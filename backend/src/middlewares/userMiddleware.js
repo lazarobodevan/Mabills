@@ -3,14 +3,14 @@ const Joi = require('joi');
 const validator = (schema, payload) => 
     schema.validate(payload, {abortEarly: false });
 
-const userSignUpSchema = Joi.object({
+const userSchema = Joi.object({
     email: Joi.string().email().required(),
     password: Joi.string().max(45).required(),
     name: Joi.string().max(45).required()
 });
 
-const validateUserSignUp =(req, res, next)=>{
-    const {error, value} = validator(userSignUpSchema, req.body);
+const validateUser =(req, res, next)=>{
+    const {error, value} = validator(userSchema, req.body);
 
     if(error){
         console.log(error);
@@ -20,6 +20,8 @@ const validateUserSignUp =(req, res, next)=>{
     next();
 };
 
+
+
 module.exports = {
-    validateUserSignUp
+    validateUser
 }
