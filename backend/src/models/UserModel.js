@@ -5,7 +5,7 @@ const Transaction = require('./TransactionModel');
 const Schema = mongoose.Schema;
 const ObjId = Schema.ObjectId;
 
-const User = new Schema({
+const UserSchema = new Schema({
     id: ObjId,
     email: String,
     password: String,
@@ -14,4 +14,6 @@ const User = new Schema({
     ownCategories: [Category]
 });
 
-module.exports = User;
+const UserModel = mongoose.model('users', UserSchema)
+
+module.exports = UserModel;
