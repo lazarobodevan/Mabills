@@ -14,7 +14,7 @@ const validateUserLoggedIn = async (req, res, next) =>{
 
     const {id} = jwt.verify(token, process.env.JWT_PASS);
 
-    const user = await UserModel.findOne({id});
+    const user = await UserModel.findById(id);
 
     if(!user){
         return res.status(403).json({message: "Access denied"});
@@ -29,7 +29,6 @@ const validateUserLoggedIn = async (req, res, next) =>{
     }
 
     req.user = loggedUser;
-
     next();
 }
 

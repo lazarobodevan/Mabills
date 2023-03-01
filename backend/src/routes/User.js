@@ -18,7 +18,11 @@ router.post('/signin', userMiddleware.validateLoginBody, login);
 
 router.use(authMiddleware.validateUserLoggedIn);
 
-router.put('/users', userMiddleware.validateUserBody,userController.updateUser);
+router.put('/users', 
+    userMiddleware.validateUserBody, 
+    userMiddleware.validateEmailAreadyInUse, 
+    userController.updateUser
+);
 
 
 module.exports = router;

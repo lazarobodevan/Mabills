@@ -17,8 +17,7 @@ const login = async (req, res) =>{
     if(!verifyPassword){
         return res.status(401).json({message: "Incorrect email or password"});
     }
-
-    const token = jwt.sign({id: user.id}, process.env.JWT_PASS, {expiresIn: '7d'});
+    const token = jwt.sign({id: user._id}, process.env.JWT_PASS, {expiresIn: '7d'});
     const userLogin = {
         id: user.id,
         name: user.name,

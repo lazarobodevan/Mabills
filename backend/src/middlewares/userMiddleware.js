@@ -49,9 +49,24 @@ const validateLoginBody = (req, res, next) =>{
     next();
 }
 
+const validateEmailAreadyInUse = (req, res, next) =>{
+    const {email} = req.body;
+    const {user} = req;
+    
+    if(email != user.email){
+        const foundUser = UserModel.findOne({email});
+        if(foundUser){
+            return res.status(203).json({message: "Email already in use"});
+        }
+        next();
+    }
+    next();
+}
+
 
 module.exports = {
     validateUserBody,
     validateUserAlreadyExists,
-    validateLoginBody
+    validateLoginBody,
+    validateEmailAreadyInUse
 }
