@@ -1,7 +1,8 @@
 const express = require('express');
 const app = express();
 const cors = require('cors')
-const router = require('./routes/User');
+const userRouter = require('./routes/userRoutes');
+const transactionRouter = require('./routes/transactionRoutes');
 
 var bodyParser = require('body-parser');
 
@@ -11,7 +12,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(router);
+app.use(userRouter);
+app.use(transactionRouter);
 app.use(express.json());
 
 module.exports = app;

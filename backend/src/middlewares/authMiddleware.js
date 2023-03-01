@@ -14,21 +14,23 @@ const validateUserLoggedIn = async (req, res, next) =>{
 
     const {id} = jwt.verify(token, process.env.JWT_PASS);
 
-    const user = await UserModel.findById(id);
+    const user = await UserModel.findById(id).then(obj => {return obj;});
 
     if(!user){
         return res.status(403).json({message: "Access denied"});
     }
 
     const loggedUser = {
-        id: user.id,
+        id: user._id,
         name: user.name,
         email: user.email,
-        transactions: user.transactions,
-        ownCategories: user.ownCategories
+        transactions: [user.transactions],
+        ownCategories: [user.ownCategories]
     }
 
-    req.user = loggedUser;
+    user.password = "";
+
+    req.user = user;
     next();
 }
 
