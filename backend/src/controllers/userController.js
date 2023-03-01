@@ -1,18 +1,38 @@
 const userModel = require('../models/UserModel');
 const express = require('express');
+const bcrypt = require('bcrypt');
 
 const app = express();
 
 const createUser = async (req, res) =>{
-    const createdUser = await userModel.create(req.body);
 
-    return res.status(200).json(createdUser);
+    const {password, name, email} = req.body;
+    const hashPassword = await encryptPassoword(password);
+
+    const newUser = await userModel.create({
+        name, 
+        email,
+        password: hashPassword
+    });
+
+    const {password: _, ...user} = newUser;
+
+    return res.status(200).json(user);
 }
 
 const updateUser = async (req, res) =>{
+
     const updatedUser = await userModel.updateOne(req.body);
 
     return res.status(201).json(updatedUser);
+}
+
+const encryptPassoword = async (password) => {
+    const salt = bcrypt.genSaltSync(10);
+    const hashed = await bcrypt.hash(password, salt).then((hash)=>{
+        return hash;
+    });
+    return hashed;
 }
 
 module.exports = {
