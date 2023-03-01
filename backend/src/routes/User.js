@@ -8,17 +8,17 @@ const authMiddleware = require('../middlewares/authMiddleware');
 
 const {login} = require('../auth/userLogin');
 
-router.get('/health', (req, res) =>{
-    res.status(200).send({message: "Server in running"});
-});
-
 router.post('/signup', 
     userMiddleware.validateUserBody, 
     userMiddleware.validateUserAlreadyExists, 
     userController.createUser
 );
 router.post('/signin', userMiddleware.validateLoginBody, login);
-router.put('/users', userMiddleware.validateUserBody, authMiddleware.validateUserLoggedIn ,userController.updateUser);
+
+
+router.use(authMiddleware.validateUserLoggedIn);
+
+router.put('/users', userMiddleware.validateUserBody,userController.updateUser);
 
 
 module.exports = router;
