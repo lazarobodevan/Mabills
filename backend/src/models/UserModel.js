@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
-const Category = require('./CategoryModel');
-const Transaction = require('./TransactionModel');
+const {Category} = require('./CategoryModel');
 
 const Schema = mongoose.Schema;
 const ObjId = Schema.ObjectId;
@@ -10,7 +9,6 @@ const UserSchema = new Schema({
     email: String,
     password: String,
     name: String,
-    transactions: [Transaction],
     ownCategories: [Category]
 });
 

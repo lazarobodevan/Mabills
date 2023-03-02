@@ -20,14 +20,6 @@ const validateUserLoggedIn = async (req, res, next) =>{
         return res.status(403).json({message: "Access denied"});
     }
 
-    const loggedUser = {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        transactions: [user.transactions],
-        ownCategories: [user.ownCategories]
-    }
-
     user.password = "";
 
     req.user = user;

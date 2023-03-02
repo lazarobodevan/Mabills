@@ -5,8 +5,14 @@ const ObjId = Schema.ObjectId;
 
 const Category = new Schema({
     id: ObjId,
+    userId: ObjId,
     name: String,
     icon: String
 });
 
-module.exports = Category;
+const CategoryModel = mongoose.model('categories', Category);
+
+module.exports = {
+    Category,
+    CategoryModel
+};

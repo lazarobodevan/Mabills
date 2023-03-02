@@ -3,6 +3,7 @@ const app = express();
 const cors = require('cors')
 const userRouter = require('./routes/userRoutes');
 const transactionRouter = require('./routes/transactionRoutes');
+const categoryRouter = require('./routes/categoryRoutes');
 
 var bodyParser = require('body-parser');
 
@@ -14,6 +15,7 @@ app.use(bodyParser.json());
 
 app.use(userRouter);
 app.use(transactionRouter);
+app.use(categoryRouter);
 app.use(express.json());
 
 module.exports = app;

@@ -15,9 +15,10 @@ const createUser = async (req, res) =>{
         password: hashPassword
     });
 
-    const {password: _, ...user} = newUser;
+    newUser.password = "";
+    //const {password: _, ...user} = newUser;
 
-    return res.status(200).json(user);
+    return res.status(200).json(newUser);
 }
 
 const updateUser = async (req, res) =>{
