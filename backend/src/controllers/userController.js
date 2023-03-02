@@ -23,7 +23,10 @@ const createUser = async (req, res) =>{
 
 const updateUser = async (req, res) =>{
 
-    const updatedUser = await userModel.updateOne(req.body);
+    const updatedUser = await userModel.findByIdAndUpdate(req.user._id, req.body, {new: true});
+
+    updatedUser.password = "";
+    req.user = updatedUser;
 
     return res.status(201).json(updatedUser);
 }

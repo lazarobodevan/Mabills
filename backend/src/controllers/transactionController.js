@@ -32,7 +32,38 @@ const getTransactions = async(req, res) =>{
     return res.status(200).json(transactions);
 }
 
+const updateTransaction = async(req, res) => {
+
+    //TODO: talvez validar se a transação pertence ao usuário.
+
+    try{
+        const id = req.params.id;
+        const updatedTransaction = await transactionModel.findByIdAndUpdate(id, req.body, {new: true});
+        return res.status(200).json(updatedTransaction);
+
+    }catch(e){
+        console.log(e);
+        return res.status(500).json({message: "Internal server error"});
+    }
+}
+
+const deleteTransaction = async(req, res) => {
+    
+    //TODO: talvez validar se a transação pertence ao usuário.
+    
+    try{
+        const {id} = req.params;
+        await transactionModel.findByIdAndDelete(id);
+        return res.status(202).json({message: "Object deleted"});
+    }catch(e){
+        console.log(e);
+        return res.status(500).json({message: "Internal server error"});
+    }
+}
+
 module.exports = {
     createTransaction,
-    getTransactions
+    getTransactions,
+    updateTransaction,
+    deleteTransaction
 }
