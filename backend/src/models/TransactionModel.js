@@ -11,7 +11,7 @@ const Transaction = new Schema({
     value: Number,
     date: Date,
     type: String,
-    categoryId: ObjId
+    categoryId: {type: ObjId, ref: 'categories'}
 });
 
 const TransactionModel = mongoose.model('transactions', Transaction);

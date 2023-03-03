@@ -18,6 +18,26 @@ const createCategory = async (req, res) =>{
     }
 }
 
+const editCategory = async (req, res) =>{
+    try{
+        const {id} = req.params;
+        const updatedCategory = await CategoryModel.findByIdAndUpdate(id, req.body, {new: true});
+        return res.status(200).json(updatedCategory);
+    }catch(e){
+        console.log(e);
+        return res.status(500).json({message: "Internal server error"});
+    }
+}
+
+const getCategories = async (req, res) =>{
+    const {user} = req;
+    const categories = await CategoryModel.find({userId: user._id});
+
+    return res.status(200).json(categories);
+}
+
 module.exports = {
-    createCategory
+    createCategory,
+    editCategory,
+    getCategories
 }

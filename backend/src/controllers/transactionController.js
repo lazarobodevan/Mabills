@@ -6,7 +6,7 @@ const {CategoryModel} = require('../models/CategoryModel');
 const createTransaction = async (req, res) =>{
     const {name, value, date, type, categoryId} = req.body;
     const loggedUser = req.user;
-    
+
     try{
         const category = await CategoryModel.findOne({userId: loggedUser._id, _id: categoryId}).then((category => {return category;}))
         if(!category){
@@ -34,7 +34,7 @@ const getTransactions = async(req, res) =>{
 
     let {limit, offset} = req.query;
     const {date, value, category, type} = req.body;
-    console.log(date);
+
     const {user} = req;
 
     const filter = {
@@ -49,7 +49,7 @@ const getTransactions = async(req, res) =>{
 
     limit = Number(limit);
     offset = Number(offset);
-    console.log(query)
+
     if(!limit){
         limit = 5;
     }
@@ -60,9 +60,11 @@ const getTransactions = async(req, res) =>{
 
     
     const transactions = await (await transactionModel.find(query)
+                                                        .populate("categoryId")
                                                         .sort({date:-1})
                                                         .skip(offset)
-                                                        .limit(limit).then(transactions =>{return transactions;}));
+                                                        .limit(limit)
+                                                        .then(transactions =>{return transactions;}));
 
     const total = await TransactionModel.countDocuments({userId: user._id});
     const next = offset + limit;
