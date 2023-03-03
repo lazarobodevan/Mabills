@@ -14,7 +14,7 @@ const transactionSchema = Joi.object({
 
 const validateTransactionBody = (req, res, next) =>{
     const newReq = req.body;
-    newReq.date = moment(req.body.date, 'YYYY-MM-DD').format()
+    newReq.date = moment(req.body.date,'DD-MM-YYYY').format('YYYY-MM-DD');
     const {error} = validator(transactionSchema, newReq);
 
     if(error){
