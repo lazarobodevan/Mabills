@@ -1,22 +1,27 @@
 const transactionModel = require('../models/TransactionModel');
 const moment = require('moment');
 const TransactionModel = require('../models/TransactionModel');
+const {CategoryModel} = require('../models/CategoryModel');
 
 const createTransaction = async (req, res) =>{
     const {name, value, date, type, categoryId} = req.body;
     const loggedUser = req.user;
+    
     try{
-        //const category = await CategoryModel.findOne({userId: loggedUser._id, _id: categoryId}).then((category => {return category;}))
-        const newTransaction = await transactionModel.create({
+        const category = await CategoryModel.findOne({userId: loggedUser._id, _id: categoryId}).then((category => {return category;}))
+        if(!category){
+            return res.status(400).json({message: "Invalid category"});
+        }
+        let newTransaction = await transactionModel.create({
             userId: loggedUser._id,
             name,
             value,
-            date: moment(date,'DD-MM-YYYY').format('YYYY-MM-DD'),
+            date: date,
             type,
             categoryId
         });
-
-        return res.status(200).json(newTransaction.populate("categoryId"));
+        
+        return res.status(200).json({newTransaction, category});
         
     }catch(e){
         console.log(e)
@@ -29,7 +34,7 @@ const getTransactions = async(req, res) =>{
 
     let {limit, offset} = req.query;
     const {date, value, category, type} = req.body;
-
+    console.log(date);
     const {user} = req;
 
     const filter = {
@@ -44,7 +49,7 @@ const getTransactions = async(req, res) =>{
 
     limit = Number(limit);
     offset = Number(offset);
-
+    console.log(query)
     if(!limit){
         limit = 5;
     }
