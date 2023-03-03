@@ -28,6 +28,20 @@ const createTransaction = async (req, res) =>{
 const getTransactions = async(req, res) =>{
 
     let {limit, offset} = req.query;
+    const {date, value, category, type} = req.body;
+
+    const {user} = req;
+
+    const filter = {
+        userId: user._id,
+        date: date ? moment(moment(date,'DD-MM-YYYY').format('YYYY-MM-DD')).utc().format(): null,
+        value,
+        category,
+        type
+    }
+
+    const query = buildFilter(filter);
+
     limit = Number(limit);
     offset = Number(offset);
 
@@ -39,8 +53,8 @@ const getTransactions = async(req, res) =>{
         offset = 0;
     }
 
-    const {user} = req;
-    const transactions = await (await transactionModel.find({userId: user._id})
+    
+    const transactions = await (await transactionModel.find(query)
                                                         .sort({date:-1})
                                                         .skip(offset)
                                                         .limit(limit).then(transactions =>{return transactions;}));
@@ -90,6 +104,19 @@ const deleteTransaction = async(req, res) => {
         console.log(e);
         return res.status(500).json({message: "Internal server error"});
     }
+}
+
+buildFilter = (filter) => {
+    
+    let query = {};
+
+    for(let key in filter){
+        if(filter[key]){
+            query[key] = filter[key];
+        }
+    }
+    query['userId'] = filter.userId;
+    return query;
 }
 
 module.exports = {
