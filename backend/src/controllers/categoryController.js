@@ -36,8 +36,20 @@ const getCategories = async (req, res) =>{
     return res.status(200).json(categories);
 }
 
+const deleteCategory = async (req, res) =>{
+    const {id} = req.params;
+    try{
+        await CategoryModel.findByIdAndDelete(id)
+        return res.status(200).json({message: 'Category deleted'});
+    }catch(e){
+        console.log(e);
+        return res.status(500).json({message: 'Internal server error'});
+    }
+}
+
 module.exports = {
     createCategory,
     editCategory,
-    getCategories
+    getCategories,
+    deleteCategory
 }
