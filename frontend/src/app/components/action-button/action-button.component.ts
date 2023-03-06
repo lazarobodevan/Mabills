@@ -8,4 +8,6 @@ import { Component, Input } from '@angular/core';
 export class ActionButtonComponent {
   @Input() text: string = "";
   @Input() width: string = "";
+
+  @Input() func!: Function;
 }

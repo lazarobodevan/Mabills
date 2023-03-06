@@ -13,6 +13,8 @@ import { SideBarItemComponent } from './components/side-bar-item/side-bar-item.c
 import { ExpensesComponent } from './components/expenses/expenses.component';
 import { InvestedComponent } from './components/invested/invested.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { AuthService } from './services/auth.service';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -30,9 +32,10 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MatIconModule
+    MatIconModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
