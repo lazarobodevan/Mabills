@@ -15,6 +15,7 @@ import { InvestedComponent } from './components/invested/invested.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthService } from './services/auth.service';
 import { FormsModule } from '@angular/forms';
+import { CardComponent } from './components/card/card.component';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import { FormsModule } from '@angular/forms';
     ExpensesComponent,
     InvestedComponent,
     DashboardComponent,
+    CardComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,5 +1,12 @@
 .container{
+    padding: 20px;
     background-color: #111111;
     width: calc(100vw - 210px);
     height: 100%;
+}
+
+.cards-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
 }
