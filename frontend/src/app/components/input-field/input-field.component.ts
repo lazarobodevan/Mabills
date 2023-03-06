@@ -14,7 +14,6 @@ export class InputFieldComponent {
   
 
   @Output() inputContent: EventEmitter<string> = new EventEmitter();
-
   sendContent(){
     this.inputContent.emit(this.content);
   }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../classes/User';
 
@@ -8,15 +8,20 @@ import { User } from '../classes/User';
 export class AuthService {
 
   private isUserAuthenticated: boolean = false;
+
+  showSideBarEmitter = new EventEmitter<boolean>();
+
   constructor(private router: Router) { }
 
   //implementar logica
   authenticate(user: User){
     if(user.email === 'teste@teste.com'){
-      console.log("chamou");
+      this.showSideBarEmitter.emit(true);
+
       this.isUserAuthenticated = true;
       this.router.navigate(['/home']);
     }else{
+      this.showSideBarEmitter.emit(true);
       this.isUserAuthenticated = false;
     }
   }

@@ -1,6 +1,7 @@
 <div style="display: flex; flex-grow: grow;">
-    
-    <app-side-bar></app-side-bar>
+    <div *ngIf="showSidebar">
+        <app-side-bar></app-side-bar>
+    </div>
     <router-outlet>
     </router-outlet>
 </div>

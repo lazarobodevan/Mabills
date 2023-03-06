@@ -27,7 +27,7 @@ import { FormsModule } from '@angular/forms';
     SideBarItemComponent,
     ExpensesComponent,
     InvestedComponent,
-    DashboardComponent
+    DashboardComponent,
   ],
   imports: [
     BrowserModule,
