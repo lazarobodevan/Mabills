@@ -6,11 +6,7 @@
     grid-template-rows: 80px 30px auto;
     grid-template-columns: auto;
     align-content: start;
-    
-}
-
-.container:hover{
-    cursor: pointer;
+    position: relative;
 }
 
 .container span{

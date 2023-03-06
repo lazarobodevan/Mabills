@@ -10,6 +10,9 @@ import { ActionButtonComponent } from './components/action-button/action-button.
 import { HomeComponent } from './components/home/home.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { SideBarItemComponent } from './components/side-bar-item/side-bar-item.component';
+import { ExpensesComponent } from './components/expenses/expenses.component';
+import { InvestedComponent } from './components/invested/invested.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +22,10 @@ import { SideBarItemComponent } from './components/side-bar-item/side-bar-item.c
     ActionButtonComponent,
     HomeComponent,
     SideBarComponent,
-    SideBarItemComponent
+    SideBarItemComponent,
+    ExpensesComponent,
+    InvestedComponent,
+    DashboardComponent
   ],
   imports: [
     BrowserModule,

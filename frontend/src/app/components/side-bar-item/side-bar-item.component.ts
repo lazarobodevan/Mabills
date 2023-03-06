@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-side-bar-item',
@@ -6,7 +6,8 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./side-bar-item.component.css']
 })
 export class SideBarItemComponent {
-  @Input() selected!: boolean;
   @Input() text: string = "";
   @Input() icon: string = "";
+  @Input() routLink: string = ""
+
 }

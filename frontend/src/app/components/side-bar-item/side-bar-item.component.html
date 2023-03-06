@@ -1,6 +1,4 @@
-<div class="container">
-    <div [ngClass]="selected ? 'container-active':'container-unactive'">
-        <mat-icon aria-hidden="false" fontIcon={{icon}}></mat-icon>
-        <span>{{text}}</span>
-    </div>
+<div routerLink={{routLink}} routerLinkActive="container-active" class="container">
+    <mat-icon aria-hidden="false" fontIcon={{icon}} routerLinkActive="active"></mat-icon>
+    <a routerLinkActive="active">{{text}}</a>
 </div>
