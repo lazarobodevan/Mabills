@@ -16,6 +16,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthService } from './services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { CardComponent } from './components/card/card.component';
+import { TransactionCardComponent } from './components/transaction-card/transaction-card.component';
 
 @NgModule({
   declarations: [
@@ -30,6 +31,7 @@ import { CardComponent } from './components/card/card.component';
     InvestedComponent,
     DashboardComponent,
     CardComponent,
+    TransactionCardComponent,
   ],
   imports: [
     BrowserModule,

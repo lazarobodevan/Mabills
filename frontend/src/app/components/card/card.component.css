@@ -1,5 +1,5 @@
 .container{
-    width: 400px;
+    min-width: 400px;
     height: 172px;
     padding: 16px;
     background-color: #3C7DAC;
@@ -8,7 +8,7 @@
     display: grid;
     grid-template-columns: auto auto;
     grid-template-rows: auto auto;
-    margin-right: 20px;
+    max-width: 600px;
 
 }
 
@@ -24,6 +24,7 @@
     color: white;
     justify-self: flex-start;
     font-size: 36px;
+    width: 100%;
     
     grid-column: 2;
     grid-row: 2;

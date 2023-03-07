@@ -2,6 +2,16 @@
     <div class="cards-container">
         <app-card icon="receive-money.png" text="Contas a receber" [value]="2000.0" backgroundColor="#3C7DAC"></app-card>
         <app-card icon="pay.png" text="Contas a pagar" [value]="2000.0" backgroundColor="#6F9600"></app-card>
-        <app-card icon="due-date.png" text="Contas a vencer" [value]="2000.0" backgroundColor="#5A0606"></app-card>
+        <app-card icon="due-date.png" text="Contas a vencer" [value]="123154.0" backgroundColor="#5A0606"></app-card>
+    </div>
+    <p class="title">Resumo da semana</p>
+    <div class="charts-container">
+        <canvas #chartCanvas ></canvas>
+        <canvas #chartCanvas2 ></canvas>
+    </div>
+
+    <p class="title">Transações recentes</p>
+    <div class="transactions-container">
+        <app-transaction-card></app-transaction-card>
     </div>
 </div>

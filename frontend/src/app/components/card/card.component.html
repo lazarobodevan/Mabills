@@ -1,5 +1,5 @@
 <div class="container" [ngStyle]="{'background-color':backgroundColor}">
     <img src='{{"../../../assets/" + icon}}'/>
     <span class="name">{{text}}</span>
-    <span class="value">{{'R$ '+ value.toFixed(2)}}</span>
+    <span class="value">{{'R$ '+ (value <= 999999 ? value.toFixed(2) : ((value/1.0e+6).toFixed(2) + ' M'))}}</span>
 </div>
