@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { Chart } from 'chart.js/auto';
+import { Chart, AnimationOptions, Animation } from 'chart.js/auto';
 
 @Component({
   selector: 'app-home',
@@ -7,25 +7,42 @@ import { Chart } from 'chart.js/auto';
   styleUrls: ['./home.component.css']
 })
 export class HomeComponent {
-  @ViewChild("chartCanvas", {static: true}) element!: ElementRef;
-  @ViewChild("chartCanvas2", {static: true}) element2!: ElementRef;
+  @ViewChild("chartCanvas", {static: true}) element2!: ElementRef;
+  @ViewChild("chartCanvas2", {static: true}) element!: ElementRef;
 
   ngOnInit(){
+
     new Chart(this.element.nativeElement,{
       type:'doughnut',
-      data:{
-        datasets:[{
-          data:[10,20,20,30]
-        }]
+      data: {// values on X-Axis
+	       datasets: [
+          {
+            label: "Sales",
+            data: ['467','576', '572', '79', '92',
+								 '574', '573', '576'],
+            backgroundColor: 'blue'
+          },
+        ]
+      },
+      options:{
+        animation:true
       }
     })
 
     new Chart(this.element2.nativeElement,{
       type:'doughnut',
-      data:{
-        datasets:[{
-          data:[1,2,20,30]
-        }]
+      data: {
+	       datasets: [
+          {
+            label: "Sales",
+            data: ['467','576', '572', '79', '92',
+								 '574', '573', '576'],
+            backgroundColor: 'blue'
+          },
+        ]
+      },
+      options:{
+        animation:true
       }
     })
   }

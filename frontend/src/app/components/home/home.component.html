@@ -5,13 +5,19 @@
         <app-card icon="due-date.png" text="Contas a vencer" [value]="123154.0" backgroundColor="#5A0606"></app-card>
     </div>
     <p class="title">Resumo da semana</p>
-    <div class="charts-container">
+    <div class="charts-container" style="position: relative;height:40vh; width:80vw">
         <canvas #chartCanvas ></canvas>
         <canvas #chartCanvas2 ></canvas>
     </div>
 
     <p class="title">Transações recentes</p>
     <div class="transactions-container">
-        <app-transaction-card></app-transaction-card>
+        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
+        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
+        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
+        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
+        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
+        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
+        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
     </div>
 </div>
