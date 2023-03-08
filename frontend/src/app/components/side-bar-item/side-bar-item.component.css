@@ -26,6 +26,7 @@ a{
     margin-left: 10px;
     color: white;
     opacity: 0.66;
+    user-select: none;
 }
 
 mat-icon{

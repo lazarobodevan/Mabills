@@ -20,13 +20,9 @@ export class HomeComponent {
             label: "Sales",
             data: ['467','576', '572', '79', '92',
 								 '574', '573', '576'],
-            backgroundColor: 'blue'
           },
         ]
       },
-      options:{
-        animation:true
-      }
     })
 
     new Chart(this.element2.nativeElement,{
@@ -37,13 +33,9 @@ export class HomeComponent {
             label: "Sales",
             data: ['467','576', '572', '79', '92',
 								 '574', '573', '576'],
-            backgroundColor: 'blue'
           },
         ]
       },
-      options:{
-        animation:true
-      }
     })
   }
 }

@@ -5,7 +5,7 @@
     </div>
 
     <form class="fields-container">
-        <app-input-field placeholder="Email" (inputContent)="setEmail($event)"></app-input-field>
+        <app-input-field placeholder="Email" (inputContent)="setEmail($event)" style="margin-bottom: 10px;"></app-input-field>
         <app-input-field placeholder="Senha" type="password" (inputContent)="setPassword($event)"></app-input-field>
         <app-action-button text="Login" width="100%" [style]="{'margin-top':'20px'}" (OnClick)="login()"></app-action-button>
         <a>Cadastre-se</a>

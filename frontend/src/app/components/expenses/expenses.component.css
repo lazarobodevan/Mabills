@@ -1,0 +1,55 @@
+.container{
+    padding: 40px 40px 0 40px;
+    background-color: #111111;
+    width: calc(100vw - 210px);
+    height: 100vh;
+    overflow: auto;
+}
+
+.header{
+    display: flex;
+    width: 100%;
+    color: white;
+    align-items: center;
+}
+
+.icon{
+    display: block;
+    width: fit-content;
+    height: fit-content;
+    font-size: 40px;
+    margin-left: 60px;
+}
+
+.filter{
+    margin-left: 10px;
+    margin-right: 15px;
+}
+
+.filter p{
+    line-height: 20px;
+}
+
+.dropdown{
+    width: 120px;
+    height: 40px;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.table{
+    min-width: 90%;
+    color: white;
+    border-collapse: collapse;
+}
+
+.table tr,td{
+    text-align: center;
+    border: 2px solid white;
+    padding: 10px;
+}
+
+.table input{
+    width: 20px; 
+    height: 20px;
+}

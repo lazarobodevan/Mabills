@@ -1,1 +1,43 @@
-<p>expenses works!</p>
+<div class="container">
+    <div class="header">
+        <app-input-field placeholder="Pesquisar..."></app-input-field>
+        <mat-icon fontIcon="filter_list" class="icon"></mat-icon>
+        <div class="filter">
+            <p>Tipo</p>
+            <select name="type" class="dropdown">
+                <option value="" selected>Selecione...</option>
+                <option value="EXPENSE">Despesa</option>
+                <option value="INCOME">Entrada</option>
+            </select>
+        </div>
+        <div class="filter">
+            <p>Categoria</p>
+            <select name="category" class="dropdown">
+                <option value="" selected>Selecione...</option>
+                <option value="EXPENSE">Despesa</option>
+                <option value="INCOME">Entrada</option>
+            </select>
+        </div>
+        <div class="filter">
+            <p>Data</p>
+            <select name="date" class="dropdown">
+                <option value="" selected>Selecione...</option>
+                <option value="asc">Asc</option>
+                <option value="des">Desc</option>
+            </select>
+        </div>
+    </div>
+
+    <table class="table">
+        <tr>
+            <td></td>
+            <td>Nome</td>
+            <td>Tipo</td>
+            <td>Categoria</td>
+            <td>Data</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox"/></td>
+        </tr>
+    </table>
+</div>
