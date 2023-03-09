@@ -9,9 +9,8 @@ const login = async (req, res) =>{
     const user = await UserModel.findOne({email});
 
     if(!user){
-        res.status(401).json({message: "Incorrect email or password"});
+        return res.status(401).json({message: "Incorrect email or password"});
     }
-
     const verifyPassword = await bcrypt.compare(password, user.password);
 
     if(!verifyPassword){
@@ -22,7 +21,6 @@ const login = async (req, res) =>{
         id: user._id,
         name: user.name,
         email: user.email,
-        transactions: user.transactions,
         ownCategories: user.ownCategories
     }
     

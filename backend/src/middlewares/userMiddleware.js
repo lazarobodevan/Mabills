@@ -49,14 +49,16 @@ const validateLoginBody = (req, res, next) =>{
     next();
 }
 
-const validateEmailAreadyInUse = (req, res, next) =>{
+const validateEmailAreadyInUse = async (req, res, next) =>{
     const {email} = req.body;
     const {user} = req;
+
     
     if(email != user.email){
-        const foundUser = UserModel.findOne({email});
+        const foundUser = await UserModel.findOne({email}).then(user => {return user;});
         if(foundUser){
-            return res.status(203).json({message: "Email already in use"});
+            console.log(foundUser);
+            return res.status(400).json({message: "Email already in use"});
         }
         next();
     }
