@@ -3,7 +3,7 @@ const request = require('supertest');
 
 const app = require('../app');
 
-const mongo = require('./test_db');
+const mongo = require('./utils/test_db');
 
 const {generateDefaultUser} = require('./utils/utils');
 
@@ -49,7 +49,7 @@ describe('User domain',() => {
             });
 
             const expectation = {
-               message: "User already exists"
+               message: "User already exists",
             }
 
             expect(response.body).toMatchObject(expectation);
@@ -224,4 +224,4 @@ describe('User domain',() => {
             expect(response.body).toMatchObject(expectation);
         })
     })
-})
+});

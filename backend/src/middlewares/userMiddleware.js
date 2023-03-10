@@ -57,7 +57,6 @@ const validateEmailAreadyInUse = async (req, res, next) =>{
     if(email != user.email){
         const foundUser = await UserModel.findOne({email}).then(user => {return user;});
         if(foundUser){
-            console.log(foundUser);
             return res.status(400).json({message: "Email already in use"});
         }
         next();
