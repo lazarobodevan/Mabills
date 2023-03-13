@@ -11,6 +11,7 @@ export class InputFieldComponent {
 
   @Input() placeholder: string = '';
   @Input() type: string = '';
+  @Input() icon: string = '';
   
 
   @Output() inputContent: EventEmitter<string> = new EventEmitter();

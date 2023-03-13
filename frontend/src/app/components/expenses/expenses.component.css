@@ -41,6 +41,7 @@
     min-width: 90%;
     color: white;
     border-collapse: collapse;
+    margin-top: 20px;
 }
 
 .table tr,td{

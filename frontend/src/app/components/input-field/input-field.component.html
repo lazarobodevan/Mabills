@@ -1,1 +1,11 @@
-<input placeholder={{placeholder}} type={{type}} [(ngModel)]="content" (input)="sendContent()"/>
+<div style="position: relative;">
+    <span class="icon" *ngIf="icon">
+        <mat-icon fontIcon={{icon}}></mat-icon>
+    </span>
+    <input placeholder={{placeholder}} 
+        type={{type}} 
+        [(ngModel)]="content" 
+        (input)="sendContent()" 
+        style="display: block;"
+        [ngClass]="{'has-icon':icon}"/>
+</div>

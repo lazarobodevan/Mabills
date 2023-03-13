@@ -11,12 +11,13 @@ import { HomeComponent } from './components/home/home.component';
 import { SideBarComponent } from './components/side-bar/side-bar.component';
 import { SideBarItemComponent } from './components/side-bar-item/side-bar-item.component';
 import { ExpensesComponent } from './components/expenses/expenses.component';
-import { InvestedComponent } from './components/invested/invested.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { AuthService } from './services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { CardComponent } from './components/card/card.component';
 import { TransactionCardComponent } from './components/transaction-card/transaction-card.component';
+import { CategoriesComponent } from './components/categories/categories.component';
+import { CategoryItemComponent } from './components/category-item/category-item.component';
 
 @NgModule({
   declarations: [
@@ -28,10 +29,11 @@ import { TransactionCardComponent } from './components/transaction-card/transact
     SideBarComponent,
     SideBarItemComponent,
     ExpensesComponent,
-    InvestedComponent,
     DashboardComponent,
     CardComponent,
     TransactionCardComponent,
+    CategoriesComponent,
+    CategoryItemComponent,
   ],
   imports: [
     BrowserModule,

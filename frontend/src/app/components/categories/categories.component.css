@@ -1,0 +1,14 @@
+.container{
+    padding: 40px 40px 0 40px;
+    background-color: #111111;
+    width: calc(100vw - 210px);
+    height: 100vh;
+    overflow: auto;
+}
+
+.categories-container{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
+

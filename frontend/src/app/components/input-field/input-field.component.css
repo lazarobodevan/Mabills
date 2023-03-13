@@ -8,3 +8,16 @@ input{
     color: white;
     border-radius: 5px;
 }
+
+.icon{
+    display: flex; 
+    position:absolute; 
+    height: 100%; 
+    align-items: center;
+    margin-left: 5px;
+    color: white;
+}
+
+.has-icon{
+    padding-left: 30px;
+}
