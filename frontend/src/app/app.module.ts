@@ -18,6 +18,7 @@ import { CardComponent } from './components/card/card.component';
 import { TransactionCardComponent } from './components/transaction-card/transaction-card.component';
 import { CategoriesComponent } from './components/categories/categories.component';
 import { CategoryItemComponent } from './components/category-item/category-item.component';
+import { ProfileComponent } from './components/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { CategoryItemComponent } from './components/category-item/category-item.
     TransactionCardComponent,
     CategoriesComponent,
     CategoryItemComponent,
+    ProfileComponent,
   ],
   imports: [
     BrowserModule,

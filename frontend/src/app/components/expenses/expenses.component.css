@@ -37,6 +37,10 @@
     padding: 5px;
 }
 
+.table-container{
+    min-height: 80%;
+}
+
 .table{
     min-width: 90%;
     color: white;
@@ -53,4 +57,35 @@
 .table input{
     width: 20px; 
     height: 20px;
+}
+
+.footer{
+    display: grid;
+    width: 100%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    padding-right: 160px;
+    grid-template-columns: 90% auto;
+    align-items: center;
+}
+
+.btn{
+    display: flex;
+    justify-content: flex-end;
+    align-self: flex-end;
+
+}
+
+.see-more{
+    display: flex;
+    grid-column: 1;
+    grid-row: 1;
+    height: 100%;
+    width: 100px;
+    align-items: center;
+    justify-content: flex-end;
+    justify-self: center;
+    color: white;
+    user-select: none;
+    cursor: pointer;
 }
