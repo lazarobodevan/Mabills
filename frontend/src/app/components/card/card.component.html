@@ -1,5 +1,9 @@
 <div class="container" [ngStyle]="{'background-color':backgroundColor}">
-    <img src='{{"../../../assets/" + icon}}'/>
+    <img src='{{"../../../assets/" + icon}}' *ngIf="icon"/>
     <span class="name">{{text}}</span>
     <span class="value">{{'R$ '+ (value <= 999999 ? value.toFixed(2) : ((value/1.0e+6).toFixed(2) + ' M'))}}</span>
+    <div class="variation" [ngClass]="defineVariation().class">
+        <mat-icon fontIcon={{defineVariation().icon}}></mat-icon>
+        <span *ngIf="variation != 0">{{variation}}</span>
+    </div>
 </div>

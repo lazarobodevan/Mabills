@@ -29,3 +29,24 @@
     grid-column: 2;
     grid-row: 2;
 }
+
+.variation{
+    display: flex;
+    width: fit-content;
+    height: fit-content;
+    align-items: center;
+    justify-self: flex-end;
+    grid-column: 2;
+    grid-row: 1;
+    font-weight: bold;
+}
+
+.positive{
+    color: rgb(0, 94, 0);
+}
+.negative{
+    color: rgb(134, 0, 0);
+}
+.neutral{
+    color: white;
+}

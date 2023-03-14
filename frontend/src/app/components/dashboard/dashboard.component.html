@@ -1,3 +1,16 @@
 <div class="container">
-    
+    <div class="cards-container">
+        <app-card backgroundColor="#5A0606" text="Despesas do mês" [value]=200 ></app-card>
+        <app-card backgroundColor="#6F9600" text="Receita do mês" [value]=2000 ></app-card>
+        <app-card backgroundColor="#000000" text="Contas vencidas" [value]=2000 ></app-card>
+    </div>
+
+    <div class="chart-container">
+        <canvas #chartCanvas ></canvas>
+    </div>
+
+    <div class="chart-container" style="margin-top: 80px; margin-bottom: 40px;">
+        <canvas #income></canvas>
+        <canvas #expense></canvas>
+    </div>
 </div>
