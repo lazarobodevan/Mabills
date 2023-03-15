@@ -11,6 +11,7 @@ const Transaction = new Schema({
     value: Number,
     date: Date,
     type: String,
+    isPaid: Boolean,
     categoryId: {type: ObjId, ref: 'categories'}
 });
 

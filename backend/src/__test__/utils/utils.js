@@ -21,7 +21,17 @@ const loginDefaultUser = async () =>{
     return response.body.token;
 }
 
+const generateDefaultCategory = async (token) =>{
+    const response = await request(app).post('/category').set({'Authorization':'bearer '+token}).send({
+        name: "defaultCategory",
+        icon:"defaultCategory.png"
+    });
+
+    return response.body;
+}
+
 module.exports = {
     generateDefaultUser,
-    loginDefaultUser
+    loginDefaultUser,
+    generateDefaultCategory
 }

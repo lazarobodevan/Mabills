@@ -4,7 +4,7 @@ const TransactionModel = require('../models/TransactionModel');
 const {CategoryModel} = require('../models/CategoryModel');
 
 const createTransaction = async (req, res) =>{
-    const {name, value, date, type, categoryId} = req.body;
+    const {name, value, date, type, isPaid, categoryId} = req.body;
     const loggedUser = req.user;
 
     try{
@@ -18,6 +18,7 @@ const createTransaction = async (req, res) =>{
             value,
             date: date,
             type,
+            isPaid,
             categoryId
         });
         
@@ -33,7 +34,7 @@ const createTransaction = async (req, res) =>{
 const getTransactions = async(req, res) =>{
 
     let {limit, offset} = req.query;
-    const {date, value, category, type} = req.body;
+    const {date, value, category, type, isPaid} = req.body;
 
     const {user} = req;
 
@@ -42,6 +43,7 @@ const getTransactions = async(req, res) =>{
         date: date ? moment(moment(date,'DD-MM-YYYY').format('YYYY-MM-DD')).utc().format(): null,
         value,
         category,
+        isPaid,
         type
     }
 
