@@ -22,9 +22,11 @@ const expenseTransactionSchema = Joi.object({
 });
 
 const filterSchema = Joi.object({
-    category: Joi.string().optional(),
+    name: Joi.string().optional(),
+    categoryId: Joi.string().optional(),
     value: Joi.number().optional(),
     date: Joi.date().optional(),
+    isPaid: Joi.boolean(),
     type: Joi.string().valid('INCOME').valid('EXPENSE')
 })
 

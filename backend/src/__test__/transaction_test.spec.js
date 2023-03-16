@@ -60,8 +60,6 @@ describe('Transaction domain',() => {
                 categoryId: categoryCreated._id,
             });
 
-            console.log(JSON.stringify(response.body));
-
             const expectation = {
                 "_original": {
                   "name": "transaction",
@@ -92,7 +90,7 @@ describe('Transaction domain',() => {
         });
     });
 
-    describe('POST #createTransaction - EXPENSE - paid true', ()=>{
+    describe('POST #createTransaction - EXPENSE - isPaid true', ()=>{
         it('should create a paid EXPENSE transaction and relate to the logged user and return its data', async()=>{
             const response = await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
                 name: "transaction",
@@ -102,9 +100,6 @@ describe('Transaction domain',() => {
                 isPaid: true,
                 categoryId: categoryCreated._id,
             });
-
-            console.log("corpo: "+JSON.stringify(response))
-
 
             const expectation = {
                 newTransaction: {
@@ -122,8 +117,8 @@ describe('Transaction domain',() => {
             expect(response.body).toMatchObject(expectation);
         });
     });
-    });
-    describe('POST #createTransaction - EXPENSE - paid false', ()=>{
+
+    describe('POST #createTransaction - EXPENSE - isPaid false', ()=>{
         it('should create a unpaid EXPENSE transaction and relate to the logged user and return its data', async()=>{
             const response = await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
                 name: "transaction",
@@ -150,4 +145,117 @@ describe('Transaction domain',() => {
 
             expect(response.body).toMatchObject(expectation);
         });
+
+    });
+    
+    describe('POST #getTransaction - no filter', ()=>{
+        it('should return all transactions from logged user with pagination', async()=>{
+            const response = await request(app).post('/transactions/filter').set({'Authorization':'bearer '+token}).send({
+            });
+
+            const expectation = {
+                "nextUrl": null,
+                "previousUrl": null,
+                "limit": 5,
+                "offset": 0,
+                "total": 3,
+                "results": [
+                  {
+                    "userId": user._id,
+                    "name": "transaction",
+                    "value": 123,
+                    "date": "2023-02-25T00:00:00.000Z",
+                    "type": "INCOME",
+                    "categoryId": {
+                      "_id": categoryCreated._id,
+                      "userId": user._id,
+                      "name": "defaultCategory",
+                      "icon": "defaultCategory.png",
+                      "__v": 0
+                    },
+                    "__v": 0
+                  },
+                  {
+                    "userId": user._id,
+                    "name": "transaction",
+                    "value": 123,
+                    "date": "2023-02-25T00:00:00.000Z",
+                    "type": "EXPENSE",
+                    "isPaid": true,
+                    "categoryId": {
+                      "_id": categoryCreated._id,
+                      "userId": user._id,
+                      "name": "defaultCategory",
+                      "icon": "defaultCategory.png",
+                      "__v": 0
+                    },
+                    "__v": 0
+                  },
+                  {
+                    "userId": user._id,
+                    "name": "transaction",
+                    "value": 123,
+                    "date": "2023-02-25T00:00:00.000Z",
+                    "type": "EXPENSE",
+                    "isPaid": false,
+                    "categoryId": {
+                      "_id": categoryCreated._id,
+                      "userId": user._id,
+                      "name": "defaultCategory",
+                      "icon": "defaultCategory.png",
+                      "__v": 0
+                    },
+                    "__v": 0
+                  }
+                ]
+              }
+
+            expect(response.body).toMatchObject(expectation);
+        });
+
+    });
+    describe('POST #getTransaction - filters', ()=>{
+        it('should return filtered transactions from logged user with pagination', async()=>{
+            const response = await request(app).post('/transactions/filter').set({'Authorization':'bearer '+token}).send({
+                type: 'EXPENSE',
+                isPaid: true,
+                date: '25/02/2023',
+                categoryId: categoryCreated._id,
+                value: 123,
+                name: 'transaction'
+            });
+
+            console.log("a : " + JSON.stringify(response.body))
+
+            const expectation = {
+                "nextUrl": null,
+                "previousUrl": null,
+                "limit": 5,
+                "offset": 0,
+                "total": 3,
+                "results": [
+                  {
+                    "userId": user._id,
+                    "name": "transaction",
+                    "value": 123,
+                    "date": "2023-02-25T00:00:00.000Z",
+                    "type": "EXPENSE",
+                    "isPaid": true,
+                    "categoryId": {
+                      "_id": categoryCreated._id,
+                      "userId": user._id,
+                      "name": "defaultCategory",
+                      "icon": "defaultCategory.png",
+                      "__v": 0
+                    },
+                    "__v": 0
+                  }
+                ]
+              }
+
+            expect(response.body).toMatchObject(expectation);
+        });
+
+    });
+
 })

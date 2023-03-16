@@ -40,7 +40,7 @@ const getTransactions = async(req, res) =>{
 
     const filter = {
         userId: user._id,
-        date: date ? moment(moment(date,'DD-MM-YYYY').format('YYYY-MM-DD')).utc().format(): null,
+        date: date ? new Date(moment.utc(date,'DD-MM-YYYY').format('YYYY-MM-DD')): null,
         value,
         category,
         isPaid,
@@ -48,6 +48,8 @@ const getTransactions = async(req, res) =>{
     }
 
     const query = buildFilter(filter);
+
+    console.log(query);
 
     limit = Number(limit);
     offset = Number(offset);
