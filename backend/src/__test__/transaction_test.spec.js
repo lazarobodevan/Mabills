@@ -9,6 +9,7 @@ const {generateDefaultUser, loginDefaultUser, generateDefaultCategory} = require
 
 let token;
 let categoryCreated;
+let transactionCreated;
 
 beforeAll(async ()=>{
     await mongo.connect();
@@ -44,6 +45,8 @@ describe('Transaction domain',() => {
                 },
                 category: categoryCreated
             }
+
+            transactionCreated = response.body;
 
             expect(response.body).toMatchObject(expectation);
         });
@@ -256,6 +259,53 @@ describe('Transaction domain',() => {
             expect(response.body).toMatchObject(expectation);
         });
 
+    });
+
+    describe('PUT #updateTransaction', ()=>{
+        it('should update an INCOME transaction and relate to the logged user and return its data', async()=>{
+            const response = await request(app).put(`/transactions/${transactionCreated.newTransaction._id}`).set({'Authorization':'bearer '+token}).send({
+                name: "transaction2",
+                value:1234,
+                date: "26/02/2023",
+                type: "EXPENSE",
+                isPaid: false,
+                categoryId: categoryCreated._id,
+            });
+
+            console.log(JSON.stringify(response.body))
+
+            const expectation = {
+                "userId": user._id,
+                "name": "transaction2",
+                "value": 1234,
+                "date": "2023-02-26T00:00:00.000Z",
+                "type": "EXPENSE",
+                "categoryId": {
+                  "_id": categoryCreated._id,
+                  "userId": user._id,
+                  "name": "defaultCategory",
+                  "icon": "defaultCategory.png",
+                  "__v": 0
+                },
+                "__v": 0,
+                "isPaid": false
+              }
+
+            expect(response.body).toMatchObject(expectation);
+        });
+    });
+
+    describe('DELETE #deleteTransaction', ()=>{
+        it('should delete transaction by its id', async()=>{
+            const response = await request(app).delete(`/transactions/${transactionCreated.newTransaction._id}`).set({'Authorization':'bearer '+token}).send({
+            });
+
+            const expectation = {
+                message: 'Object deleted'
+              }
+
+            expect(response.body).toMatchObject(expectation);
+        });
     });
 
 })
