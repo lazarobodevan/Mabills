@@ -6,6 +6,6 @@ const dashboardController = require('../controllers/dashboardController');
 
 router.use(authMiddleware.validateUserLoggedIn);
 
-router.get('/dashboard/weekcards', dashboardController.getBillsToReceive);
+router.get('/dashboard/weekcards', dashboardController.getWeekCards);
 
 module.exports = router;

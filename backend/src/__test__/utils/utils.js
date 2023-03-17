@@ -30,8 +30,60 @@ const generateDefaultCategory = async (token) =>{
     return response.body;
 }
 
+const populateTransactions = async(token) =>{
+    const categoryCreated = await generateDefaultCategory(token);
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction",
+        value:123,
+        date: "16/03/2023",
+        type: "INCOME",
+        categoryId: categoryCreated._id,
+    });
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction2",
+        value:1234,
+        date: "16/03/2023",
+        type: "INCOME",
+        categoryId: categoryCreated._id,
+    });
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction2",
+        value:123,
+        date: "16/03/2023",
+        type: "EXPENSE",
+        isPaid: false,
+        categoryId: categoryCreated._id,
+    });
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction2",
+        value:123,
+        date: "16/03/2023",
+        type: "EXPENSE",
+        isPaid: true,
+        categoryId: categoryCreated._id,
+    });
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction2",
+        value:123,
+        date: "17/03/2023",
+        type: "EXPENSE",
+        isPaid: false,
+        categoryId: categoryCreated._id,
+    });
+
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction2",
+        value:123,
+        date: "18/03/2023",
+        type: "EXPENSE",
+        isPaid: false,
+        categoryId: categoryCreated._id,
+    });
+}
+
 module.exports = {
     generateDefaultUser,
     loginDefaultUser,
-    generateDefaultCategory
+    generateDefaultCategory,
+    populateTransactions
 }

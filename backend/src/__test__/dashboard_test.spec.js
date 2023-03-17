@@ -5,7 +5,7 @@ const app = require('../app');
 
 const mongo = require('./utils/test_db');
 
-const {generateDefaultUser, loginDefaultUser, generateDefaultCategory} = require('./utils/utils');
+const {generateDefaultUser, loginDefaultUser, generateDefaultCategory, populateTransactions} = require('./utils/utils');
 
 const {getBillsToReceive} = require('../controllers/dashboardController');
 
@@ -28,29 +28,16 @@ afterAll(async ()=>{
 describe('Dashboard domain',() => {
     describe('GET #getWeekCards', ()=>{
         it('should get total value and variation from this week to the last one of bills to receive, bills to pay and late bills', async()=>{
-            await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
-                name: "transaction",
-                value:123,
-                date: "16/03/2023",
-                type: "INCOME",
-                categoryId: categoryCreated._id,
-            });
-            await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
-                name: "transaction2",
-                value:1234,
-                date: "16/03/2023",
-                type: "INCOME",
-                categoryId: categoryCreated._id,
-            });
 
-
+            await populateTransactions(token);
 
             const response = await request(app).get('/dashboard/weekcards').set({'Authorization':'bearer '+token});
 
-            const expectation = [{
-                _id: null,
-                SUM: 1357
-            }]
+            const expectation = {
+                toPay: [ { _id: null, SUM: 123 } ],
+                toReceive: [ { _id: null, SUM: 1357 } ],
+                toExpire: [ { _id: null, SUM: 246 } ]
+              }
 
             expect(response.body).toMatchObject(expectation);
         })
