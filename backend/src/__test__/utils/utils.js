@@ -32,6 +32,7 @@ const generateDefaultCategory = async (token) =>{
 
 const populateTransactions = async(token) =>{
     const categoryCreated = await generateDefaultCategory(token);
+
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
         name: "transaction",
         value:123,
@@ -41,14 +42,14 @@ const populateTransactions = async(token) =>{
     });
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
         name: "transaction2",
-        value:1234,
+        value:10000,
         date: "16/03/2023",
         type: "INCOME",
         categoryId: categoryCreated._id,
     });
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
         name: "transaction2",
-        value:123,
+        value:40000,
         date: "16/03/2023",
         type: "EXPENSE",
         isPaid: false,
@@ -56,7 +57,7 @@ const populateTransactions = async(token) =>{
     });
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
         name: "transaction2",
-        value:123,
+        value:0,
         date: "16/03/2023",
         type: "EXPENSE",
         isPaid: true,
@@ -75,6 +76,55 @@ const populateTransactions = async(token) =>{
         name: "transaction2",
         value:123,
         date: "18/03/2023",
+        type: "EXPENSE",
+        isPaid: false,
+        categoryId: categoryCreated._id,
+    });
+
+    //-----------------PAST WEEK-------------------------
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction",
+        value:1123,
+        date: "06/03/2023",
+        type: "INCOME",
+        categoryId: categoryCreated._id,
+    });
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction2",
+        value:1234,
+        date: "07/03/2023",
+        type: "INCOME",
+        categoryId: categoryCreated._id,
+    });
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction2",
+        value:303,
+        date: "09/03/2023",
+        type: "EXPENSE",
+        isPaid: false,
+        categoryId: categoryCreated._id,
+    });
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction2",
+        value:12,
+        date: "10/03/2023",
+        type: "EXPENSE",
+        isPaid: true,
+        categoryId: categoryCreated._id,
+    });
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction2",
+        value:12,
+        date: "11/03/2023",
+        type: "EXPENSE",
+        isPaid: false,
+        categoryId: categoryCreated._id,
+    });
+
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction2",
+        value:1234,
+        date: "11/03/2023",
         type: "EXPENSE",
         isPaid: false,
         categoryId: categoryCreated._id,

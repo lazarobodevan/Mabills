@@ -34,9 +34,9 @@ describe('Dashboard domain',() => {
             const response = await request(app).get('/dashboard/weekcards').set({'Authorization':'bearer '+token});
 
             const expectation = {
-                toPay: [ { _id: null, SUM: 123 } ],
-                toReceive: [ { _id: null, SUM: 1357 } ],
-                toExpire: [ { _id: null, SUM: 246 } ]
+                toReceive: { value: 10123, variation: -329.5 },
+                toPay: { value: 40000, variation: -13101.3 },
+                toExpire: { value: 246, variation: 80.3 }
               }
 
             expect(response.body).toMatchObject(expectation);
