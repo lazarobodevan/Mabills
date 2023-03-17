@@ -49,8 +49,6 @@ const getTransactions = async(req, res) =>{
 
     const query = buildFilter(filter);
 
-    console.log(query);
-
     limit = Number(limit);
     offset = Number(offset);
 

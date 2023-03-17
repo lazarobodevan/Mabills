@@ -228,8 +228,6 @@ describe('Transaction domain',() => {
                 name: 'transaction'
             });
 
-            console.log("a : " + JSON.stringify(response.body))
-
             const expectation = {
                 "nextUrl": null,
                 "previousUrl": null,
@@ -271,8 +269,6 @@ describe('Transaction domain',() => {
                 isPaid: false,
                 categoryId: categoryCreated._id,
             });
-
-            console.log(JSON.stringify(response.body))
 
             const expectation = {
                 "userId": user._id,

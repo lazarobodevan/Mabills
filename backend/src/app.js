@@ -4,6 +4,7 @@ const cors = require('cors')
 const userRouter = require('./routes/userRoutes');
 const transactionRouter = require('./routes/transactionRoutes');
 const categoryRouter = require('./routes/categoryRoutes');
+const dashboardRouter = require('./routes/dashboardRoutes');
 
 var bodyParser = require('body-parser');
 
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 app.use(userRouter);
 app.use(transactionRouter);
 app.use(categoryRouter);
+app.use(dashboardRouter)
 app.use(express.json());
 
 module.exports = app;

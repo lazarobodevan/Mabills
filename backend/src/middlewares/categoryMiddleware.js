@@ -20,7 +20,6 @@ const validateCategoryBody = (req, res, next) =>{
 
 const validateParams = (req, res, next) => {
     const {id} = req.params;
-    console.log(id);
     if(!id){
         return res.status(400).json({message: 'Param Id is required'});
     }

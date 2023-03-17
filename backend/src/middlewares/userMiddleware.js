@@ -19,7 +19,6 @@ const validateUserBody = async (req, res, next)=>{
     const {error, value} = validator(userSchema, req.body);
 
     if(error){
-        console.log(error);
         return res.status(400).json(error);
     }
 
