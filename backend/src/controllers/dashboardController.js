@@ -147,6 +147,8 @@ const getWeekCards = async (req, res) =>{
         const pastToPay = await getBillsToPay(req, pastFirstDay, pastLastDayMinusTwo);
         const pastToExpire = await getBillsToExpire(req, pastFirstDayToExpire, pastLastDay);
 
+        //---------------Generating payload--------------------
+
         const payload = {
             toReceive:{
                 value: toReceive[0].SUM,
@@ -169,9 +171,57 @@ const getWeekCards = async (req, res) =>{
     }
 }
 
+const getWeekExpensesByCategory = async(req, res) =>{
+    const expensesByCategory = await TransactionModel.aggregate([
+        {
+            $match:{
+                $and:[
+                    {
+                        userId: mongoose.Types.ObjectId(req.user._id)
+                    },
+                    {
+                        type:'EXPENSE'
+                    },
+                    {
+                        date:{
+                            $gte: getWeekRange().firstday,
+                            $lte: getWeekRange().lastday
+                        }
+                    }   
+                ]
+            }
+        },
+        {
+            $lookup:{
+                from: 'categories',
+                localField: 'categoryId',
+                foreignField: '_id',
+                as: 'categoryDetails'
+
+            }
+        },
+        {
+            $unwind: '$categoryDetails'
+        },
+        {
+            $group:{
+                _id:{
+                    name: '$categoryDetails.name'
+                },
+                SUM:{
+                    $sum:'$value'
+                }
+            }
+        }
+    ]);
+
+    return res.status(200).json(expensesByCategory);
+}
+
 module.exports = {
     getBillsToReceive,
     getBillsToPay,
     getBillsToExpire,
-    getWeekCards
+    getWeekCards,
+    getWeekExpensesByCategory
 }
