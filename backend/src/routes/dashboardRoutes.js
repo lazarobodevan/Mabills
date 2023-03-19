@@ -8,5 +8,6 @@ router.use(authMiddleware.validateUserLoggedIn);
 
 router.get('/dashboard/weekcards', dashboardController.getWeekCards);
 router.get('/dashboard/expenses-by-category-week', dashboardController.getWeekExpensesByCategory);
+router.get('/dashboard/incomes-by-category-week', dashboardController.getWeekIncomeByCategory);
 
 module.exports = router;

@@ -7,7 +7,7 @@ const { calcPercent } = require('../utils/mathUtils');
 
 //Searches for INCOME bills to be received this week and returns total value
 const getBillsToReceive = async (req, firstday, lastday) =>{
-    const billsToReceive = await TransactionModel.aggregate([{
+    let billsToReceive = await TransactionModel.aggregate([{
         $match:{
             $and:[
                 {
@@ -36,6 +36,7 @@ const getBillsToReceive = async (req, firstday, lastday) =>{
     }
 
 ]);
+
     return billsToReceive;
 }
 
@@ -75,7 +76,7 @@ const getBillsToPay = async(req, firstDay, lastDay) =>{
         }
     }
 ]);
-
+    
     return billsToPay;
 }
 
@@ -114,7 +115,6 @@ const getBillsToExpire = async (req, firstDay, lastDay) =>{
             }
         }
     ]);
-
     return billsToExpire;
 }
 
@@ -151,16 +151,19 @@ const getWeekCards = async (req, res) =>{
 
         const payload = {
             toReceive:{
-                value: toReceive[0].SUM,
-                variation: calcPercent(pastToReceive[0].SUM, toReceive[0].SUM)
+                value: toReceive && toReceive[0] && toReceive[0].SUM || 0,
+                variation: calcPercent(pastToReceive && pastToReceive[0] && pastToReceive[0].SUM || 0,
+                     toReceive && toReceive[0] && toReceive[0].SUM || 0)
             },
             toPay:{
-                value: toPay[0].SUM,
-                variation: calcPercent(pastToPay[0].SUM, toPay[0].SUM)
+                value: toPay && toPay[0] && toPay[0].SUM || 0,
+                variation: calcPercent(pastToPay && pastToPay[0] && pastToPay[0].SUM || 0, 
+                    toPay && toPay[0] && toPay[0].SUM || 0)
             },
             toExpire:{
-                value: toExpire[0].SUM,
-                variation: calcPercent(pastToExpire[0].SUM, toExpire[0].SUM)
+                value: toExpire && toExpire[0] && toExpire[0].SUM || 0,
+                variation: calcPercent(pastToExpire && pastToExpire[0] && pastToExpire[0].SUM || 0, 
+                    toExpire && toExpire[0] && toExpire[0].SUM || 0)
             }
         }
 
@@ -218,10 +221,58 @@ const getWeekExpensesByCategory = async(req, res) =>{
     return res.status(200).json(expensesByCategory);
 }
 
+const getWeekIncomeByCategory = async(req, res) =>{
+    const incomeByCategory = await TransactionModel.aggregate([
+        {
+            $match:{
+                $and:[
+                    {
+                        userId: mongoose.Types.ObjectId(req.user._id)
+                    },
+                    {
+                        type:'INCOME'
+                    },
+                    {
+                        date:{
+                            $gte: getWeekRange().firstday,
+                            $lte: getWeekRange().lastday
+                        }
+                    }   
+                ]
+            }
+        },
+        {
+            $lookup:{
+                from: 'categories',
+                localField: 'categoryId',
+                foreignField: '_id',
+                as: 'categoryDetails'
+
+            }
+        },
+        {
+            $unwind: '$categoryDetails'
+        },
+        {
+            $group:{
+                _id:{
+                    name: '$categoryDetails.name'
+                },
+                SUM:{
+                    $sum:'$value'
+                }
+            }
+        },
+    ]);
+    
+    return res.status(200).json(incomeByCategory);
+}
+
 module.exports = {
     getBillsToReceive,
     getBillsToPay,
     getBillsToExpire,
     getWeekCards,
-    getWeekExpensesByCategory
+    getWeekExpensesByCategory,
+    getWeekIncomeByCategory
 }

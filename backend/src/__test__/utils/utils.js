@@ -1,8 +1,20 @@
-const UserModel = require("../../models/UserModel")
 const request = require('supertest');
+const moment = require('moment');
 
 const app = require('../../app');
-const TransactionModel = require("../../models/TransactionModel");
+const { getWeekRange } = require("../../utils/dateUtils");
+
+const THIS_WEEK_FIRST_DAY = getWeekRange().firstday;
+const THIS_WEEK_LAST_DAY  = getWeekRange().lastday;
+const THIS_WEEK_LAST_DAY_TO_BE_PAID = moment.utc(new Date(THIS_WEEK_LAST_DAY).setDate(THIS_WEEK_LAST_DAY.getDate() - 2)).format('DD/MM/YYYY');
+const THIS_WEEK_FIRST_DAY_TO_EXPIRE = moment.utc(new Date(THIS_WEEK_LAST_DAY).setDate(THIS_WEEK_LAST_DAY.getDate() - 1)).format('DD/MM/YYYY');
+const THIS_WEEK_LAST_DAY_TO_EXPIRE = moment.utc(THIS_WEEK_LAST_DAY).format('DD/MM/YYYY');
+
+const LAST_WEEK_FIRST_DAY = new Date(new Date(THIS_WEEK_FIRST_DAY).setDate(THIS_WEEK_FIRST_DAY.getDate() - 6));
+const LAST_WEEK_LAST_DAY  = new Date(new Date(THIS_WEEK_LAST_DAY).setDate(THIS_WEEK_LAST_DAY.getDate() - 6));
+const LAST_WEEK_LAST_DAY_TO_BE_PAID = moment(new Date(LAST_WEEK_LAST_DAY).setDate(LAST_WEEK_LAST_DAY.getDate() - 2)).format('DD/MM/YYYY');
+const LAST_WEEK_FIRST_DAY_TO_EXPIRE = moment(new Date(LAST_WEEK_LAST_DAY).setDate(LAST_WEEK_LAST_DAY.getDate() - 1)).format('DD/MM/YYYY');
+const LAST_WEEK_LAST_DAY_TO_EXPIRE = moment(LAST_WEEK_LAST_DAY).format('DD/MM/YYYY');
 
 const generateDefaultUser = async() => {
     const response = await request(app).post('/signup').send({
@@ -31,43 +43,57 @@ const generateDefaultCategory = async (token) =>{
     return response.body;
 }
 
-const populateTransactions = async(token) =>{
-    const categoryCreated = await generateDefaultCategory(token);
+const generateCategory = async(token, name) => {
+    const response = await request(app).post('/category').set({'Authorization':'bearer '+token}).send({
+        name: name,
+        icon:"defaultCategory.png"
+    });
+
+    return response.body;
+}
+
+const populateThisWeekIncome = async(token, categoryCreated, value)=>{
 
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
         name: "transaction",
-        value:123,
-        date: "16/03/2023",
+        value: value,
+        date: THIS_WEEK_LAST_DAY_TO_BE_PAID,
         type: "INCOME",
         categoryId: categoryCreated._id,
     });
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
         name: "transaction2",
-        value:10000,
-        date: "16/03/2023",
+        value: value,
+        date: THIS_WEEK_LAST_DAY_TO_BE_PAID,
         type: "INCOME",
         categoryId: categoryCreated._id,
     });
+}
+
+const populateThisWeekToBePaid = async(token, categoryCreated, value)=>{
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
         name: "transaction2",
-        value:40000,
-        date: "16/03/2023",
+        value: value,
+        date: THIS_WEEK_LAST_DAY_TO_BE_PAID,
         type: "EXPENSE",
         isPaid: false,
         categoryId: categoryCreated._id,
     });
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
         name: "transaction2",
-        value:0,
-        date: "16/03/2023",
+        value: value,
+        date: THIS_WEEK_LAST_DAY_TO_BE_PAID,
         type: "EXPENSE",
         isPaid: true,
         categoryId: categoryCreated._id,
     });
+}
+
+const populateThisWeekToExpire = async (token, categoryCreated, value) =>{
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
         name: "transaction2",
-        value:123,
-        date: "17/03/2023",
+        value: value,
+        date: THIS_WEEK_FIRST_DAY_TO_EXPIRE,
         type: "EXPENSE",
         isPaid: false,
         categoryId: categoryCreated._id,
@@ -75,100 +101,85 @@ const populateTransactions = async(token) =>{
 
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
         name: "transaction2",
-        value:123,
-        date: "18/03/2023",
-        type: "EXPENSE",
-        isPaid: false,
-        categoryId: categoryCreated._id,
-    });
-
-    //-----------------PAST WEEK-------------------------
-    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
-        name: "transaction",
-        value:1123,
-        date: "06/03/2023",
-        type: "INCOME",
-        categoryId: categoryCreated._id,
-    });
-    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
-        name: "transaction2",
-        value:1234,
-        date: "07/03/2023",
-        type: "INCOME",
-        categoryId: categoryCreated._id,
-    });
-    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
-        name: "transaction2",
-        value:303,
-        date: "09/03/2023",
-        type: "EXPENSE",
-        isPaid: false,
-        categoryId: categoryCreated._id,
-    });
-    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
-        name: "transaction2",
-        value:12,
-        date: "10/03/2023",
-        type: "EXPENSE",
-        isPaid: true,
-        categoryId: categoryCreated._id,
-    });
-    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
-        name: "transaction2",
-        value:12,
-        date: "11/03/2023",
-        type: "EXPENSE",
-        isPaid: false,
-        categoryId: categoryCreated._id,
-    });
-
-    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
-        name: "transaction2",
-        value:1234,
-        date: "11/03/2023",
+        value: value,
+        date: THIS_WEEK_LAST_DAY_TO_EXPIRE,
         type: "EXPENSE",
         isPaid: false,
         categoryId: categoryCreated._id,
     });
 }
 
-const populateTransactions2 = async (token) =>{
-    const newCat = await request(app).post('/category').set({'Authorization':'bearer '+token}).send({
-        name: "test",
-        icon:"testicon.png"
-    });
-
-    const cat = newCat.body;
-    //await populateTransactions(token);
+const populateLastWeekIncome = async(token, categoryCreated, value) =>{
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
-        name: "transaction2",
-        value:10000,
-        date: "16/03/2023",
+        name: "transaction",
+        value: value,
+        date: LAST_WEEK_FIRST_DAY,
         type: "INCOME",
-        categoryId: cat._id,
+        categoryId: categoryCreated._id,
     });
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
         name: "transaction2",
-        value:40000,
-        date: "16/03/2023",
+        value: value,
+        date: LAST_WEEK_FIRST_DAY,
+        type: "INCOME",
+        categoryId: categoryCreated._id,
+    });
+}
+
+const populateLastWeekToBePaid = async(token, categoryCreated, value) =>{
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction2",
+        value: value,
+        date: LAST_WEEK_LAST_DAY_TO_BE_PAID,
         type: "EXPENSE",
         isPaid: false,
-        categoryId: cat._id,
+        categoryId: categoryCreated._id,
     });
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
         name: "transaction2",
-        value:0,
-        date: "16/03/2023",
+        value: value,
+        date: LAST_WEEK_FIRST_DAY_TO_EXPIRE,
         type: "EXPENSE",
         isPaid: true,
-        categoryId: cat._id,
+        categoryId: categoryCreated._id,
     });
+}
+
+const populateLastWeekToExpire = async(token, categoryCreated, value) =>{
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction2",
+        value: value,
+        date: LAST_WEEK_LAST_DAY_TO_EXPIRE,
+        type: "EXPENSE",
+        isPaid: false,
+        categoryId: categoryCreated._id,
+    });
+
+    await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
+        name: "transaction2",
+        value: value,
+        date: LAST_WEEK_LAST_DAY_TO_EXPIRE,
+        type: "EXPENSE",
+        isPaid: false,
+        categoryId: categoryCreated._id,
+    });
+}
+
+const populateTransactions = async(token, cat) =>{
+    await populateThisWeekIncome(token, cat, 1);
+    await populateThisWeekToBePaid(token, cat, 2);
+    await populateThisWeekToExpire(token, cat, 3);
+    
+    await populateLastWeekIncome(token, cat, 3);
+    await populateLastWeekToBePaid(token, cat, 1);
+    await populateLastWeekToExpire(token, cat, 2);
+    
 }
 
 module.exports = {
     generateDefaultUser,
     loginDefaultUser,
     generateDefaultCategory,
+    generateCategory,
     populateTransactions,
-    populateTransactions2
 }

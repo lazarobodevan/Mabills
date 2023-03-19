@@ -5,9 +5,15 @@ const app = require('../app');
 
 const mongo = require('./utils/test_db');
 
-const {generateDefaultUser, loginDefaultUser, generateDefaultCategory, populateTransactions, populateTransactions2} = require('./utils/utils');
+const {
+    generateDefaultUser, 
+    loginDefaultUser, 
+    generateDefaultCategory, 
+    generateCategory, 
+    populateTransactions} = require('./utils/utils');
 
 const {getBillsToReceive} = require('../controllers/dashboardController');
+const TransactionModel = require('../models/TransactionModel');
 
 let token;
 let categoryCreated;
@@ -28,30 +34,52 @@ afterAll(async ()=>{
 describe('Dashboard domain',() => {
     describe('GET #getWeekCards', ()=>{
         it('should get total value and variation from this week to the last one of bills to receive, bills to pay and late bills', async()=>{
-
-            await populateTransactions(token);
-
+            await populateTransactions(token, categoryCreated);
+            
             const response = await request(app).get('/dashboard/weekcards').set({'Authorization':'bearer '+token});
 
             const expectation = {
-                toReceive: { value: 10123, variation: -329.5 },
-                toPay: { value: 40000, variation: -13101.3 },
-                toExpire: { value: 246, variation: 80.3 }
-              }
+                toReceive: { value: 2, variation: 100 },
+                toPay: { value: 2, variation: -100 },
+                toExpire: { value: 6, variation: -50 }
+            }
 
             expect(response.body).toMatchObject(expectation);
         })
     });
 
     describe('GET #getWeekExpenses', ()=>{
-        it('should get total value and variation from this week to the last one of bills to receive, bills to pay and late bills', async()=>{
+        it('should get total expenses by category from the current week', async()=>{
 
-            await populateTransactions2(token);
+            const cat1 = await generateCategory(token, 'cat1');
+            await populateTransactions(token, cat1);
+            
             const response = await request(app).get('/dashboard/expenses-by-category-week').set({'Authorization':'bearer '+token});
 
-            const expectation = [{"_id":{"name":"test"},"SUM":40000},{"_id":{"name":"defaultCategory"},"SUM":40246}]
+            const expectation = [
+                { _id: { name: 'defaultCategory' }, SUM: 10 },
+                { _id: { name: 'cat1' }, SUM: 10 }
+              ]
 
-            expect(response.body).toMatchObject(expectation);
+              expect(response.body).toEqual(
+                expect.arrayContaining(expectation)
+              );
+        })
+    });
+
+    describe('GET #getWeekIncome', ()=>{
+        it('should get total income by category from the current week', async()=>{
+
+            const response = await request(app).get('/dashboard/incomes-by-category-week').set({'Authorization':'bearer '+token});
+    
+            const expectation = [
+                { _id: { name: 'defaultCategory' }, SUM: 2 },
+                { _id: { name: 'cat1' }, SUM: 2 }
+              ]
+
+              expect(response.body).toEqual(
+                expect.arrayContaining(expectation)
+              );
         })
     });
 })
