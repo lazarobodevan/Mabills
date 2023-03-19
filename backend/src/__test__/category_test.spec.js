@@ -51,52 +51,12 @@ describe('Category domain',() => {
                 t:2
             });
 
-            const expectation = {
-                "_original": {
-                  "name": "",
-                  "icon": "",
-                  "t": 2
-                },
-                "details": [
-                  {
-                    "message": "\"name\" is not allowed to be empty",
-                    "path": [
-                      "name"
-                    ],
-                    "type": "string.empty",
-                    "context": {
-                      "label": "name",
-                      "value": "",
-                      "key": "name"
-                    }
-                  },
-                  {
-                    "message": "\"icon\" is not allowed to be empty",
-                    "path": [
-                      "icon"
-                    ],
-                    "type": "string.empty",
-                    "context": {
-                      "label": "icon",
-                      "value": "",
-                      "key": "icon"
-                    }
-                  },
-                  {
-                    "message": "\"t\" is not allowed",
-                    "path": [
-                      "t"
-                    ],
-                    "type": "object.unknown",
-                    "context": {
-                      "child": "t",
-                      "label": "t",
-                      "value": 2,
-                      "key": "t"
-                    }
-                  }
+            const expectation = 
+                [
+                    "\"name\" is not allowed to be empty",
+                    "\"icon\" is not allowed to be empty",
+                    "\"t\" is not allowed",
                 ]
-              }
 
             expect(response.body).toMatchObject(expectation);
         });
@@ -146,52 +106,11 @@ describe('Category domain',() => {
                 t:2
             });
 
-            const expectation = {
-                "_original": {
-                  "name": "",
-                  "icon": "",
-                  "t": 2
-                },
-                "details": [
-                  {
-                    "message": "\"name\" is not allowed to be empty",
-                    "path": [
-                      "name"
-                    ],
-                    "type": "string.empty",
-                    "context": {
-                      "label": "name",
-                      "value": "",
-                      "key": "name"
-                    }
-                  },
-                  {
-                    "message": "\"icon\" is not allowed to be empty",
-                    "path": [
-                      "icon"
-                    ],
-                    "type": "string.empty",
-                    "context": {
-                      "label": "icon",
-                      "value": "",
-                      "key": "icon"
-                    }
-                  },
-                  {
-                    "message": "\"t\" is not allowed",
-                    "path": [
-                      "t"
-                    ],
-                    "type": "object.unknown",
-                    "context": {
-                      "child": "t",
-                      "label": "t",
-                      "value": 2,
-                      "key": "t"
-                    }
-                  }
-                ]
-              }
+            const expectation = [
+              "\"name\" is not allowed to be empty",
+              "\"icon\" is not allowed to be empty",
+              "\"t\" is not allowed",
+            ]
 
             expect(response.status).toBe(400);
             expect(response.body).toMatchObject(expectation);

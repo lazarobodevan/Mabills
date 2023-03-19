@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { getMessagesFromJoiError } = require('../utils/errorUtils');
 
 const validator = (schema, payload) => 
      schema.validate(payload, {abortEarly: false });
@@ -14,7 +15,7 @@ const validateCategoryBody = (req, res, next) =>{
     const {error} = validator(transactionSchema, req.body);
 
     if(error){
-        return res.status(400).json(error);
+        return res.status(400).json(getMessagesFromJoiError(error));
     }
     next();
 }
