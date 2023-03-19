@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const UserModel = require('../models/UserModel');
+const { getMessagesFromJoiError } = require('../utils/errorUtils');
 
 const validator = (schema, payload) => 
      schema.validate(payload, {abortEarly: false });
@@ -19,7 +20,7 @@ const validateUserBody = async (req, res, next)=>{
     const {error, value} = validator(userSchema, req.body);
 
     if(error){
-        return res.status(400).json(error);
+        return res.status(400).json(getMessagesFromJoiError(error));
     }
 
     next();
@@ -41,8 +42,7 @@ const validateLoginBody = (req, res, next) =>{
     const {error, value} = validator(userLoginSchema, req.body);
 
     if(error){
-        console.log(error);
-        return res.status(400).json(error);
+        return res.status(400).json(getMessagesFromJoiError(error));
     }
 
     next();

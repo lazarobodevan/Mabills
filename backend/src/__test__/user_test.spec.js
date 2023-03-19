@@ -64,57 +64,14 @@ describe('User domain',() => {
                 password: ""
             });
 
-            const expectation = {
-                "_original": {
-                  "email": "test",
-                  "name": "",
-                  "password": ""
-                },
-                "details": [
-                  {
-                    "message": "\"email\" must be a valid email",
-                    "path": [
-                      "email"
-                    ],
-                    "type": "string.email",
-                    "context": {
-                      "value": "test",
-                      "invalids": [
-                        "test"
-                      ],
-                      "label": "email",
-                      "key": "email"
-                    }
-                  },
-                  {
-                    "message": "\"password\" is not allowed to be empty",
-                    "path": [
-                      "password"
-                    ],
-                    "type": "string.empty",
-                    "context": {
-                      "label": "password",
-                      "value": "",
-                      "key": "password"
-                    }
-                  },
-                  {
-                    "message": "\"name\" is not allowed to be empty",
-                    "path": [
-                      "name"
-                    ],
-                    "type": "string.empty",
-                    "context": {
-                      "label": "name",
-                      "value": "",
-                      "key": "name"
-                    }
-                  }
-                ]
-              }
+            const expectation = [
+                "\"email\" must be a valid email",
+                "\"password\" is not allowed to be empty",
+                "\"name\" is not allowed to be empty",
+            ]
 
             expect(response.status).toBe(400);
-            expect(response.body).toMatchObject(expectation);
+            expect(response.body).toEqual(expectation);
         });
     });
 

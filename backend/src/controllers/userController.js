@@ -16,7 +16,6 @@ const createUser = async (req, res) =>{
     });
 
     newUser.password = "";
-    //const {password: _, ...user} = newUser;
 
     return res.status(200).json(newUser);
 }
