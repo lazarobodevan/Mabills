@@ -58,7 +58,7 @@ describe('Category domain',() => {
                     "\"t\" is not allowed",
                 ]
 
-            expect(response.body).toMatchObject(expectation);
+            expect(response.body).toEqual(expectation);
         });
     })
 
@@ -113,7 +113,7 @@ describe('Category domain',() => {
             ]
 
             expect(response.status).toBe(400);
-            expect(response.body).toMatchObject(expectation);
+            expect(response.body).toEqual(expectation);
         })
     });
 

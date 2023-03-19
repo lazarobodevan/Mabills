@@ -1,5 +1,6 @@
 const Joi = require('joi');
 const moment = require('moment');
+const { getMessagesFromJoiError } = require('../utils/errorUtils');
 
 const validator = (schema, payload) => 
      schema.validate(payload, {abortEarly: false });
@@ -37,12 +38,12 @@ const validateTransactionBody = (req, res, next) =>{
     if(newReq.type === 'INCOME'){
         const {error} = validator(incomeTransactionSchema, newReq);
         if(error){
-            return res.status(400).json(error);
+            return res.status(400).json(getMessagesFromJoiError(error));
         }
     }else{
         const {error} = validator(expenseTransactionSchema, newReq);
         if(error){
-            return res.status(400).json(error);
+            return res.status(400).json(getMessagesFromJoiError(error));
         }
     }
     next();
@@ -56,7 +57,7 @@ const validateFilterBody = (req, res, next) =>{
     const {error} = validator(filterSchema, newReq);
 
     if(error){
-        return res.status(400).json(error);
+        return res.status(400).json(getMessagesFromJoiError(error));
     }
     next();
 }

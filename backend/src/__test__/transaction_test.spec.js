@@ -63,33 +63,11 @@ describe('Transaction domain',() => {
                 categoryId: categoryCreated._id,
             });
 
-            const expectation = {
-                "_original": {
-                  "name": "transaction",
-                  "value": 123,
-                  "date": "2023-02-25T00:00:00.000Z",
-                  "type": "INCOME",
-                  "isPaid": true,
-                  "categoryId": categoryCreated._id
-                },
-                "details": [
-                  {
-                    "message": "\"isPaid\" is not allowed",
-                    "path": [
-                      "isPaid"
-                    ],
-                    "type": "object.unknown",
-                    "context": {
-                      "child": "isPaid",
-                      "label": "isPaid",
-                      "value": true,
-                      "key": "isPaid"
-                    }
-                  }
-                ]
-              }
+            const expectation = [
+                "\"isPaid\" is not allowed",
+            ]
 
-            expect(response.body).toMatchObject(expectation);
+            expect(response.body).toEqual(expectation);
         });
     });
 
