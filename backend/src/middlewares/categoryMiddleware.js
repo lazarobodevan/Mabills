@@ -6,6 +6,7 @@ const validator = (schema, payload) =>
 const transactionSchema = Joi.object({
     name: Joi.string().required(),
     icon: Joi.string().required(),
+    color: Joi.string().required()
 });
 
 

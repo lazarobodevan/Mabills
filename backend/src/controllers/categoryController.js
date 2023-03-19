@@ -2,13 +2,14 @@ const { CategoryModel } = require("../models/CategoryModel");
 
 const createCategory = async (req, res) =>{
     try{
-        const {name, icon} = req.body;
+        const {name, icon, color} = req.body;
         const loggedUser = req.user;
 
         const newCategory = await CategoryModel.create({
             userId: loggedUser._id,
             name,
-            icon
+            icon,
+            color
         });
 
         return res.status(200).json(newCategory);

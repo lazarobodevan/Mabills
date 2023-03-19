@@ -37,7 +37,8 @@ const loginDefaultUser = async () =>{
 const generateDefaultCategory = async (token) =>{
     const response = await request(app).post('/category').set({'Authorization':'bearer '+token}).send({
         name: "defaultCategory",
-        icon:"defaultCategory.png"
+        icon:"defaultCategory.png",
+        color: '#FFFFFF'
     });
 
     return response.body;
@@ -46,7 +47,8 @@ const generateDefaultCategory = async (token) =>{
 const generateCategory = async(token, name) => {
     const response = await request(app).post('/category').set({'Authorization':'bearer '+token}).send({
         name: name,
-        icon:"defaultCategory.png"
+        icon:"defaultCategory.png",
+        color: '#FFFFFF'
     });
 
     return response.body;

@@ -28,12 +28,14 @@ describe('Category domain',() => {
         it('should create a category and relate to the logged user and return its data', async()=>{
             const response = await request(app).post('/category').set({'Authorization':'bearer '+token}).send({
                 name: "test",
-                icon:"testicon.png"
+                icon:"testicon.png",
+                color: '#FFFFFF'
             });
 
             const expectation = {
                 name: "test",
-                icon: "testicon.png"
+                icon: "testicon.png",
+                color: '#FFFFFF'
             }
             categoryCreated = response.body;
             expect(response.body).toMatchObject(expectation);
@@ -45,6 +47,7 @@ describe('Category domain',() => {
             const response = await request(app).post('/category').set({'Authorization':'bearer '+token}).send({
                 name: "",
                 icon:"",
+                color: '#FFFFFF',
                 t:2
             });
 
@@ -119,12 +122,14 @@ describe('Category domain',() => {
         it('should update category information', async ()=>{
             const response = await request(app).put(`/category/${categoryCreated._id}`).set({'Authorization':'bearer '+token}).send({
                 name: "updated",
-                icon: "updated.png"
+                icon: "updated.png",
+                color: '#FFFFFF'
             });
 
             const expectation = {
                 name: "updated",
-                icon: "updated.png"
+                icon: "updated.png",
+                color: '#FFFFFF'
             }
 
             expect(response.status).toBe(200);
@@ -137,6 +142,7 @@ describe('Category domain',() => {
             const response = await request(app).put(`/category/${categoryCreated._id}`).set({'Authorization':'bearer '+token}).send({
                 name: "",
                 icon:"",
+                color: '#FFFFFF',
                 t:2
             });
 
@@ -196,7 +202,8 @@ describe('Category domain',() => {
         it('should forbid update category', async ()=>{
             const response = await request(app).put(`/category/${categoryCreated._id}`).send({
                 name: "updated",
-                icon: "updated.png"
+                icon: "updated.png",
+                color: '#FFFFFF'
             });
 
             const expectation = {
@@ -217,6 +224,7 @@ describe('Category domain',() => {
                     __v: 0, 
                     icon: "updated.png", 
                     name: "updated", 
+                    color: '#FFFFFF',
                     userId
                 }
             
