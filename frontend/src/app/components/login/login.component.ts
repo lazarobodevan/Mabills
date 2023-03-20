@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { User } from 'src/app/classes/User';
+import { IUser} from 'src/app/interfaces/IUser';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormsModule } from '@angular/forms';
 
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
 })
 export class LoginComponent {
 
-  private user: User = new User();
+  private user = {} as IUser;
 
   constructor(private authService: AuthService){
   }
@@ -23,7 +23,7 @@ export class LoginComponent {
   }
 
   login(){
-    this.authService.authenticate(this.user);
+    this.authService.test(this.user).subscribe(response => (console.log(response)));
   }
 
   ngOnChange(){
