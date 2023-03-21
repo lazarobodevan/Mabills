@@ -1,6 +1,6 @@
 <div style="display: flex; flex-grow: grow;">
     <!--<div *ngIf="showSidebar">-->
-    <div>
+    <div *ngIf="authService.isUserAuthenticated$ | async">
         <app-side-bar></app-side-bar>
     </div>
     

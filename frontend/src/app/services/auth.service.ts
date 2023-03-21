@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { IUser } from '../interfaces/IUser';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
@@ -10,28 +10,25 @@ import { environment } from 'src/environments/environment.development';
 })
 export class AuthService {
 
-  private isUserAuthenticated: boolean = false;
+  private _isUserAuthenticated$ = new BehaviorSubject<boolean>(false);
+  public isUserAuthenticated$ = this._isUserAuthenticated$.asObservable();
 
   showSideBarEmitter = new EventEmitter<boolean>();
 
-  constructor(private router: Router, private http: HttpClient) { }
-
-  //implementar logica
-  authenticate(user: IUser){
-    if(user.email === 'teste@teste.com'){
-      this.showSideBarEmitter.emit(true);
-
-      this.isUserAuthenticated = true;
-      this.router.navigate(['/home']);
-    }else{
-      this.showSideBarEmitter.emit(true);
-      this.isUserAuthenticated = false;
-    }
+  constructor(private router: Router, private http: HttpClient) { 
+    const token = localStorage.getItem('token');
+    this._isUserAuthenticated$.next(!!token);
   }
 
-  test(user:IUser): Observable<IUser>{
-    console.log("Executing with... " + JSON.stringify(user));
-    return this.http.post<IUser>(`${environment.API}signin`, user);
+  authenticate(user:IUser): Observable<IUser>{
+    return this.http.post<IUser>(`${environment.API}signin`, user).pipe(
+      tap(response => {
+        localStorage.setItem('token',response.token!);
+        this._isUserAuthenticated$.next(true);
+        this.router.navigate(['/home']);
+        this.showSideBarEmitter.emit(true);
+      })
+    );
   }
 
   

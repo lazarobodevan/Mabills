@@ -11,7 +11,7 @@ export class AppComponent {
 
   showSidebar: boolean = false;
 
-  constructor(private authService: AuthService){
+  constructor(public authService: AuthService){
 
   }
 

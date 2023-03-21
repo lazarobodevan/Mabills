@@ -23,7 +23,7 @@ export class LoginComponent {
   }
 
   login(){
-    this.authService.test(this.user).subscribe(response => (console.log(response)));
+    this.authService.authenticate(this.user).subscribe(response => (console.log(response)));
   }
 
   ngOnChange(){
