@@ -64,25 +64,25 @@ const getBillsToPay = async(req, firstDay, lastDay) =>{
                 }
             ]
         }
-        
-        
     },
     {
         $group:{
-            _id: null,
+            _id:null,
             SUM:{
                 $sum: '$value'
             }
         }
     }
 ]);
-    
+
     return billsToPay;
 }
 
 const getBillsToExpire = async (req, firstDay, lastDay) =>{
 
     //const firstDay = getWeekRange().firstday;
+    console.log(firstDay);
+    console.log(lastDay);
 
     const billsToExpire =  await TransactionModel.aggregate([
         {
@@ -108,7 +108,7 @@ const getBillsToExpire = async (req, firstDay, lastDay) =>{
         },
         {
             $group:{
-                _id:null,
+                _id: null,
                 SUM:{
                     $sum: '$value'
                 }
@@ -136,8 +136,8 @@ const getWeekCards = async (req, res) =>{
 
 
         //-----------------Last Week---------------------
-        const pastLastDay = new Date(lastDay.setDate(lastDay.getDate() - 6));
-        const pastFirstDay = new Date(firstDay.setDate(firstDay.getDate() - 6));
+        const pastLastDay = new Date(new Date(lastDay).setDate(lastDay.getDate() - 7));
+        const pastFirstDay = new Date(new Date(firstDay).setDate(firstDay.getDate() - 7));
 
         const pastLastDayMinusTwo = new Date(new Date(pastLastDay).setDate(pastLastDay.getDate() -2));
 
