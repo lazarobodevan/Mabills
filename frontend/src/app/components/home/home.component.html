@@ -25,14 +25,14 @@
 
 
     <p class="title">Resumo da semana</p>
-    <div class="charts-container" style="position: relative;height:40vh; width:80vw">
+    <div class="charts-container" style="position: relative;height:50vh; width:80vw">
         <div class="canvas-wrap">
             <div *ngIf="!weekIncomes.length ? emptyIncomes:true"></div>
-            <canvas #incomeChart></canvas>
+            <canvas #incomeChart class="chart"></canvas>
         </div>
         <div class="canvas-wrap">
             <div *ngIf="weekExpenses.length > 0; else emptyExpenses"></div>
-            <canvas #expenseChart></canvas>
+            <canvas #expenseChart class="chart"></canvas>
         </div>
     </div>
 
