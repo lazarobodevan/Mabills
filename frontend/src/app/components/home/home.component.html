@@ -27,7 +27,7 @@
     <p class="title">Resumo da semana</p>
     <div class="charts-container" style="position: relative;height:50vh; width:80vw">
         <div class="canvas-wrap">
-            <div *ngIf="!weekIncomes.length ? emptyIncomes:true"></div>
+            <div *ngIf="weekIncomes.length > 0; else emptyIncomes"></div>
             <canvas #incomeChart class="chart"></canvas>
         </div>
         <div class="canvas-wrap">

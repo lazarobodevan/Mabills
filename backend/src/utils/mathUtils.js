@@ -1,7 +1,9 @@
 const calcPercent = (before, after) =>{
 
+    if(after === 0)
+        return after;
     if(before === 0)
-        return 100;
+        return before;
 
     let percent = ((before-after) * 100)/(before);
         

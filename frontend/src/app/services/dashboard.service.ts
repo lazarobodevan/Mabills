@@ -24,7 +24,9 @@ export class DashboardService {
   }
 
   getIncomesByCategory():Observable<IExpenseIncomeByCategory[]>{
-    return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/incomes-by-category-week`, {headers: this.headers});
+    return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/incomes-by-category-week`, {headers: this.headers}).pipe(tap(response=>{
+      console.log(response)
+    }));
   }
 
   getExpensesByCategory():Observable<IExpenseIncomeByCategory[]>{
