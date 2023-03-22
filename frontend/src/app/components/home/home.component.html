@@ -1,8 +1,22 @@
 <div class="container">
     <div class="cards-container">
-        <app-card icon="receive-money.png" text="Contas a receber" [value]="2000.0" backgroundColor="#3C7DAC" [variation]=1.5></app-card>
-        <app-card icon="pay.png" text="Contas a pagar" [value]="2000.0" backgroundColor="#6F9600" [variation]="-2"></app-card>
-        <app-card icon="due-date.png" text="Contas a vencer" [value]="123154.0" backgroundColor="#5A0606" [variation]="0"></app-card>
+        <app-card icon="receive-money.png" text="Contas a receber" 
+            [value]="weekCards.toReceive && weekCards.toReceive.value" 
+            backgroundColor="#3C7DAC" 
+            [variation]="weekCards.toReceive && weekCards.toReceive.variation">
+        </app-card>
+
+        <app-card icon="pay.png" text="Contas a pagar" 
+            [value]="weekCards.toPay && weekCards.toPay.value" 
+            backgroundColor="#6F9600" 
+            [variation]="weekCards.toPay && weekCards.toPay.variation">
+        </app-card>
+        
+        <app-card icon="due-date.png" text="Contas a vencer" 
+            [value]="weekCards.toExpire && weekCards.toExpire.value" 
+            backgroundColor="#5A0606" 
+            [variation]="weekCards.toExpire && weekCards.toExpire.variation">
+        </app-card>
     </div>
     <p class="title">Resumo da semana</p>
     <div class="charts-container" style="position: relative;height:40vh; width:80vw">

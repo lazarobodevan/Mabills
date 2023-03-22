@@ -23,11 +23,7 @@ export class LoginComponent {
   }
 
   login(){
-    this.authService.authenticate(this.user).subscribe(response => (console.log(response)));
-  }
-
-  ngOnChange(){
-    console.log('a')
+    this.authService.authenticate(this.user).subscribe();
   }
 
 }
