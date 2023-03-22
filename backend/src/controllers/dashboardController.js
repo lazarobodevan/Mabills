@@ -209,7 +209,8 @@ const getWeekExpensesByCategory = async(req, res) =>{
         {
             $group:{
                 _id:{
-                    name: '$categoryDetails.name'
+                    name: '$categoryDetails.name',
+                    color:'$categoryDetails.color',
                 },
                 SUM:{
                     $sum:'$value'
@@ -256,7 +257,8 @@ const getWeekIncomeByCategory = async(req, res) =>{
         {
             $group:{
                 _id:{
-                    name: '$categoryDetails.name'
+                    name: '$categoryDetails.name',
+                    color:'$categoryDetails.color',
                 },
                 SUM:{
                     $sum:'$value'

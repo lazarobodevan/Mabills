@@ -5,7 +5,7 @@
 
     <div class="variation" [ngClass]="defineVariation().class">
         <mat-icon fontIcon={{defineVariation().icon}}></mat-icon>
-        <span *ngIf="variation != 0">{{variation}}</span>
+        <span *ngIf="variation != 0">{{variation + '%'}}</span>
     </div>
     
 </div>
