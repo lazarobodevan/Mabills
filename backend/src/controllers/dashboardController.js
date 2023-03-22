@@ -80,10 +80,6 @@ const getBillsToPay = async(req, firstDay, lastDay) =>{
 
 const getBillsToExpire = async (req, firstDay, lastDay) =>{
 
-    //const firstDay = getWeekRange().firstday;
-    console.log(firstDay);
-    console.log(lastDay);
-
     const billsToExpire =  await TransactionModel.aggregate([
         {
             $match:{

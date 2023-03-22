@@ -50,6 +50,9 @@ export class HomeComponent {
             data: this.weekIncomes.map(item=>{
               return item.SUM;
             }),
+            backgroundColor: this.weekIncomes.map(item =>{
+              return item._id.color
+            })
           },
         ]
       },
@@ -69,6 +72,9 @@ export class HomeComponent {
             data: this.weekExpenses.map(item=>{
               return item.SUM;
             }),
+            backgroundColor: this.weekExpenses.map(item =>{
+              return item._id.color
+            })
           },
         ]
       },

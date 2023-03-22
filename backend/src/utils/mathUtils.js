@@ -5,7 +5,7 @@ const calcPercent = (before, after) =>{
     if(before === 0)
         return before;
 
-    let percent = ((before-after) * 100)/(before);
+    let percent = ((after-before) * 100)/(before);
         
     return parseFloat(percent.toFixed(1));
 }
