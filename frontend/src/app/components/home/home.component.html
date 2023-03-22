@@ -1,7 +1,8 @@
-<div class="spinner-container" *ngIf="weekCards$ | async as weekCards; else loading"></div>
+<div class="spinner-container" *ngIf="weekCards$ && weekIncomes$ | async; else loading">
+
+</div>
+
 <div class="container">
-
-
     <div class="cards-container">
         <app-card icon="receive-money.png" text="Contas a receber" 
             [value]="weekCards.toReceive && weekCards.toReceive.value || 0" 
@@ -25,8 +26,8 @@
 
     <p class="title">Resumo da semana</p>
     <div class="charts-container" style="position: relative;height:40vh; width:80vw">
-        <canvas #chartCanvas ></canvas>
-        <canvas #chartCanvas2 ></canvas>
+        <canvas #incomeChart ></canvas>
+        <canvas #expenseChart ></canvas>
     </div>
 
     <p class="title">Transações recentes</p>

@@ -2,13 +2,17 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
+import { IIncomeByCategory } from '../interfaces/IIncomeByCategory';
 import { IWeekCards } from '../interfaces/IWeekCards';
+
 
 @Injectable({
   providedIn: 'root'
 })
+
 export class DashboardService {
 
+  
   constructor(private http: HttpClient) { }
 
   getWeekCards():Observable<IWeekCards>{
@@ -17,5 +21,16 @@ export class DashboardService {
       Authorization: `Bearer ${localStorage.getItem('token')}`
     });
     return this.http.get<IWeekCards>(`${environment.API}dashboard/weekcards`,{headers:headers});
+  }
+
+  getIncomesByCategory():Observable<IIncomeByCategory[]>{
+    const headers = new HttpHeaders({
+      'Content-type': 'application/json',
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    });
+
+    return this.http.get<IIncomeByCategory[]>(`${environment.API}dashboard/incomes-by-category-week`, {headers: headers}).pipe(tap(response =>{
+      console.log(response);
+    }));
   }
 }
