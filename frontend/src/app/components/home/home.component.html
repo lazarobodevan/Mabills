@@ -1,23 +1,28 @@
+<div class="spinner-container" *ngIf="weekCards$ | async as weekCards; else loading"></div>
 <div class="container">
+
+
     <div class="cards-container">
         <app-card icon="receive-money.png" text="Contas a receber" 
-            [value]="weekCards.toReceive && weekCards.toReceive.value" 
-            backgroundColor="#3C7DAC" 
-            [variation]="weekCards.toReceive && weekCards.toReceive.variation">
+            [value]="weekCards.toReceive && weekCards.toReceive.value || 0" 
+            [variation]="weekCards.toReceive && weekCards.toReceive.variation || 0"
+            backgroundColor="#3C7DAC">
         </app-card>
 
         <app-card icon="pay.png" text="Contas a pagar" 
-            [value]="weekCards.toPay && weekCards.toPay.value" 
-            backgroundColor="#6F9600" 
-            [variation]="weekCards.toPay && weekCards.toPay.variation">
+            [value]="weekCards.toPay && weekCards.toPay.value || 0" 
+            [variation]="weekCards.toPay && weekCards.toPay.variation || 0"
+            backgroundColor="#6F9600" >
         </app-card>
-        
+
         <app-card icon="due-date.png" text="Contas a vencer" 
-            [value]="weekCards.toExpire && weekCards.toExpire.value" 
-            backgroundColor="#5A0606" 
-            [variation]="weekCards.toExpire && weekCards.toExpire.variation">
+            [value]="weekCards.toExpire && weekCards.toExpire.value || 0" 
+            [variation]="weekCards.toExpire && weekCards.toExpire.variation || 0"
+            backgroundColor="#5A0606">
         </app-card>
     </div>
+
+
     <p class="title">Resumo da semana</p>
     <div class="charts-container" style="position: relative;height:40vh; width:80vw">
         <canvas #chartCanvas ></canvas>
@@ -34,4 +39,10 @@
         <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
         <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
     </div>
+
+    <ng-template #loading>
+        <div class="loading-container">
+            <mat-spinner></mat-spinner>
+        </div>
+    </ng-template>
 </div>

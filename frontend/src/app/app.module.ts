@@ -20,6 +20,8 @@ import { TransactionCardComponent } from './components/transaction-card/transact
 import { CategoriesComponent } from './components/categories/categories.component';
 import { CategoryItemComponent } from './components/category-item/category-item.component';
 import { ProfileComponent } from './components/profile/profile.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 @NgModule({
   declarations: [
@@ -42,8 +44,10 @@ import { ProfileComponent } from './components/profile/profile.component';
     BrowserModule,
     AppRoutingModule,
     MatIconModule,
+    MatProgressSpinnerModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]
