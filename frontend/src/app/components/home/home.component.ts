@@ -1,7 +1,7 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Chart, AnimationOptions, Animation } from 'chart.js/auto';
 import { Observable, pipe } from 'rxjs';
-import { IIncomeByCategory } from 'src/app/interfaces/IIncomeByCategory';
+import { IExpenseIncomeByCategory } from 'src/app/interfaces/IIncomeByCategory';
 import { IWeekCards } from 'src/app/interfaces/IWeekCards';
 import { AuthService } from 'src/app/services/auth.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
@@ -17,17 +17,25 @@ export class HomeComponent {
 
   weekCards$ = this.dashboardService.getWeekCards();
   weekIncomes$ = this.dashboardService.getIncomesByCategory();
+  weekExpenses$ = this.dashboardService.getExpensesByCategory();
 
   weekCards = {} as IWeekCards;
-  weekIncomes: IIncomeByCategory[] = [];
+  weekIncomes: IExpenseIncomeByCategory[] = [];
+  weekExpenses: IExpenseIncomeByCategory[] = [];
 
   constructor(private dashboardService: DashboardService){
     this.dashboardService.getWeekCards().subscribe(response => this.weekCards = response);
     this.dashboardService.getIncomesByCategory().subscribe(response =>{
         this.weekIncomes = response;
-        this.generateIncomeChart();
+        if(this.weekIncomes.length)
+          this.generateIncomeChart();
       }
     );
+    this.dashboardService.getExpensesByCategory().subscribe(response =>{
+      this.weekExpenses = response;
+      if(this.weekExpenses.length)
+        this.generateExpenseChart();
+    })
   }
 
   generateIncomeChart(){
@@ -47,20 +55,20 @@ export class HomeComponent {
       },
     });
   }
-
-
-  ngOnInit(){
-
+  
+  generateExpenseChart(){
     
-
     new Chart(this.expenseChart.nativeElement,{
       type:'doughnut',
       data: {
-	       datasets: [
+        labels: this.weekExpenses.map(item =>{
+          return item._id.name;
+        }),
+        datasets: [
           {
-            label: "Sales",
-            data: ['467','576', '572', '79', '92',
-								 '574', '573', '576'],
+            data: this.weekExpenses.map(item=>{
+              return item.SUM;
+            }),
           },
         ]
       },

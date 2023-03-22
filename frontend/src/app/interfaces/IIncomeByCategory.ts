@@ -1,4 +1,4 @@
-export interface IIncomeByCategory{
+export interface IExpenseIncomeByCategory{
     _id: {
         name:string
     },

@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
-import { IIncomeByCategory } from '../interfaces/IIncomeByCategory';
+import { IExpenseIncomeByCategory } from '../interfaces/IIncomeByCategory';
 import { IWeekCards } from '../interfaces/IWeekCards';
 
 
@@ -12,25 +12,22 @@ import { IWeekCards } from '../interfaces/IWeekCards';
 
 export class DashboardService {
 
+  private headers = new HttpHeaders({
+    'Content-type': 'application/json',
+    Authorization: `Bearer ${localStorage.getItem('token')}`
+  });
   
   constructor(private http: HttpClient) { }
 
   getWeekCards():Observable<IWeekCards>{
-    const headers = new HttpHeaders({
-      'Content-type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    });
-    return this.http.get<IWeekCards>(`${environment.API}dashboard/weekcards`,{headers:headers});
+    return this.http.get<IWeekCards>(`${environment.API}dashboard/weekcards`,{headers:this.headers});
   }
 
-  getIncomesByCategory():Observable<IIncomeByCategory[]>{
-    const headers = new HttpHeaders({
-      'Content-type': 'application/json',
-      Authorization: `Bearer ${localStorage.getItem('token')}`
-    });
+  getIncomesByCategory():Observable<IExpenseIncomeByCategory[]>{
+    return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/incomes-by-category-week`, {headers: this.headers});
+  }
 
-    return this.http.get<IIncomeByCategory[]>(`${environment.API}dashboard/incomes-by-category-week`, {headers: headers}).pipe(tap(response =>{
-      console.log(response);
-    }));
+  getExpensesByCategory():Observable<IExpenseIncomeByCategory[]>{
+    return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/expenses-by-category-week`, {headers: this.headers});
   }
 }
