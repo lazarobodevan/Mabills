@@ -7,5 +7,5 @@ export interface ITransaction {
     date: string,
     type: string,
     isPaid: boolean,
-    category: ICategory
+    categoryId: ICategory
 }

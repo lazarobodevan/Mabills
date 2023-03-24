@@ -9,4 +9,5 @@ export class TransactionCardComponent {
   @Input() name: string = '';
   @Input() value: number = 0;
   @Input() date: string = '';
+  @Input() backgroundcolor: string = 'blue';
 }
