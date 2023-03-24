@@ -32,58 +32,61 @@ const createTransaction = async (req, res) =>{
 }
 
 const getTransactions = async(req, res) =>{
+    try{
+        let {limit, offset} = req.query;
+        const {date, value, category, type, isPaid} = req.body;
 
-    let {limit, offset} = req.query;
-    const {date, value, category, type, isPaid} = req.body;
+        const {user} = req;
 
-    const {user} = req;
+        const filter = {
+            userId: user._id,
+            date: date ? new Date(moment.utc(date,'DD-MM-YYYY').format('YYYY-MM-DD')): null,
+            value,
+            category,
+            isPaid,
+            type
+        }
 
-    const filter = {
-        userId: user._id,
-        date: date ? new Date(moment.utc(date,'DD-MM-YYYY').format('YYYY-MM-DD')): null,
-        value,
-        category,
-        isPaid,
-        type
+        const query = buildFilter(filter);
+
+        limit = Number(limit);
+        offset = Number(offset);
+
+        if(!limit){
+            limit = 5;
+        }
+
+        if(!offset){
+            offset = 0;
+        }
+
+        
+        const transactions = await (await transactionModel.find(query)
+                                                            .populate("categoryId")
+                                                            .sort({date:-1})
+                                                            .skip(offset)
+                                                            .limit(limit)
+                                                            .then(transactions =>{return transactions;}));
+
+        const total = await TransactionModel.countDocuments({userId: user._id});
+        const next = offset + limit;
+        const currentUrl = req.baseUrl;
+
+        const nextUrl = next < total ? `${currentUrl}?limit=${limit}&offset=${next}`:null;
+        const previous = offset - limit < 0 ? null : offset-limit;
+        const previousUrl = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}`: null;
+
+        return res.status(200).json({
+            nextUrl,
+            previousUrl,
+            limit,
+            offset,
+            total,
+            results:transactions
+        });
+    }catch(e){
+        console.log(e);
     }
-
-    const query = buildFilter(filter);
-
-    limit = Number(limit);
-    offset = Number(offset);
-
-    if(!limit){
-        limit = 5;
-    }
-
-    if(!offset){
-        offset = 0;
-    }
-
-    
-    const transactions = await (await transactionModel.find(query)
-                                                        .populate("categoryId")
-                                                        .sort({date:-1})
-                                                        .skip(offset)
-                                                        .limit(limit)
-                                                        .then(transactions =>{return transactions;}));
-
-    const total = await TransactionModel.countDocuments({userId: user._id});
-    const next = offset + limit;
-    const currentUrl = req.baseUrl;
-
-    const nextUrl = next < total ? `${currentUrl}?limit=${limit}&offset=${next}`:null;
-    const previous = offset - limit < 0 ? null : offset-limit;
-    const previousUrl = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}`: null;
-
-    return res.status(200).json({
-        nextUrl,
-        previousUrl,
-        limit,
-        offset,
-        total,
-        results:transactions
-    });
 }
 
 const updateTransaction = async(req, res) => {

@@ -3,7 +3,9 @@ import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { IExpenseIncomeByCategory } from '../interfaces/IIncomeByCategory';
+import { ITransaction } from '../interfaces/ITransaction';
 import { IWeekCards } from '../interfaces/IWeekCards';
+import { TransactionService } from './transaction.service';
 
 
 @Injectable({
@@ -24,12 +26,11 @@ export class DashboardService {
   }
 
   getIncomesByCategory():Observable<IExpenseIncomeByCategory[]>{
-    return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/incomes-by-category-week`, {headers: this.headers}).pipe(tap(response=>{
-      console.log(response)
-    }));
+    return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/incomes-by-category-week`, {headers: this.headers});
   }
 
   getExpensesByCategory():Observable<IExpenseIncomeByCategory[]>{
     return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/expenses-by-category-week`, {headers: this.headers});
   }
+
 }

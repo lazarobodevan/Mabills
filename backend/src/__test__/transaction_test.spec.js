@@ -236,7 +236,7 @@ describe('Transaction domain',() => {
         });
 
     });
-
+    
     describe('PUT #updateTransaction', ()=>{
         it('should update an INCOME transaction and relate to the logged user and return its data', async()=>{
             const response = await request(app).put(`/transactions/${transactionCreated.newTransaction._id}`).set({'Authorization':'bearer '+token}).send({

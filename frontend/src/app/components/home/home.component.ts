@@ -2,9 +2,11 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
 import { Chart, AnimationOptions, Animation } from 'chart.js/auto';
 import { Observable, pipe } from 'rxjs';
 import { IExpenseIncomeByCategory } from 'src/app/interfaces/IIncomeByCategory';
+import { ITransaction } from 'src/app/interfaces/ITransaction';
 import { IWeekCards } from 'src/app/interfaces/IWeekCards';
 import { AuthService } from 'src/app/services/auth.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
+import { TransactionService } from 'src/app/services/transaction.service';
 
 @Component({
   selector: 'app-home',
@@ -18,24 +20,15 @@ export class HomeComponent {
   weekCards$ = this.dashboardService.getWeekCards();
   weekIncomes$ = this.dashboardService.getIncomesByCategory();
   weekExpenses$ = this.dashboardService.getExpensesByCategory();
+  recentTransactions$ = this.transactionService.getTransactions("?limit=8");
 
   weekCards = {} as IWeekCards;
   weekIncomes: IExpenseIncomeByCategory[] = [];
   weekExpenses: IExpenseIncomeByCategory[] = [];
+  recentTransactions: ITransaction[] = [];
 
-  constructor(private dashboardService: DashboardService){
-    this.dashboardService.getWeekCards().subscribe(response => this.weekCards = response);
-    this.dashboardService.getIncomesByCategory().subscribe(response =>{
-        this.weekIncomes = response;
-        if(this.weekIncomes.length)
-          this.generateIncomeChart();
-      }
-    );
-    this.dashboardService.getExpensesByCategory().subscribe(response =>{
-      this.weekExpenses = response;
-      if(this.weekExpenses.length)
-        this.generateExpenseChart();
-    })
+  constructor(private dashboardService: DashboardService, private transactionService: TransactionService){
+    this.loadHomePage();
   }
 
   generateIncomeChart(){
@@ -78,6 +71,35 @@ export class HomeComponent {
           },
         ]
       },
+    })
+  }
+
+  loadHomePage(){
+
+    //get week cards
+    this.weekCards$.subscribe(response => this.weekCards = response);
+
+    //gets week incomes by category
+    this.weekIncomes$.subscribe(response =>{
+        this.weekIncomes = response;
+        if(this.weekIncomes.length)
+          this.generateIncomeChart();
+      }
+    );
+
+    //gets week expenses by category
+    this.weekExpenses$.subscribe(response =>{
+      this.weekExpenses = response;
+      if(this.weekExpenses.length)
+        this.generateExpenseChart();
+    });
+
+    //get 8 latest transactions
+    this.recentTransactions$.subscribe(response =>{
+      this.recentTransactions = response.results;
+      this.recentTransactions.forEach(item =>{
+        item.date = `${new Date(item.date).getDay()}/${new Date(item.date).getMonth()}`
+      })
     })
   }
 }

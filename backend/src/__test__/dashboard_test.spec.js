@@ -37,7 +37,7 @@ describe('Dashboard domain',() => {
             await populateTransactions(token, categoryCreated);
             
             const response = await request(app).get('/dashboard/weekcards').set({'Authorization':'bearer '+token});
-            console.log(response.body);
+            
             const expectation = {
                 toReceive: { value: 2, variation: 0 },
                 toPay: { value: 2, variation: 100 },
@@ -55,7 +55,7 @@ describe('Dashboard domain',() => {
             await populateTransactions(token, cat1);
             
             const response = await request(app).get('/dashboard/expenses-by-category-week').set({'Authorization':'bearer '+token});
-            console.log(response.body);
+            
             const expectation = [
                 { _id: { name: 'defaultCategory', color: '#FFFFFF' }, SUM: 10 },
                 { _id: { name: 'cat1', color: '#FFFFFF' }, SUM: 10 }
@@ -71,7 +71,7 @@ describe('Dashboard domain',() => {
         it('should get total income by category from the current week', async()=>{
 
             const response = await request(app).get('/dashboard/incomes-by-category-week').set({'Authorization':'bearer '+token});
-            console.log(response.body);
+
             const expectation = [
                 { _id: { name: 'defaultCategory', color: '#FFFFFF' }, SUM: 2 },
                 { _id: { name: 'cat1', color: '#FFFFFF' }, SUM: 2 }

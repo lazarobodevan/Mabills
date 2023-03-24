@@ -38,13 +38,7 @@
 
     <p class="title">Transações recentes</p>
     <div class="transactions-container">
-        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
-        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
-        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
-        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
-        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
-        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
-        <app-transaction-card name="Farmácia" [value]=200 date="15/03"></app-transaction-card>
+        <app-transaction-card *ngFor="let transaction of recentTransactions" name={{transaction.name}}  date="{{transaction.date}}" [value]="transaction.value"></app-transaction-card>
     </div>
 
     <ng-template #loading>
