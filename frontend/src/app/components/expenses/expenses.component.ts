@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+import * as moment from 'moment';
+import { Observable } from 'rxjs';
 import { ITransaction } from 'src/app/interfaces/ITransaction';
+import { ITransactionResponse } from 'src/app/interfaces/ITransactionResponse';
 import { TransactionService } from 'src/app/services/transaction.service';
 
 @Component({
@@ -9,29 +12,31 @@ import { TransactionService } from 'src/app/services/transaction.service';
 })
 export class ExpensesComponent {
 
-  transactions$ = this.transactionService.getTransactions("");
-  
   transactions = [] as ITransaction[];
-  nextURL: string = 'first';
+  nextURL: string = '?limit=5&offset=0';
 
-  isModalVisible: boolean = true;
+  transactions$!: Observable<ITransactionResponse>;
+  
+  isModalVisible: boolean = false;
 
   constructor(private transactionService: TransactionService){
     this.loadTransaction();
   }
 
   loadTransaction(){
-    if(this.nextURL === 'first'){
+      if(!this.nextURL) return
+      this.transactions$ = this.transactionService.getTransactions(this.nextURL);
       this.transactions$.subscribe(response =>{
-        this.transactions = response.results;
-        this.nextURL = response.nextUrl;
+      response.results.forEach(item =>{
+        item.date = moment.utc(item.date).format('DD/MM');
+        this.transactions.push(item);
       })
-    }
+      this.nextURL = response.nextUrl;
+    })
   }
 
   toggleModal(){
     this.isModalVisible = !this.isModalVisible;
-    console.log("alo")
   }
 
 

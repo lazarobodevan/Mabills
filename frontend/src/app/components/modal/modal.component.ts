@@ -10,11 +10,15 @@ import { TransactionService } from 'src/app/services/transaction.service';
   styleUrls: ['./modal.component.css']
 })
 export class ModalComponent {
+  
+  transaction =  {isPaid:false} as ITransactionRequest;
+  categories = [] as ICategory[];
+  isSubmitted: boolean = false;
 
   categories$ = this.categoryService.getCategories();
+  transaction$ = this.transactionService.createTransaction(this.transaction);
 
-  categories = [] as ICategory[];
-  transaction =  {} as ITransactionRequest;
+
 
   constructor(private categoryService: CategoryService, private transactionService: TransactionService){
     this.getCategories();
@@ -25,7 +29,6 @@ export class ModalComponent {
   clickOutside(event:any){
     if(event.target.className === "container"){
       this.clickedOutside.emit();
-      console.log("emitiu")
     }
   }
 
@@ -52,11 +55,14 @@ export class ModalComponent {
   }
 
   addTransaction(){
+
+    this.isSubmitted = true;
     if(this.transaction.type === 'INCOME'){
       Reflect.deleteProperty(this.transaction, 'isPaid');
     }
     this.transactionService.createTransaction(this.transaction).subscribe(response=>{
-      console.log(response);
+      this.clickedOutside.emit();
+      this.isSubmitted = false;
     })
   }
 

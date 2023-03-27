@@ -41,6 +41,7 @@
                 <td><b>Nome</b></td>
                 <td><b>Tipo</b></td>
                 <td><b>Categoria</b></td>
+                <td><b>Valor</b></td>
                 <td><b>Data</b></td>
             </tr>
             <tr *ngFor="let transaction of transactions">
@@ -55,13 +56,14 @@
                         {{transaction.categoryId.name}}
                     </div>
                 </td>
-                <td>{{transaction.date | date:'dd/MM'}}</td>
+                <td>{{'R$ ' +transaction.value}}</td>
+                <td>{{transaction.date}}</td>
             </tr>
         </table>
     </div>
 
     <div class="footer">
-        <div class="see-more">
+        <div class="see-more" (click)="loadTransaction()">
             <span>Ver mais</span>
         </div>
         

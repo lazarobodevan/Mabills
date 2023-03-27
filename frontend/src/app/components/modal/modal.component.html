@@ -1,3 +1,4 @@
+<div class="spinner-container" *ngIf="isSubmitted then loading"></div>
 <div class="container" (click)="clickOutside($event)">
     <div class="form">
         <h1 style="color: white">Adicionar Transação</h1>
@@ -28,3 +29,9 @@
         <app-action-button text="Adicionar" width="200px" (OnClick)="addTransaction()"></app-action-button>
     </div>
 </div>
+
+<ng-template #loading>
+    <div class="loading-container">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-template>
