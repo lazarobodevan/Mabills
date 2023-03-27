@@ -22,6 +22,7 @@ import { CategoryItemComponent } from './components/category-item/category-item.
 import { ProfileComponent } from './components/profile/profile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
     CategoriesComponent,
     CategoryItemComponent,
     ProfileComponent,
+    ModalComponent,
   ],
   imports: [
     BrowserModule,

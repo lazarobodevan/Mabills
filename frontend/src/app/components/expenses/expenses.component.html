@@ -1,3 +1,9 @@
+
+<!--  Displaying Modal   -->
+<div *ngIf="isModalVisible === true then modal" >
+
+</div>
+
 <div class="container">
     <div class="header">
         <app-input-field placeholder="Pesquisar..." icon="search"></app-input-field>
@@ -30,42 +36,26 @@
 
     <div class="table-container">
         <table class="table">
-            <tr>
+            <tr style="font-size: 20px;">
                 <td></td>
-                <td>Nome</td>
-                <td>Tipo</td>
-                <td>Categoria</td>
-                <td>Data</td>
+                <td><b>Nome</b></td>
+                <td><b>Tipo</b></td>
+                <td><b>Categoria</b></td>
+                <td><b>Data</b></td>
             </tr>
-            <tr>
+            <tr *ngFor="let transaction of transactions">
                 <td><input type="checkbox"/></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"/></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"/></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"/></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"/></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"/></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"/></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"/></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"/></td>
-            </tr>
-            <tr>
-                <td><input type="checkbox"/></td>
+                <td>{{transaction.name}}</td>
+                <td>
+                    {{transaction.type === "EXPENSE"? "Despesa":"Receita"}}
+                </td>
+                <td>
+                    <div class="category-wrapper">
+                        <div style="width: 20px; height: 20px; border-radius: 5px; margin-right: 20px;" [ngStyle]="{'background-color':transaction.categoryId.color}"></div>
+                        {{transaction.categoryId.name}}
+                    </div>
+                </td>
+                <td>{{transaction.date | date:'dd/MM'}}</td>
             </tr>
         </table>
     </div>
@@ -76,10 +66,11 @@
         </div>
         
         <div class="btn">
-            <app-action-button text="Adicionar" width="200px"></app-action-button>
+            <app-action-button text="Adicionar" width="200px" (OnClick)="toggleModal()"></app-action-button>
         </div>
-        
     </div>
 
-    
+    <ng-template #modal>
+        <app-modal  (clickedOutside)="toggleModal()"></app-modal>
+    </ng-template>
 </div>

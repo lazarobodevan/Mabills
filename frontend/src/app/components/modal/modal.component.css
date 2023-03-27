@@ -1,0 +1,32 @@
+.container{
+    padding: 40px 40px 0 40px;
+    background-color: rgba(0, 0, 0, 0.945);
+    width: calc(100vw - 210px);
+    height: 100%;
+    position: absolute;
+    z-index: 10;
+    overflow: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form{
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    height: 450px;
+    flex-direction: column;
+
+}
+
+.dropdown{
+    width: 120px;
+    height: 40px;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+option{
+    height: 40px;
+}

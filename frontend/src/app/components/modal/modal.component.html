@@ -1,0 +1,30 @@
+<div class="container" (click)="clickOutside($event)">
+    <div class="form">
+        <h1 style="color: white">Adicionar Transação</h1>
+        <app-input-field type="text" placeholder="Nome" (inputContent)="transaction.name = $event"></app-input-field>
+        <div class="selector">
+            <p style="color:white">Tipo</p>
+            <select name="type" class="dropdown"  (change)="setType($event)">
+                <option value="">Selecione...</option>
+                <option value="EXPENSE">Despesa</option>
+                <option value="INCOME">Receita</option>
+            </select>
+        </div>
+        <div class="selector">
+            <p style="color:white">Categoria</p>
+            <select name="categories" class="dropdown"  (change)="setCategory($event)" >
+                <option value="" >Selecione...</option>
+                <option *ngFor="let opt of categories" value="{{opt._id}}" >
+                    {{opt.name}}
+                </option>
+            </select>
+        </div>
+        <app-input-field type="date" (inputContent)="transaction.date = $event"></app-input-field>
+        <app-input-field type="number" placeholder="R$" (inputContent)="setValue($event)"></app-input-field>
+        <div class="selector" *ngIf="transaction.type === 'EXPENSE'">
+            <input type="checkbox" id="isPaid" style="width: 20px;height: 20px;" (click)="setIsPaid()">
+            <label for="isPaid" style="color: white; margin-left: 10px;">Pago</label>
+        </div>
+        <app-action-button text="Adicionar" width="200px" (OnClick)="addTransaction()"></app-action-button>
+    </div>
+</div>

@@ -97,9 +97,6 @@ export class HomeComponent {
     //get 8 latest transactions
     this.recentTransactions$.subscribe(response =>{
       this.recentTransactions = response.results;
-      this.recentTransactions.forEach(item =>{
-        item.date = `${new Date(item.date).getDay()}/${new Date(item.date).getMonth()}`
-      })
     })
   }
 }

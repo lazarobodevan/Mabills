@@ -1,11 +1,9 @@
-import { ICategory } from "./ICategory";
-
-export interface ITransaction {
+export interface ITransactionRequest {
     _id?: string,
     name: string,
     value: number,
     date: string,
     type: string,
     isPaid?: boolean,
-    categoryId: ICategory
+    categoryId: string
 }

@@ -89,3 +89,9 @@
     user-select: none;
     cursor: pointer;
 }
+
+.category-wrapper{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

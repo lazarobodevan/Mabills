@@ -2,6 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
+import { ITransaction } from '../interfaces/ITransaction';
+import { ITransactionRequest } from '../interfaces/ITransactionRequest';
 import { ITransactionResponse } from '../interfaces/ITransactionResponse';
 
 @Injectable({
@@ -15,6 +17,11 @@ export class TransactionService {
   });
   
   constructor(private http: HttpClient) { 
+  }
+
+  createTransaction(transaction:ITransactionRequest):Observable<ITransaction>{
+    let options = {headers: this.headers};
+    return this.http.post<ITransaction>(`${environment.API}transactions`, transaction, options);
   }
 
   getTransactions(query:String) :Observable<ITransactionResponse> {
