@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
+import { IFilter } from '../interfaces/IFilter';
 import { ITransaction } from '../interfaces/ITransaction';
 import { ITransactionRequest } from '../interfaces/ITransactionRequest';
 import { ITransactionResponse } from '../interfaces/ITransactionResponse';
@@ -24,8 +25,9 @@ export class TransactionService {
     return this.http.post<ITransaction>(`${environment.API}transactions`, transaction, options);
   }
 
-  getTransactions(query:String) :Observable<ITransactionResponse> {
+  getTransactions(query:string, body?:IFilter) :Observable<ITransactionResponse> {
     let options = { headers: this.headers };
-    return this.http.post<ITransactionResponse>(`${environment.API}transactions/filter${query}`,null,options);
+    console.log(body);
+    return this.http.post<ITransactionResponse>(`${environment.API}transactions/filter${query}`,body,options);
   }
 }

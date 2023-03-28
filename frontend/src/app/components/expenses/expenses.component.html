@@ -4,13 +4,18 @@
 
 </div>
 
+<!--  Displaying Loading Spinner  -->
+<div class="spinner-container" *ngIf="transactions$ | async; else loading">
+
+</div>
+
 <div class="container">
     <div class="header">
         <app-input-field placeholder="Pesquisar..." icon="search"></app-input-field>
         <mat-icon fontIcon="filter_list" class="icon"></mat-icon>
         <div class="filter">
             <p>Tipo</p>
-            <select name="type" class="dropdown">
+            <select name="type" class="dropdown" (change)="setTypeFilter($event)">
                 <option value="" selected>Selecione...</option>
                 <option value="EXPENSE">Despesa</option>
                 <option value="INCOME">Entrada</option>
@@ -18,18 +23,17 @@
         </div>
         <div class="filter">
             <p>Categoria</p>
-            <select name="category" class="dropdown">
+            <select name="category" class="dropdown" (change)="setCategoryFilter($event)">
                 <option value="" selected>Selecione...</option>
-                <option value="EXPENSE">Despesa</option>
-                <option value="INCOME">Entrada</option>
+                <option *ngFor="let cat of categories" value={{cat._id}}>{{cat.name}}</option>
             </select>
         </div>
         <div class="filter">
             <p>Data</p>
-            <select name="date" class="dropdown">
+            <select name="date" class="dropdown" (change)="setDateFilter($event)">
                 <option value="" selected>Selecione...</option>
-                <option value="asc">Asc</option>
-                <option value="des">Desc</option>
+                <option value="1">Asc</option>
+                <option value="-1">Desc</option>
             </select>
         </div>
     </div>
@@ -60,7 +64,7 @@
                 <td>{{transaction.date}}</td>
             </tr>
         </table>
-        <div class="see-more" (click)="loadTransaction()">
+        <div class="see-more" (click)="loadTransaction()" [ngClass]="!nextURL ? 'disabled':''">
             <span>Ver mais</span>
         </div>
     </div>
@@ -74,5 +78,11 @@
 
     <ng-template #modal>
         <app-modal  (clickedOutside)="toggleModal()"></app-modal>
+    </ng-template>
+
+    <ng-template #loading>
+        <div class="loading-container">
+            <mat-spinner></mat-spinner>
+        </div>
     </ng-template>
 </div>
