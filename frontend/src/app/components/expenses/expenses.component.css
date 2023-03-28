@@ -38,11 +38,14 @@
 }
 
 .table-container{
-    min-height: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 70%;
 }
 
 .table{
-    min-width: 90%;
+    width: 100%;
     color: white;
     border-collapse: collapse;
     margin-top: 20px;
@@ -62,29 +65,24 @@
 .footer{
     display: grid;
     width: 100%;
-    margin-top: 20px;
     margin-bottom: 20px;
-    padding-right: 160px;
-    grid-template-columns: 90% auto;
+    grid-template-columns: auto;
     align-items: center;
 }
 
 .btn{
     display: flex;
-    justify-content: flex-end;
-    align-self: flex-end;
+    align-self: center;
 
 }
 
 .see-more{
     display: flex;
-    grid-column: 1;
-    grid-row: 1;
     height: 100%;
     width: 100px;
+    margin-top: 40px;
+    margin-bottom: 20px;
     align-items: center;
-    justify-content: flex-end;
-    justify-self: center;
     color: white;
     user-select: none;
     cursor: pointer;

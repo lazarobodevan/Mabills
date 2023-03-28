@@ -1,5 +1,5 @@
 <div class="container" [ngStyle]="{'backgroundColor': backgroundcolor}">
-    <p class="name">{{name}}</p>
-    <p class="value">{{'R$' + value}}</p>
+    <p class="name">{{name.substring(0,15)}}</p>
+    <p class="value">{{'R$' + value.toFixed(2)}}</p>
     <p class="date">{{date | date:'dd/MM'}}</p>
 </div>

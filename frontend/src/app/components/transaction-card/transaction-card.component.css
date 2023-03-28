@@ -1,15 +1,14 @@
 .container{
     min-width: 250px;
     width: fit-content;
-    height: 5rem;
+    height: 80px;
+    padding-left: 20px;
     background-color: rgba(89, 0, 255, 0.66);
     border-radius: 2px;
-    padding: 10px;
     display: grid;
     grid-template-rows: auto auto;
     grid-template-columns: auto auto;
     align-items: center;
-    justify-content: space-evenly;
     color: white;
 
     margin-right: 10px;
@@ -30,4 +29,6 @@
 .date{
     grid-row: 1;
     grid-column: 2;
+    justify-self: flex-end;
+    margin-right: 20px;
 }
