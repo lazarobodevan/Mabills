@@ -19,6 +19,7 @@ export class ExpensesComponent {
   nextURL: string = '';
   categories = [] as ICategory[];
   filter = {} as IFilter;
+  selectedTransactionId: string = '';
 
   transactions$!: Observable<ITransactionResponse>;
   categories$ = this.categoryService.getCategories();
@@ -26,9 +27,12 @@ export class ExpensesComponent {
   isModalVisible: boolean = false;
   isFilterChanged: boolean = false;
 
-  constructor(private transactionService: TransactionService, private categoryService: CategoryService){
+  constructor(private transactionService: TransactionService, 
+              private categoryService: CategoryService){
+
     this.loadTransaction();
     this.getCategories();
+
   }
 
   loadTransaction(){
@@ -87,6 +91,19 @@ export class ExpensesComponent {
     }
     this.isFilterChanged = true;
     this.loadTransaction();
+  }
+
+  setSelectedTransaction(id:string){
+    this.selectedTransactionId = id.toString();
+  }
+
+  deleteTransaction(){
+    this.transactionService.deleteTransaction(this.selectedTransactionId).subscribe(response=>{
+      this.transactions = this.transactions.filter(item=>{
+        return item._id != this.selectedTransactionId;
+      })
+      this.selectedTransactionId = '';
+    })
   }
 
   toggleModal(){

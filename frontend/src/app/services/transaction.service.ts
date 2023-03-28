@@ -27,9 +27,11 @@ export class TransactionService {
 
   getTransactions(query:string, body?:IFilter) :Observable<ITransactionResponse> {
     let options = { headers: this.headers };
-    console.log(body);
-    return this.http.post<ITransactionResponse>(`${environment.API}transactions/filter${query}`,body,options).pipe(tap(response =>{
-      console.log("aaa"+JSON.stringify(response))
-    }));
+    return this.http.post<ITransactionResponse>(`${environment.API}transactions/filter${query}`,body,options);
+  }
+
+  deleteTransaction(id:string):Observable<any>{
+    let options = { headers: this.headers };
+    return this.http.delete(`${environment.API}transactions/${id}`, options);
   }
 }

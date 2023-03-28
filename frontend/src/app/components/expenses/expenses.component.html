@@ -32,6 +32,7 @@
             <p>Data</p>
            <app-input-field (inputContent)="setDateFilter($event)" type="date"></app-input-field>
         </div>
+        <app-action-button text="Excluir" width="90px" [ngClass]="!selectedTransactionId ? 'disabled' : ''" (OnClick)="deleteTransaction()"></app-action-button>
     </div>
 
     <div class="table-container">
@@ -45,7 +46,7 @@
                 <td><b>Data</b></td>
             </tr>
             <tr *ngFor="let transaction of transactions">
-                <td><input type="checkbox"/></td>
+                <td><input type="radio" name="transaction" id={{transaction._id}} (change)="setSelectedTransaction(transaction._id!)"/></td>
                 <td>{{transaction.name}}</td>
                 <td>
                     {{transaction.type === "EXPENSE"? "Despesa":"Receita"}}
