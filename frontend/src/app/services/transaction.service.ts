@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { IFilter } from '../interfaces/IFilter';
 import { ITransaction } from '../interfaces/ITransaction';
@@ -28,6 +28,8 @@ export class TransactionService {
   getTransactions(query:string, body?:IFilter) :Observable<ITransactionResponse> {
     let options = { headers: this.headers };
     console.log(body);
-    return this.http.post<ITransactionResponse>(`${environment.API}transactions/filter${query}`,body,options);
+    return this.http.post<ITransactionResponse>(`${environment.API}transactions/filter${query}`,body,options).pipe(tap(response =>{
+      console.log("aaa"+JSON.stringify(response))
+    }));
   }
 }

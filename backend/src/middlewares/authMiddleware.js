@@ -12,7 +12,6 @@ const validateUserLoggedIn = async (req, res, next) =>{
         }
     
         const token = authorization.split(' ')[1];
-        console.log(token)
     
         const {id} = jwt.verify(token, process.env.JWT_PASS);
     

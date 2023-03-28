@@ -85,7 +85,7 @@ const getBillsToExpire = async (req, firstDay, lastDay) =>{
             $match:{
                 $and:[
                     {
-                        userId: req.user._id
+                        userId: mongoose.Types.ObjectId(req.user._id)
                     },
                     {
                         type: 'EXPENSE'

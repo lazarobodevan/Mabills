@@ -16,7 +16,7 @@ import { TransactionService } from 'src/app/services/transaction.service';
 export class ExpensesComponent {
 
   transactions = [] as ITransaction[];
-  nextURL: string = '?limit=5&offset=0';
+  nextURL: string = '';
   categories = [] as ICategory[];
   filter = {} as IFilter;
 
@@ -32,18 +32,20 @@ export class ExpensesComponent {
   }
 
   loadTransaction(){
-      if(!this.nextURL) return
-      this.transactions$ = this.transactionService.getTransactions(this.nextURL, this.filter);
-      if(this.isFilterChanged){
-        this.transactions = [];
-      }
-      this.transactions$.subscribe(response =>{
-        response.results.forEach(item =>{
-          item.date = moment.utc(item.date).format('DD/MM');
-          this.transactions.push(item);
-        })
-        this.nextURL = response.nextUrl;
-        this.isFilterChanged = false;
+
+    if(this.isFilterChanged){
+      this.transactions = [];
+      this.nextURL = '';
+    }
+    this.transactions$ = this.transactionService.getTransactions(this.nextURL, this.filter);
+    
+    this.transactions$.subscribe(response =>{
+      response.results.forEach(item =>{
+        item.date = moment.utc(item.date).format('DD/MM');
+        this.transactions.push(item);
+      })
+      this.nextURL = response.nextUrl;
+      this.isFilterChanged = false;
     })
   }
 
@@ -70,16 +72,17 @@ export class ExpensesComponent {
     this.loadTransaction();
   }
   setNameFilter(event:any){
-    this.filter.name = event.target.value;
-    if(event.target.value === ''){
+    this.filter.name = event;
+    console.log(this.filter)
+    if(event === ''){
       Reflect.deleteProperty(this.filter, 'name')
     }
     this.isFilterChanged = true;
     this.loadTransaction();
   }
   setDateFilter(event:any){
-    this.filter.date = event.target.value;
-    if(event.target.value === ''){
+    this.filter.date = event;
+    if(event === ''){
       Reflect.deleteProperty(this.filter, 'date')
     }
     this.isFilterChanged = true;

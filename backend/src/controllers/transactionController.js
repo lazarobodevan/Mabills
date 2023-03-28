@@ -34,7 +34,7 @@ const createTransaction = async (req, res) =>{
 const getTransactions = async(req, res) =>{
     try{
         let {limit, offset} = req.query;
-        const {date, value, category, type, isPaid} = req.body;
+        const {date, value, categoryId, type, isPaid, name} = req.body;
 
         const {user} = req;
 
@@ -42,9 +42,10 @@ const getTransactions = async(req, res) =>{
             userId: user._id,
             date: date ? new Date(moment.utc(date,'DD-MM-YYYY').format('YYYY-MM-DD')): null,
             value,
-            category,
+            categoryId,
             isPaid,
-            type
+            type,
+            name
         }
 
         const query = buildFilter(filter);
@@ -59,15 +60,15 @@ const getTransactions = async(req, res) =>{
         if(!offset){
             offset = 0;
         }
-
-        
-        const transactions = await (await transactionModel.find(query)
-                                                            .populate("categoryId")
+        const transactions = await (await transactionModel.find(filter.name ?{"name":{
+            $regex:filter.name,
+            $options: "i"
+        }}:{}).where(query)
+                                                            .populate('categoryId')
                                                             .sort({date:-1})
                                                             .skip(offset)
                                                             .limit(limit)
                                                             .then(transactions =>{return transactions;}));
-
         const total = await TransactionModel.countDocuments({userId: user._id});
         const next = offset + limit;
         const currentUrl = req.baseUrl;
@@ -123,7 +124,7 @@ buildFilter = (filter) => {
     let query = {};
 
     for(let key in filter){
-        if(filter[key]){
+        if(filter[key] && key !== 'name'){
             query[key] = filter[key];
         }
     }

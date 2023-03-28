@@ -11,7 +11,7 @@
 
 <div class="container">
     <div class="header">
-        <app-input-field placeholder="Pesquisar..." icon="search"></app-input-field>
+        <app-input-field placeholder="Pesquisar..." icon="search" (inputContent)="setNameFilter($event)"></app-input-field>
         <mat-icon fontIcon="filter_list" class="icon"></mat-icon>
         <div class="filter">
             <p>Tipo</p>
@@ -30,11 +30,7 @@
         </div>
         <div class="filter">
             <p>Data</p>
-            <select name="date" class="dropdown" (change)="setDateFilter($event)">
-                <option value="" selected>Selecione...</option>
-                <option value="1">Asc</option>
-                <option value="-1">Desc</option>
-            </select>
+           <app-input-field (inputContent)="setDateFilter($event)" type="date"></app-input-field>
         </div>
     </div>
 

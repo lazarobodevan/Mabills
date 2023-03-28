@@ -18,7 +18,11 @@ export class InputFieldComponent {
   @Output() inputContent: EventEmitter<string> = new EventEmitter();
   sendContent(){
     if(this.type === "date"){
-      this.inputContent.emit(moment(this.content, 'YYYY,mm,DD').format('DD/mm/YYYY'));
+      let date = moment(this.content, 'YYYY,mm,DD').format('DD/mm/YYYY');
+      if(date === 'Invalid date'){
+        return this.inputContent.emit('');
+      }
+      this.inputContent.emit(date);
       return;
     }
     this.inputContent.emit(this.content);
