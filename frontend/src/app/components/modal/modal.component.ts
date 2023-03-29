@@ -1,5 +1,7 @@
-import { Component, ElementRef, EventEmitter, HostListener, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { ICategory } from 'src/app/interfaces/ICategory';
+import { ITransaction } from 'src/app/interfaces/ITransaction';
 import { ITransactionRequest } from 'src/app/interfaces/ITransactionRequest';
 import { CategoryService } from 'src/app/services/category.service';
 import { TransactionService } from 'src/app/services/transaction.service';
@@ -18,16 +20,23 @@ export class ModalComponent {
   categories$ = this.categoryService.getCategories();
   transaction$ = this.transactionService.createTransaction(this.transaction);
 
+  
+  @Input() inputTransaction = {} as ITransaction;
+  @Output() public clickedOutside = new EventEmitter();
 
-
-  constructor(private categoryService: CategoryService, private transactionService: TransactionService){
+  constructor(private categoryService: CategoryService, private transactionService: TransactionService, private ref: ChangeDetectorRef){
     this.getCategories();
+    
   }
 
-  @Output() public clickedOutside = new EventEmitter();
+  ngOnChanges(){
+    this.initializeTransactionByInput();
+  }
+
 
   clickOutside(event:any){
     if(event.target.className === "container"){
+      this.transaction = {} as ITransactionRequest;
       this.clickedOutside.emit();
     }
   }
@@ -54,6 +63,21 @@ export class ModalComponent {
     this.transaction.value = event;
   }
 
+  initializeTransactionByInput(){
+    if(this.inputTransaction._id)
+      this.transaction = {
+        _id: this.inputTransaction._id,
+        date: this.inputTransaction.date,
+        name: this.inputTransaction.name,
+        type: this.inputTransaction.type,
+        value: this.inputTransaction.value,
+        isPaid: this.inputTransaction.isPaid,
+        categoryId: this.inputTransaction.categoryId._id!
+      }
+  }
+
+
+
   addTransaction(){
 
     this.isSubmitted = true;
@@ -61,8 +85,18 @@ export class ModalComponent {
       Reflect.deleteProperty(this.transaction, 'isPaid');
     }
     this.transactionService.createTransaction(this.transaction).subscribe(response=>{
-      this.clickedOutside.emit();
+      this.clickedOutside.emit(true);
       this.isSubmitted = false;
+      this.transaction = {} as ITransactionRequest;
+    })
+  }
+
+  updateTransaction(){
+    this.isSubmitted = true;
+    this.transactionService.updateTransaction(this.transaction).subscribe(response=>{
+      this.clickedOutside.emit(true);
+      this.isSubmitted = false;
+      this.transaction = {} as ITransactionRequest;
     })
   }
 

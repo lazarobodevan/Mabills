@@ -49,7 +49,7 @@ import { ModalComponent } from './components/modal/modal.component';
     MatProgressSpinnerModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

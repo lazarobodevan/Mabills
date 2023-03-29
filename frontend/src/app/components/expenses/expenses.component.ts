@@ -1,3 +1,4 @@
+import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { Component } from '@angular/core';
 import * as moment from 'moment';
 import { Observable } from 'rxjs';
@@ -11,7 +12,8 @@ import { TransactionService } from 'src/app/services/transaction.service';
 @Component({
   selector: 'app-expenses',
   templateUrl: './expenses.component.html',
-  styleUrls: ['./expenses.component.css']
+  styleUrls: ['./expenses.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ExpensesComponent {
 
@@ -19,7 +21,7 @@ export class ExpensesComponent {
   nextURL: string = '';
   categories = [] as ICategory[];
   filter = {} as IFilter;
-  selectedTransactionId: string = '';
+  selectedTransaction = {} as ITransaction;
 
   transactions$!: Observable<ITransactionResponse>;
   categories$ = this.categoryService.getCategories();
@@ -28,7 +30,8 @@ export class ExpensesComponent {
   isFilterChanged: boolean = false;
 
   constructor(private transactionService: TransactionService, 
-              private categoryService: CategoryService){
+              private categoryService: CategoryService,
+              public ref:ChangeDetectorRef){
 
     this.loadTransaction();
     this.getCategories();
@@ -45,7 +48,7 @@ export class ExpensesComponent {
     
     this.transactions$.subscribe(response =>{
       response.results.forEach(item =>{
-        item.date = moment.utc(item.date).format('DD/MM');
+        item.date = moment.utc(item.date).format('DD/MM/YYYY');
         this.transactions.push(item);
       })
       this.nextURL = response.nextUrl;
@@ -93,20 +96,29 @@ export class ExpensesComponent {
     this.loadTransaction();
   }
 
-  setSelectedTransaction(id:string){
-    this.selectedTransactionId = id.toString();
+  setSelectedTransaction(transaction:ITransaction){
+    this.selectedTransaction = transaction;
   }
 
   deleteTransaction(){
-    this.transactionService.deleteTransaction(this.selectedTransactionId).subscribe(response=>{
+    this.transactionService.deleteTransaction(this.selectedTransaction._id!).subscribe(response=>{
       this.transactions = this.transactions.filter(item=>{
-        return item._id != this.selectedTransactionId;
+        return item._id != this.selectedTransaction._id;
       })
-      this.selectedTransactionId = '';
+      this.selectedTransaction = {} as ITransaction;
     })
   }
 
-  toggleModal(){
+  editTransaction(){
+    this.selectedTransaction = Object.assign({}, this.selectedTransaction);
+    this.toggleModal();
+  }
+
+  toggleModal(event?:any){
+    if(event === true){
+      this.isFilterChanged = true;
+      this.loadTransaction();
+    }
     this.isModalVisible = !this.isModalVisible;
   }
 

@@ -34,4 +34,10 @@ export class TransactionService {
     let options = { headers: this.headers };
     return this.http.delete(`${environment.API}transactions/${id}`, options);
   }
+
+  updateTransaction(transaction:ITransactionRequest):Observable<ITransaction>{
+    let options = { headers: this.headers };
+    const {_id, ...newTransaction} = transaction
+    return this.http.put<ITransaction>(`${environment.API}transactions/${_id}`, newTransaction, options);
+  }
 }

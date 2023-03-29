@@ -32,7 +32,8 @@
             <p>Data</p>
            <app-input-field (inputContent)="setDateFilter($event)" type="date"></app-input-field>
         </div>
-        <app-action-button text="Excluir" width="90px" [ngClass]="!selectedTransactionId ? 'disabled' : ''" (OnClick)="deleteTransaction()"></app-action-button>
+        <app-action-button text="Excluir" width="90px" [ngClass]="!selectedTransaction._id ? 'disabled' : ''" (OnClick)="deleteTransaction()"></app-action-button>
+        <app-action-button text="Editar" width="90px" [ngClass]="!selectedTransaction._id ? 'disabled' : ''" (OnClick)="editTransaction()"></app-action-button>
     </div>
 
     <div class="table-container">
@@ -44,9 +45,10 @@
                 <td><b>Categoria</b></td>
                 <td><b>Valor</b></td>
                 <td><b>Data</b></td>
+                <td><b>Pago?</b></td>
             </tr>
             <tr *ngFor="let transaction of transactions">
-                <td><input type="radio" name="transaction" id={{transaction._id}} (change)="setSelectedTransaction(transaction._id!)"/></td>
+                <td><input type="radio" name="transaction" id={{transaction._id}} (change)="setSelectedTransaction(transaction!)"/></td>
                 <td>{{transaction.name}}</td>
                 <td>
                     {{transaction.type === "EXPENSE"? "Despesa":"Receita"}}
@@ -59,6 +61,7 @@
                 </td>
                 <td>{{'R$ ' +transaction.value}}</td>
                 <td>{{transaction.date}}</td>
+                <td>{{transaction.type === 'EXPENSE' ? (transaction.isPaid ? "Sim": "Não") : "-"}}</td>
             </tr>
         </table>
         <div class="see-more" (click)="loadTransaction()" [ngClass]="!nextURL ? 'disabled':''">
@@ -69,12 +72,12 @@
 
     <div class="footer">        
         <div class="btn">
-            <app-action-button text="Adicionar" width="200px" (OnClick)="toggleModal()"></app-action-button>
+            <app-action-button text="Adicionar" width="200px" (OnClick)="toggleModal($event)"></app-action-button>
         </div>
     </div>
 
     <ng-template #modal>
-        <app-modal  (clickedOutside)="toggleModal()"></app-modal>
+        <app-modal  (clickedOutside)="toggleModal($event)" [inputTransaction]="selectedTransaction"></app-modal>
     </ng-template>
 
     <ng-template #loading>
