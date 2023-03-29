@@ -25,14 +25,12 @@ export class ModalComponent {
   @Output() public clickedOutside = new EventEmitter();
 
   constructor(private categoryService: CategoryService, private transactionService: TransactionService, private ref: ChangeDetectorRef){
-    this.getCategories();
-    
+    this.getCategories()
   }
 
   ngOnChanges(){
     this.initializeTransactionByInput();
   }
-
 
   clickOutside(event:any){
     if(event.target.className === "container"){
@@ -44,6 +42,7 @@ export class ModalComponent {
   getCategories(){
     this.categories$.subscribe(response =>{
       this.categories = response;
+      console.log(this.categories)
     })
   }
 
@@ -76,10 +75,8 @@ export class ModalComponent {
       }
   }
 
-
-
   addTransaction(){
-
+    console.log('add')
     this.isSubmitted = true;
     if(this.transaction.type === 'INCOME'){
       Reflect.deleteProperty(this.transaction, 'isPaid');
@@ -92,12 +89,13 @@ export class ModalComponent {
   }
 
   updateTransaction(){
+    console.log('atualizar')
     this.isSubmitted = true;
     this.transactionService.updateTransaction(this.transaction).subscribe(response=>{
       this.clickedOutside.emit(true);
       this.isSubmitted = false;
       this.transaction = {} as ITransactionRequest;
-    })
+    });
   }
 
 }
