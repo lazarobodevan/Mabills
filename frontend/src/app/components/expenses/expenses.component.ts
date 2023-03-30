@@ -28,6 +28,7 @@ export class ExpensesComponent {
   
   isModalVisible: boolean = false;
   isFilterChanged: boolean = false;
+  isLoading: boolean = false;
 
   constructor(private transactionService: TransactionService, 
               private categoryService: CategoryService,
@@ -39,7 +40,7 @@ export class ExpensesComponent {
   }
 
   loadTransaction(){
-
+    this.isLoading = true;
     if(this.isFilterChanged){
       this.transactions = [];
       this.nextURL = '';
@@ -53,6 +54,8 @@ export class ExpensesComponent {
       })
       this.nextURL = response.nextUrl;
       this.isFilterChanged = false;
+      this.isLoading  = false;
+      this.ref.detectChanges();
     })
   }
 

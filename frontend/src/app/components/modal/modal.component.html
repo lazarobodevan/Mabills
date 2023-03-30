@@ -15,7 +15,7 @@
             <p style="color:white">Categoria</p>
             <select name="categories" class="dropdown"  (change)="setCategory($event)" >
                 <option value="" >Selecione...</option>
-                <option *ngFor="let opt of categories" [selected]="(inputTransaction && opt) && (inputTransaction.categoryId._id === opt._id)">
+                <option *ngFor="let opt of categories" value="{{opt._id}}">
                     {{opt.name}}
                 </option>
             </select>
