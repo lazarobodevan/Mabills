@@ -10,14 +10,21 @@ import { CategoryService } from 'src/app/services/category.service';
 export class CategoriesComponent {
 
   categories = [] as ICategory[];
+  isModalVisible: boolean = false;
+
+  getCategories$ = this.categoryService.getCategories();
 
   constructor(private categoryService: CategoryService){
     this.getCategories();
   }
 
   getCategories(){
-    this.categoryService.getCategories().subscribe(response =>{
+    this.getCategories$.subscribe(response =>{
       this.categories = response;
     });
+  }
+
+  toggleModal(){
+    this.isModalVisible = !this.isModalVisible;
   }
 }

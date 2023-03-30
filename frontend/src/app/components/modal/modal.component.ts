@@ -20,7 +20,7 @@ export class ModalComponent {
   categories$ = this.categoryService.getCategories();
   transaction$ = this.transactionService.createTransaction(this.transaction);
 
-  
+  @Input() parentComponent: string = 'expenses'  
   @Input() inputTransaction = {} as ITransaction;
   @Output() public clickedOutside = new EventEmitter();
 

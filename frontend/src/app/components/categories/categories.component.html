@@ -1,3 +1,10 @@
+<div *ngIf="isModalVisible then modal"></div>
+
+<!--  Displaying Loading Spinner  -->
+<div class="spinner-container" *ngIf="getCategories$ | async; else loading">
+
+</div>
+
 <div class="container">
     <app-input-field placeholder="Pesquisar..." icon="search"></app-input-field>
 
@@ -9,7 +16,17 @@
     </div>
 
     <div class="btn">
-        <app-action-button text="Adicionar" width="200px" ></app-action-button>
+        <app-action-button text="Adicionar" width="200px" (OnClick)="toggleModal()"></app-action-button>
 
     </div>
 </div>
+
+<ng-template #loading>
+    <div class="loading-container">
+        <mat-spinner></mat-spinner>
+    </div>
+</ng-template>
+
+<ng-template #modal>
+    <app-modal  (clickedOutside)="toggleModal()" parentComponent="categories"></app-modal>
+</ng-template>

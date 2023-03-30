@@ -13,7 +13,6 @@
 }
 
 .container:hover{
-    z-index: 10;
     cursor: pointer;
     transform: scaleX(102%) scaleY(102%);
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
@@ -31,4 +30,19 @@
     font-size: 20px;
     font-weight: bold;
     color: white;
+}
+
+.delete-icon{
+    position: absolute;
+    display: flex;
+    justify-self: flex-end;
+    margin-top: 10px;
+    margin-right: 10px;
+    color: red;
+    opacity: 0;
+}
+
+.container:hover .delete-icon{
+    opacity: 1;
+    transition: opacity 0.5s;
 }

@@ -1,32 +1,53 @@
-<div class="spinner-container" *ngIf="isSubmitted then loading"></div>
-<div class="container" (click)="clickOutside($event)">
-    <div class="form">
-        <h1 style="color: white">Adicionar Transação</h1>
-        <app-input-field type="text" placeholder="Nome" (inputContent)="transaction.name = $event" [inputValue]="transaction.name"></app-input-field>
-        <div class="selector">
-            <p style="color:white">Tipo</p>
-            <select name="type" class="dropdown"  (change)="setType($event)">
-                <option value="">Selecione...</option>
-                <option value="EXPENSE" [selected]="inputTransaction.type === 'EXPENSE'">Despesa</option>
-                <option value="INCOME" [selected]="inputTransaction.type === 'INCOME'">Receita</option>
-            </select>
+
+<!----------------- Expenses modal ----------------->
+<div *ngIf="parentComponent === 'expenses'">
+    <div class="spinner-container" *ngIf="isSubmitted then loading"></div>
+    <div class="container" (click)="clickOutside($event)">
+        <div class="form">
+            <h1 style="color: white">Adicionar Transação</h1>
+            <app-input-field type="text" placeholder="Nome" (inputContent)="transaction.name = $event" [inputValue]="transaction.name"></app-input-field>
+            <div class="selector">
+                <p style="color:white">Tipo</p>
+                <select name="type" class="dropdown"  (change)="setType($event)">
+                    <option value="">Selecione...</option>
+                    <option value="EXPENSE" [selected]="inputTransaction.type === 'EXPENSE'">Despesa</option>
+                    <option value="INCOME" [selected]="inputTransaction.type === 'INCOME'">Receita</option>
+                </select>
+            </div>
+            <div class="selector">
+                <p style="color:white">Categoria</p>
+                <select name="categories" class="dropdown"  (change)="setCategory($event)" >
+                    <option value="" >Selecione...</option>
+                    <option *ngFor="let opt of categories" value="{{opt._id}}" [selected]="transaction.categoryId === opt._id">
+                        {{opt.name}}
+                    </option>
+                </select>
+            </div>
+            <app-input-field type="date" (inputContent)="transaction.date = $event" [inputValue]="transaction.date"></app-input-field>
+            <app-input-field type="number" placeholder="R$" (inputContent)="setValue($event)" [inputValue]="transaction.value"></app-input-field>
+            <div class="selector" *ngIf="transaction.type === 'EXPENSE'">
+                <input type="checkbox" id="isPaid" style="width: 20px;height: 20px;" (click)="setIsPaid()" [checked]="transaction.isPaid">
+                <label for="isPaid" style="color: white; margin-left: 10px;">Pago</label>
+            </div>
+            <app-action-button text="Finalizar" width="200px" (OnClick)=" transaction._id ? updateTransaction() : addTransaction()"></app-action-button>
         </div>
-        <div class="selector">
-            <p style="color:white">Categoria</p>
-            <select name="categories" class="dropdown"  (change)="setCategory($event)" >
-                <option value="" >Selecione...</option>
-                <option *ngFor="let opt of categories" value="{{opt._id}}" [selected]="transaction.categoryId === opt._id">
-                    {{opt.name}}
-                </option>
-            </select>
+    </div>
+</div>
+
+<!----------------- Categories modal ----------------->
+<div *ngIf="parentComponent === 'categories'">
+    <div class="spinner-container" *ngIf="isSubmitted then loading"></div>
+    <div class="container" (click)="clickOutside($event)">
+        <div class="form">
+            <h1 style="color: white">Adicionar Categoria</h1>
+            <app-input-field type="text" placeholder="Nome"></app-input-field>
+            <div class="selector">
+                <p style="color:white">Cor</p>
+                <app-input-field type="color"></app-input-field>
+            </div>
+            
+            <app-action-button text="Finalizar" width="200px" (OnClick)=" transaction._id ? updateTransaction() : addTransaction()"></app-action-button>
         </div>
-        <app-input-field type="date" (inputContent)="transaction.date = $event" [inputValue]="transaction.date"></app-input-field>
-        <app-input-field type="number" placeholder="R$" (inputContent)="setValue($event)" [inputValue]="transaction.value"></app-input-field>
-        <div class="selector" *ngIf="transaction.type === 'EXPENSE'">
-            <input type="checkbox" id="isPaid" style="width: 20px;height: 20px;" (click)="setIsPaid()" [checked]="transaction.isPaid">
-            <label for="isPaid" style="color: white; margin-left: 10px;">Pago</label>
-        </div>
-        <app-action-button text="Finalizar" width="200px" (OnClick)=" transaction._id ? updateTransaction() : addTransaction()"></app-action-button>
     </div>
 </div>
 
