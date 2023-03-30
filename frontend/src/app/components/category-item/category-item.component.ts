@@ -7,6 +7,5 @@ import { Component, Input } from '@angular/core';
 })
 export class CategoryItemComponent {
   @Input() name: string = '';
-  @Input() icon: string = '';
   @Input() backgroundColor = 'rgba(59, 77, 255, 0.52)';
 }

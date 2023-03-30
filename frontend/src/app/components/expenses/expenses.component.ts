@@ -104,7 +104,6 @@ export class ExpensesComponent {
   }
 
   deleteTransaction(){
-    console.log("excluir")
     this.transactionService.deleteTransaction(this.selectedTransaction._id!).subscribe(response=>{
       this.transactions = this.transactions.filter(item=>{
         return item._id != this.selectedTransaction._id;

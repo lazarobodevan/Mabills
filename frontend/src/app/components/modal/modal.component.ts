@@ -42,7 +42,7 @@ export class ModalComponent {
   getCategories(){
     this.categories$.subscribe(response =>{
       this.categories = response;
-      console.log(this.categories)
+      this.ref.detectChanges();
     })
   }
 

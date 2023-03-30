@@ -2,43 +2,10 @@
     <app-input-field placeholder="Pesquisar..." icon="search"></app-input-field>
 
     <div class="categories-container">
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
-        <app-category-item name="Casa" icon="house"></app-category-item>
+        <app-category-item *ngFor="let category of categories"  
+            name={{category.name}} 
+            backgroundColor={{category.color}}>
+        </app-category-item>
     </div>
 
     <div class="btn">
