@@ -1,5 +1,5 @@
-<div class="container" >
+<div class="container" (click)="click()">
     <mat-icon class="delete-icon" fontIcon="delete_outline"></mat-icon>
-    <div class="color" [ngStyle]="{'background-color': backgroundColor}"></div>
-    <span class="name">{{name}}</span>
+    <div class="color" [ngStyle]="{'background-color': category.color}"></div>
+    <span class="name">{{category.name}}</span>
 </div>

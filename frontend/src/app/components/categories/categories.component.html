@@ -10,8 +10,9 @@
 
     <div class="categories-container">
         <app-category-item *ngFor="let category of categories"  
-            name={{category.name}} 
-            backgroundColor={{category.color}}>
+            [category]="category"
+            (OnClick)="toggleModal($event)"
+        >
         </app-category-item>
     </div>
 
@@ -28,5 +29,5 @@
 </ng-template>
 
 <ng-template #modal>
-    <app-modal  (clickedOutside)="toggleModal()" parentComponent="categories"></app-modal>
+    <app-modal  (clickedOutside)="toggleModal()" parentComponent="categories" [inputCategory]="categorySelected"></app-modal>
 </ng-template>

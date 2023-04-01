@@ -10,6 +10,7 @@ import { CategoryService } from 'src/app/services/category.service';
 export class CategoriesComponent {
 
   categories = [] as ICategory[];
+  categorySelected = {} as ICategory;
   isModalVisible: boolean = false;
 
   getCategories$ = this.categoryService.getCategories();
@@ -24,7 +25,10 @@ export class CategoriesComponent {
     });
   }
 
-  toggleModal(){
+  toggleModal(event?:any){
+    if(event){
+      this.categorySelected = event;
+    }
     this.isModalVisible = !this.isModalVisible;
   }
 }

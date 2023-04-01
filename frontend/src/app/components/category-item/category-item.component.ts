@@ -1,4 +1,6 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ICategory } from 'src/app/interfaces/ICategory';
+import { CategoryService } from 'src/app/services/category.service';
 
 @Component({
   selector: 'app-category-item',
@@ -6,6 +8,14 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./category-item.component.css']
 })
 export class CategoryItemComponent {
-  @Input() name: string = '';
-  @Input() backgroundColor = 'rgba(59, 77, 255, 0.52)';
+
+  @Input() category = {} as ICategory;
+  @Output() OnClick: EventEmitter<ICategory> = new EventEmitter();
+
+  constructor(private categoryService: CategoryService){}
+
+  click(){
+    this.OnClick.emit(this.category);
+  }
+
 }

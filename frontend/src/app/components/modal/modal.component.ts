@@ -22,6 +22,7 @@ export class ModalComponent {
 
   @Input() parentComponent: string = 'expenses'  
   @Input() inputTransaction = {} as ITransaction;
+  @Input() inputCategory = {} as ICategory;
   @Output() public clickedOutside = new EventEmitter();
 
   constructor(private categoryService: CategoryService, private transactionService: TransactionService, private ref: ChangeDetectorRef){
@@ -31,10 +32,13 @@ export class ModalComponent {
   ngOnChanges(){
     this.initializeTransactionByInput();
   }
-
+test(event:any){
+  console.log(event)
+}
   clickOutside(event:any){
     if(event.target.className === "container"){
       this.transaction = {} as ITransactionRequest;
+      this.inputCategory = {} as ICategory;
       this.clickedOutside.emit();
     }
   }
