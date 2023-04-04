@@ -40,13 +40,13 @@
     <div class="container" (click)="clickOutside($event)">
         <div class="form">
             <h1 style="color: white">Adicionar Categoria</h1>
-            <app-input-field type="text" placeholder="Nome" [inputValue]="inputCategory.name"></app-input-field>
+            <app-input-field type="text" placeholder="Nome" [inputValue]="inputCategory.name" (inputContent)="setCategoryName($event)"></app-input-field>
             <div class="selector">
                 <p style="color:white">Cor</p>
-                <app-input-field type="color" [inputValue]="inputCategory.color"></app-input-field>
+                <app-input-field type="color" [inputValue]="inputCategory.color" (inputContent)="setCategoryColor($event)"></app-input-field>
             </div>
             
-            <app-action-button text="Finalizar" width="200px" (OnClick)=" transaction._id ? updateTransaction() : addTransaction()"></app-action-button>
+            <app-action-button text="Finalizar" width="200px" (OnClick)=" transaction._id ? updateTransaction() : createCategory()"></app-action-button>
         </div>
     </div>
 </div>

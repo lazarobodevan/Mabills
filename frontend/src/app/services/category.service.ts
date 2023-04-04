@@ -20,4 +20,8 @@ export class CategoryService {
   getCategories():Observable<ICategory[]>{
     return this.http.get<ICategory[]>(`${environment.API}categories`,{headers:this.headers});
   }
+
+  createCategory(category: ICategory):Observable<ICategory>{
+    return this.http.post<ICategory>(`${environment.API}category`,category,{headers:this.headers});
+  }
 }

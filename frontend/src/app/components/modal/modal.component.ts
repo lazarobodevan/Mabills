@@ -15,6 +15,7 @@ export class ModalComponent {
   
   transaction =  {isPaid:false} as ITransactionRequest;
   categories = [] as ICategory[];
+  category = {} as ICategory;
   isSubmitted: boolean = false;
 
   categories$ = this.categoryService.getCategories();
@@ -66,6 +67,13 @@ test(event:any){
     this.transaction.value = event;
   }
 
+  setCategoryName(event:any){
+    this.category.name = event;
+  }
+  setCategoryColor(event:any){
+    this.category.color = event;
+  }
+
   initializeTransactionByInput(){
     if(this.inputTransaction._id)
       this.transaction = {
@@ -80,7 +88,6 @@ test(event:any){
   }
 
   addTransaction(){
-    console.log('add')
     this.isSubmitted = true;
     if(this.transaction.type === 'INCOME'){
       Reflect.deleteProperty(this.transaction, 'isPaid');
@@ -93,12 +100,23 @@ test(event:any){
   }
 
   updateTransaction(){
-    console.log('atualizar')
     this.isSubmitted = true;
     this.transactionService.updateTransaction(this.transaction).subscribe(response=>{
       this.clickedOutside.emit(true);
       this.isSubmitted = false;
       this.transaction = {} as ITransactionRequest;
+    });
+  }
+
+  createCategory(){
+    this.isSubmitted = true;
+    //-------REMOVER--------
+    this.category.icon = "a";
+    //----------------------
+    this.categoryService.createCategory(this.category).subscribe(response =>{
+      this.clickedOutside.emit(true);
+      this.isSubmitted = false;
+      this.category = {} as ICategory;
     });
   }
 

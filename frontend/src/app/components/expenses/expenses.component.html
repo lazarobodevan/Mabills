@@ -48,7 +48,13 @@
                 <td><b>Pago?</b></td>
             </tr>
             <tr *ngFor="let transaction of transactions">
-                <td><input type="radio" name="transaction" id={{transaction._id}} (change)="setSelectedTransaction(transaction!)"/></td>
+                <td>
+                    <input type="radio" 
+                        name="transaction" 
+                        id={{transaction._id}} 
+                        (change)="setSelectedTransaction(transaction!)" 
+                        [checked]="transaction._id ===selectedTransaction._id? true: false"/>
+                </td>
                 <td>{{transaction.name}}</td>
                 <td>
                     {{transaction.type === "EXPENSE"? "Despesa":"Receita"}}
@@ -72,7 +78,7 @@
 
     <div class="footer">        
         <div class="btn">
-            <app-action-button text="Adicionar" width="200px" (OnClick)="toggleModal($event)"></app-action-button>
+            <app-action-button text="Adicionar" width="200px" (OnClick)="createTransaction($event)"></app-action-button>
         </div>
     </div>
 

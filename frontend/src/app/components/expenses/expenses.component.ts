@@ -118,6 +118,11 @@ export class ExpensesComponent {
     this.toggleModal();
   }
 
+  createTransaction(event?:any){
+    this.selectedTransaction = {} as ITransaction;
+    this.toggleModal(event);
+  }
+
   toggleModal(event?:any){
     if(event === true){
       this.isFilterChanged = true;
