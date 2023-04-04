@@ -80,13 +80,17 @@ export class HomeComponent {
   loadHomePage(){
 
     //get week cards
-    this.weekCards$.subscribe(response => this.weekCards = response);
+    this.weekCards$.subscribe(response => {
+      this.weekCards = response;
+      this.ref.detectChanges();
+    });
 
     //gets week incomes by category
     this.weekIncomes$.subscribe(response =>{
         this.weekIncomes = response;
         if(this.weekIncomes.length)
           this.generateIncomeChart();
+        this.ref.detectChanges()
       }
     );
 
@@ -95,6 +99,7 @@ export class HomeComponent {
       this.weekExpenses = response;
       if(this.weekExpenses.length)
         this.generateExpenseChart();
+      this.ref.detectChanges()
     });
 
     //get 8 latest transactions

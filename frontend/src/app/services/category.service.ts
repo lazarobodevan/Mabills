@@ -24,4 +24,8 @@ export class CategoryService {
   createCategory(category: ICategory):Observable<ICategory>{
     return this.http.post<ICategory>(`${environment.API}category`,category,{headers:this.headers});
   }
+
+  deleteCategory(category: ICategory):Observable<any>{
+    return this.http.delete<ICategory>(`${environment.API}category/${category._id}`, {headers:this.headers});
+  }
 }
