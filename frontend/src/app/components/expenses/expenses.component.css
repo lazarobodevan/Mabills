@@ -88,12 +88,6 @@
     cursor: pointer;
 }
 
-.category-wrapper{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
 .loading-container{
     display: flex;
     position: absolute;
@@ -108,4 +102,9 @@
 .disabled{
     pointer-events: none;
     opacity: 0.6;
+}
+
+@media screen and (max-width: 1280px) {
+    
+    
 }
