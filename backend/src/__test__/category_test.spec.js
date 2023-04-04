@@ -28,13 +28,11 @@ describe('Category domain',() => {
         it('should create a category and relate to the logged user and return its data', async()=>{
             const response = await request(app).post('/category').set({'Authorization':'bearer '+token}).send({
                 name: "test",
-                icon:"testicon.png",
                 color: '#FFFFFF'
             });
 
             const expectation = {
                 name: "test",
-                icon: "testicon.png",
                 color: '#FFFFFF'
             }
             categoryCreated = response.body;
@@ -46,15 +44,14 @@ describe('Category domain',() => {
         it('should not create a category and return an error message', async()=>{
             const response = await request(app).post('/category').set({'Authorization':'bearer '+token}).send({
                 name: "",
-                icon:"",
-                color: '#FFFFFF',
+                color: '',
                 t:2
             });
 
             const expectation = 
                 [
                     "\"name\" is not allowed to be empty",
-                    "\"icon\" is not allowed to be empty",
+                    "\"color\" is not allowed to be empty",
                     "\"t\" is not allowed",
                 ]
 
@@ -66,7 +63,7 @@ describe('Category domain',() => {
         it('shoudl forbid category creation', async()=>{
             const response = await request(app).post('/category').send({
                 name: "test",
-                icon:"testicon.png"
+                color: "#FFFFFF"
             });
 
             const expectation = {
@@ -82,13 +79,11 @@ describe('Category domain',() => {
         it('should update category information', async ()=>{
             const response = await request(app).put(`/category/${categoryCreated._id}`).set({'Authorization':'bearer '+token}).send({
                 name: "updated",
-                icon: "updated.png",
                 color: '#FFFFFF'
             });
 
             const expectation = {
                 name: "updated",
-                icon: "updated.png",
                 color: '#FFFFFF'
             }
 
@@ -101,14 +96,12 @@ describe('Category domain',() => {
         it('should update category information', async ()=>{
             const response = await request(app).put(`/category/${categoryCreated._id}`).set({'Authorization':'bearer '+token}).send({
                 name: "",
-                icon:"",
                 color: '#FFFFFF',
                 t:2
             });
 
             const expectation = [
               "\"name\" is not allowed to be empty",
-              "\"icon\" is not allowed to be empty",
               "\"t\" is not allowed",
             ]
 
@@ -121,7 +114,6 @@ describe('Category domain',() => {
         it('should forbid update category', async ()=>{
             const response = await request(app).put(`/category/${categoryCreated._id}`).send({
                 name: "updated",
-                icon: "updated.png",
                 color: '#FFFFFF'
             });
 
@@ -141,7 +133,6 @@ describe('Category domain',() => {
             const expectation = 
                 {
                     __v: 0, 
-                    icon: "updated.png", 
                     name: "updated", 
                     color: '#FFFFFF',
                     userId

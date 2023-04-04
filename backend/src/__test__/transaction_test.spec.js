@@ -151,7 +151,6 @@ describe('Transaction domain',() => {
                       "_id": categoryCreated._id,
                       "userId": user._id,
                       "name": "defaultCategory",
-                      "icon": "defaultCategory.png",
                       "__v": 0
                     },
                     "__v": 0
@@ -167,7 +166,6 @@ describe('Transaction domain',() => {
                       "_id": categoryCreated._id,
                       "userId": user._id,
                       "name": "defaultCategory",
-                      "icon": "defaultCategory.png",
                       "__v": 0
                     },
                     "__v": 0
@@ -183,7 +181,6 @@ describe('Transaction domain',() => {
                       "_id": categoryCreated._id,
                       "userId": user._id,
                       "name": "defaultCategory",
-                      "icon": "defaultCategory.png",
                       "__v": 0
                     },
                     "__v": 0
@@ -224,7 +221,6 @@ describe('Transaction domain',() => {
                       "_id": categoryCreated._id,
                       "userId": user._id,
                       "name": "defaultCategory",
-                      "icon": "defaultCategory.png",
                       "__v": 0
                     },
                     "__v": 0
@@ -258,7 +254,6 @@ describe('Transaction domain',() => {
                   "_id": categoryCreated._id,
                   "userId": user._id,
                   "name": "defaultCategory",
-                  "icon": "defaultCategory.png",
                   "__v": 0
                 },
                 "__v": 0,
