@@ -7,7 +7,6 @@ const Category = new Schema({
     id: ObjId,
     userId: ObjId,
     name: String,
-    icon: String,
     color: String
 });
 

@@ -110,9 +110,6 @@ test(event:any){
 
   createCategory(){
     this.isSubmitted = true;
-    //-------REMOVER--------
-    this.category.icon = "a";
-    //----------------------
     this.categoryService.createCategory(this.category).subscribe(response =>{
       this.clickedOutside.emit(true);
       this.isSubmitted = false;

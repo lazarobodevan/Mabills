@@ -12,6 +12,7 @@
         <app-category-item *ngFor="let category of categories"  
             [category]="category"
             (OnClick)="toggleModal($event)"
+            (OnDelete)="deleteCategory($event)"
         >
         </app-category-item>
     </div>

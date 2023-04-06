@@ -11,7 +11,7 @@
 
 <div class="container">
     <div class="header">
-        <app-input-field placeholder="Pesquisar..." icon="search" (inputContent)="setNameFilter($event)"></app-input-field>
+        <app-input-field placeholder="Pesquisar..." icon="search" (inputContent)="setNameFilter($event)" width="200px"></app-input-field>
         <mat-icon fontIcon="filter_list" class="icon"></mat-icon>
         <div class="filter">
             <p>Tipo</p>
@@ -30,7 +30,7 @@
         </div>
         <div class="filter">
             <p>Data</p>
-           <app-input-field (inputContent)="setDateFilter($event)" type="date"></app-input-field>
+           <app-input-field (inputContent)="setDateFilter($event)" type="date" width="180px"></app-input-field>
         </div>
         <app-action-button text="Excluir" width="90px" [ngClass]="!selectedTransaction._id ? 'disabled' : ''" (OnClick)="deleteTransaction()"></app-action-button>
         <app-action-button text="Editar" width="90px" [ngClass]="!selectedTransaction._id ? 'disabled' : ''" (OnClick)="editTransaction()"></app-action-button>
@@ -60,8 +60,10 @@
                     {{transaction.type === "EXPENSE"? "Despesa":"Receita"}}
                 </td>
                 <td>
-                    <div class="category-wrapper">
-                        <div style="width: 20px; height: 20px; border-radius: 5px; margin-right: 20px;" [ngStyle]="{'background-color':transaction.categoryId.color}"></div>
+                    <div style="display: flex;">
+                        <div style="width: 100px;justify-self: flex-start;display:flex;justify-content: flex-end;">
+                            <div style="width: 20px; height: 20px; border-radius: 5px; margin-right: 20px;justify-self: flex-end;" [ngStyle]="{'background-color':transaction.categoryId.color}"></div>
+                        </div>
                         {{transaction.categoryId.name}}
                     </div>
                 </td>

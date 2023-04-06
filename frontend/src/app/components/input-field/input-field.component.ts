@@ -14,6 +14,7 @@ export class InputFieldComponent {
   @Input() type: string = '';
   @Input() icon: string = '';
   @Input() inputValue: any = '';
+  @Input() width: string = '300px';
   
   @Output() inputContent: EventEmitter<string> = new EventEmitter();
 

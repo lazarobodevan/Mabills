@@ -33,6 +33,11 @@ export class CategoriesComponent {
     this.toggleModal(event);
   }
 
+  deleteCategory(event:ICategory){
+    this.categoryService.deleteCategory(event).subscribe(()=>{
+      this.getCategories();
+    })
+  }
 
   toggleModal(event?:any){
     if(event){

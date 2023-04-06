@@ -1,4 +1,4 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { Chart, AnimationOptions, Animation } from 'chart.js/auto';
 import { Observable, pipe } from 'rxjs';
 import { IExpenseIncomeByCategory } from 'src/app/interfaces/IIncomeByCategory';
@@ -11,7 +11,8 @@ import { TransactionService } from 'src/app/services/transaction.service';
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  styleUrls: ['./home.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HomeComponent {
   @ViewChild("incomeChart", {static: true}) incomeChart!: ElementRef;
@@ -27,7 +28,9 @@ export class HomeComponent {
   weekExpenses: IExpenseIncomeByCategory[] = [];
   recentTransactions: ITransaction[] = [];
 
-  constructor(private dashboardService: DashboardService, private transactionService: TransactionService){
+  constructor(private dashboardService: DashboardService, 
+              private transactionService: TransactionService,
+              public ref:ChangeDetectorRef){
     this.loadHomePage();
   }
 
@@ -77,13 +80,17 @@ export class HomeComponent {
   loadHomePage(){
 
     //get week cards
-    this.weekCards$.subscribe(response => this.weekCards = response);
+    this.weekCards$.subscribe(response => {
+      this.weekCards = response;
+      this.ref.detectChanges();
+    });
 
     //gets week incomes by category
     this.weekIncomes$.subscribe(response =>{
         this.weekIncomes = response;
         if(this.weekIncomes.length)
           this.generateIncomeChart();
+        this.ref.detectChanges()
       }
     );
 
@@ -92,11 +99,15 @@ export class HomeComponent {
       this.weekExpenses = response;
       if(this.weekExpenses.length)
         this.generateExpenseChart();
+      this.ref.detectChanges()
     });
 
     //get 8 latest transactions
     this.recentTransactions$.subscribe(response =>{
       this.recentTransactions = response.results;
-    })
+      this.ref.detectChanges()
+    });
+
+    
   }
 }

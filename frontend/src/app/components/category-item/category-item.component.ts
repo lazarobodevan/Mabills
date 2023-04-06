@@ -11,11 +11,16 @@ export class CategoryItemComponent {
 
   @Input() category = {} as ICategory;
   @Output() OnClick: EventEmitter<ICategory> = new EventEmitter();
+  @Output() OnDelete: EventEmitter<ICategory> = new EventEmitter();
 
   constructor(private categoryService: CategoryService){}
 
   click(){
     this.OnClick.emit(this.category);
+  }
+
+  deleteCategory(){
+    this.OnDelete.emit(this.category);
   }
 
 }

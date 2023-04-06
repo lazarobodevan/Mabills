@@ -3,13 +3,12 @@ const TransactionModel = require('../models/TransactionModel');
 
 const createCategory = async (req, res) =>{
     try{
-        const {name, icon, color} = req.body;
+        const {name, color} = req.body;
         const loggedUser = req.user;
 
         const newCategory = await CategoryModel.create({
             userId: loggedUser._id,
             name,
-            icon,
             color
         });
 
