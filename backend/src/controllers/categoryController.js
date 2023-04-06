@@ -1,4 +1,5 @@
 const { CategoryModel } = require("../models/CategoryModel");
+const TransactionModel = require('../models/TransactionModel');
 
 const createCategory = async (req, res) =>{
     try{
@@ -40,6 +41,10 @@ const getCategories = async (req, res) =>{
 const deleteCategory = async (req, res) =>{
     const {id} = req.params;
     try{
+        const relatedExpenses = await(TransactionModel.find({}).where({categoryId: id}).then(obj => {return obj;}));
+        if(relatedExpenses.length){
+            return res.status(400).json({message: 'Cannot delete category that is related to any transaction.'});
+        }
         await CategoryModel.findByIdAndDelete(id)
         return res.status(200).json({message: 'Category deleted'});
     }catch(e){

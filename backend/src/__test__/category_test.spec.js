@@ -6,9 +6,11 @@ const app = require('../app');
 const mongo = require('./utils/test_db');
 
 const {generateDefaultUser, loginDefaultUser} = require('./utils/utils');
+const utils = require('./utils/utils');
 
 let token;
 let categoryCreated;
+let transactionCreated;
 
 //jest.setTimeout(90*1000);
 
@@ -181,9 +183,26 @@ describe('Category domain',() => {
         })
     });
 
-    describe('DELETE #deleteCategory', ()=>{
-        it('should delete category of logged user', async ()=>{
+    describe('DELETE #deleteCategory - Category related to transaction', ()=>{
+        it('should not delete category that is related to any transaction', async ()=>{
+            transactionCreated = await utils.populateTransactions(token, categoryCreated);
             const response = await request(app).delete(`/category/${categoryCreated._id}`).set({'Authorization':'bearer '+token});
+            const expectation = 
+                {
+                    message:"Cannot delete category that is related to any transaction."
+                }
+            
+
+            expect(response.status).toBe(400);
+            expect(response.body).toMatchObject(expectation);
+        })
+    });
+
+    describe('DELETE #deleteCategory', ()=>{
+        it('should not delete category that is related to any transaction', async ()=>{
+            const category = await utils.generateDefaultCategory(token);
+            
+            const response = await request(app).delete(`/category/${category._id}`).set({'Authorization':'bearer '+token});
             const expectation = 
                 {
                     message:"Category deleted"
