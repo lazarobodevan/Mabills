@@ -1,10 +1,11 @@
 .container{
     width: 200px;
     height: 200px;
-    margin: 20px 20px 20px 0px;
+    margin: 20px 20px 0px 0px;
     padding: 20px;
     border-radius: 5px;
     border: 1px solid white;
+    position: relative;
 
     display: grid;
     grid-template-rows: auto auto;
@@ -32,20 +33,26 @@
     color: white;
 }
 
-.delete-icon{
-    position: absolute;
-    justify-self: flex-end;
-    color: red;
-    opacity: 0;
+.delete{
+    display: none;
+    width: 200px;
+    height: 30px;
+    background-color: red;
+    border-radius: 0 0 5px 5px;
+    justify-content: center;
+    align-items: center;
 }
-
-.wrapper{
-    width: 100%;
-    display: grid;
-}
-
-.wrapper:hover .delete-icon{
-    opacity: 1;
+.delete:hover{
+    display: flex;
+    box-shadow: inset 0px 0px 10px rgba(0,0,0,0.9);
     cursor: pointer;
-    transition: opacity 0.5s;
+}
+.container:hover + .delete{
+    display: flex;
+}
+
+.text{
+    color:white;
+    text-align: center;
+    user-select: none;
 }

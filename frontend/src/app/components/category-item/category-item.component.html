@@ -1,9 +1,8 @@
-<div class="wrapper">
-    <div (click)="deleteCategory()"class="delete-icon">
-        <mat-icon fontIcon="delete_outline" ></mat-icon>
-    </div>
-    <div class="container" (click)="click()">
-        <div class="color" [ngStyle]="{'background-color': category.color}"></div>
-        <span class="name">{{category.name}}</span>
-    </div>
+
+<div class="container" (click)="click()">
+    <div class="color" [ngStyle]="{'background-color': category.color}"></div>
+    <span class="name">{{category.name}}</span>
+</div>
+<div class="delete">
+    <span class="text">Excluir</span>
 </div>
