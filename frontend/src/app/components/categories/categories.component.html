@@ -30,5 +30,5 @@
 </ng-template>
 
 <ng-template #modal>
-    <app-modal  (clickedOutside)="toggleModal()" parentComponent="categories" [inputCategory]="categorySelected"></app-modal>
+    <app-modal  (clickedOutside)="toggleModal($event)" parentComponent="categories" [inputCategory]="categorySelected"></app-modal>
 </ng-template>

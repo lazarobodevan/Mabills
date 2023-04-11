@@ -33,9 +33,7 @@ export class ModalComponent {
   ngOnChanges(){
     this.initializeTransactionByInput();
   }
-test(event:any){
-  console.log(event)
-}
+
   clickOutside(event:any){
     if(event.target.className === "container"){
       this.transaction = {} as ITransactionRequest;
@@ -114,6 +112,7 @@ test(event:any){
       this.clickedOutside.emit(true);
       this.isSubmitted = false;
       this.category = {} as ICategory;
+      this.ref.detectChanges();
     });
   }
 
