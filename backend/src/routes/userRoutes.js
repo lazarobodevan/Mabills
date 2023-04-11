@@ -3,6 +3,7 @@ const router = express.Router();
 
 const userController = require('../controllers/userController');
 const userMiddleware = require('../middlewares/userMiddleware');
+const auth = require('../auth/userLogin');
 
 const authMiddleware = require('../middlewares/authMiddleware');
 
@@ -23,6 +24,8 @@ router.put('/users',
     userMiddleware.validateEmailAreadyInUse, 
     userController.updateUser
 );
+
+router.get('/user', auth.getLoggedUser);
 
 
 module.exports = router;
