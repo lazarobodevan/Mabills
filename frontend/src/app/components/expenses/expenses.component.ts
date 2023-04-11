@@ -41,11 +41,12 @@ export class ExpensesComponent {
 
   loadTransaction(){
     this.isLoading = true;
+    this.selectedTransaction = {} as ITransaction;
     if(this.isFilterChanged){
       this.transactions = [];
       this.nextURL = '';
     }
-    this.transactions$ = this.transactionService.getTransactions(this.nextURL, this.filter);
+    this.transactions$ = this.transactionService.getTransactions(this.nextURL?this.nextURL : '', this.filter);
     
     this.transactions$.subscribe(response =>{
       response.results.forEach(item =>{
@@ -105,11 +106,10 @@ export class ExpensesComponent {
 
   deleteTransaction(){
     this.transactionService.deleteTransaction(this.selectedTransaction._id!).subscribe(response=>{
-      this.transactions = this.transactions.filter(item=>{
-        return item._id != this.selectedTransaction._id;
-      })
       this.selectedTransaction = {} as ITransaction;
-      this.loadTransaction()
+      this.isFilterChanged = true;
+      this.loadTransaction();
+      this.ref.detectChanges();
     })
   }
 

@@ -55,16 +55,18 @@
                         (change)="setSelectedTransaction(transaction!)" 
                         [checked]="transaction._id ===selectedTransaction._id? true: false"/>
                 </td>
-                <td>{{transaction.name}}</td>
+                <td style="width: 20%;">{{transaction.name}}</td>
                 <td>
                     {{transaction.type === "EXPENSE"? "Despesa":"Receita"}}
                 </td>
                 <td>
-                    <div style="display: flex;">
-                        <div style="width: 100px;justify-self: flex-start;display:flex;justify-content: flex-end;">
-                            <div style="width: 20px; height: 20px; border-radius: 5px; margin-right: 20px;justify-self: flex-end;" [ngStyle]="{'background-color':transaction.categoryId.color}"></div>
+                    <div style="display: flex; transform: translateX(30%);">
+                        <div class="color-wrapper">
+                            <div style="width: 20px; height: 20px; border-radius: 5px; margin-right: 10px;justify-self: flex-end;" 
+                                [ngStyle]="{'background-color':transaction.categoryId.color}">
+                            </div>
                         </div>
-                        {{transaction.categoryId.name}}
+                        <span >{{transaction.categoryId.name}}</span>
                     </div>
                 </td>
                 <td>{{'R$ ' +transaction.value}}</td>

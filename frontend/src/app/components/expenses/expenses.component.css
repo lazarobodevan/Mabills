@@ -104,6 +104,12 @@
     opacity: 0.6;
 }
 
+.color-wrapper{
+    justify-self: flex-start;
+    display:flex;
+    justify-content: flex-end;
+}
+
 @media screen and (max-width: 1280px) {
     
     

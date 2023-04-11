@@ -32,6 +32,7 @@ export class TransactionService {
 
   deleteTransaction(id:string):Observable<any>{
     let options = { headers: this.headers };
+    console.log(id);
     return this.http.delete(`${environment.API}transactions/${id}`, options);
   }
 
