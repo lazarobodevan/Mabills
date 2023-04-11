@@ -36,6 +36,7 @@ export class CategoriesComponent {
   deleteCategory(event:ICategory){
     this.categoryService.deleteCategory(event).subscribe(()=>{
       this.getCategories();
+      this.ref.detectChanges();
     })
   }
 
