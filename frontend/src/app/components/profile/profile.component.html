@@ -5,18 +5,29 @@
         </div>
         <div class="field">
             <p>Nome</p>
-            <app-input-field type="text" placeholder="Nome"></app-input-field>
+            <app-input-field type="text" 
+                            placeholder="Nome" 
+                            [inputValue]="loggedUser.name"
+                            (inputContent)="setName($event)">
+            </app-input-field>
         </div>
         <div class="field">
             <p>Email</p>
-            <app-input-field type="email" placeholder="Email"></app-input-field>
+            <app-input-field type="email" 
+                            placeholder="Email" 
+                            [inputValue]="loggedUser.email"
+                            (inputContent)="setEmail($event)">
+            </app-input-field>
         </div>
         <div class="field">
             <p>Senha</p>
-            <app-input-field type="text" placeholder="Senha"></app-input-field>
+            <app-input-field type="text" 
+                            placeholder="Senha"
+                            (inputContent)="setPassword($event)">
+            </app-input-field>
         </div>
         <div class="field">
-            <app-action-button text="Confirmar" width="200px"></app-action-button>
+            <app-action-button text="Confirmar" width="200px" (OnClick)="updateUser()"></app-action-button>
         </div>
     </div>
 </div>
