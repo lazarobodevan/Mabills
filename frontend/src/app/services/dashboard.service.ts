@@ -6,6 +6,7 @@ import { IExpenseIncomeByCategory } from '../interfaces/IIncomeByCategory';
 import { ITransaction } from '../interfaces/ITransaction';
 import { IWeekCards } from '../interfaces/IWeekCards';
 import { TransactionService } from './transaction.service';
+import { IMonthCards } from '../interfaces/IMonthCards';
 
 
 @Injectable({
@@ -31,6 +32,10 @@ export class DashboardService {
 
   getExpensesByCategory():Observable<IExpenseIncomeByCategory[]>{
     return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/expenses-by-category-week`, {headers: this.headers});
+  }
+
+  getMonthCards():Observable<IMonthCards>{
+    return this.http.get<IMonthCards>(`${environment.API}dashboard/monthCards`, {headers:this.headers});
   }
 
 }

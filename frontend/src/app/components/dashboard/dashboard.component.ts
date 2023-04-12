@@ -1,15 +1,25 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import Chart from 'chart.js/auto';
+import { IMonthCards } from 'src/app/interfaces/IMonthCards';
+import { DashboardService } from 'src/app/services/dashboard.service';
+import { NotifierService } from 'src/app/services/notifier.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent {
   @ViewChild("chartCanvas", {static: true}) element!: ElementRef;
   @ViewChild("income", {static: true}) incomeChart!: ElementRef;
   @ViewChild("expense", {static: true}) expenseChart!: ElementRef;
+  
+  monthCards = {} as IMonthCards;
+
+  constructor(private dashboardService:DashboardService, private notifierService: NotifierService, private ref:ChangeDetectorRef){
+    this.getMonthCards()
+  }
 
   ngOnInit(){
     Chart.defaults.borderColor = "rgba(255, 255, 255, 0.22)";
@@ -17,6 +27,20 @@ export class DashboardComponent {
     this.generateIncomeExpesesChart();
     this.generateIncomeChart();
     this.generateExpenseChart();
+  }
+
+  getMonthCards(){
+    this.dashboardService.getMonthCards().subscribe({
+      next: response =>{
+        this.monthCards = response;
+      },
+      error: err =>{
+        this.notifierService.ShowError(err.error.message);
+      },
+      complete: ()=>{
+        this.ref.detectChanges();
+      }
+    })
   }
 
   generateIncomeExpesesChart(){

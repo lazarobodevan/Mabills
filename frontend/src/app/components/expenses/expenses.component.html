@@ -33,7 +33,7 @@
            <app-input-field (inputContent)="setDateFilter($event)" type="date" width="180px"></app-input-field>
         </div>
         <app-action-button text="Excluir" width="90px" [ngClass]="!selectedTransaction._id ? 'disabled' : ''" (OnClick)="deleteTransaction()"></app-action-button>
-        <app-action-button text="Editar" width="90px" [ngClass]="!selectedTransaction._id ? 'disabled' : ''" (OnClick)="editTransaction()"></app-action-button>
+        <app-action-button text="Editar" width="90px" [ngClass]="!selectedTransaction._id ? 'disabled' : ''" (OnClick)="editTransaction()" style="margin-left: 15px;"></app-action-button>
     </div>
 
     <div class="table-container">

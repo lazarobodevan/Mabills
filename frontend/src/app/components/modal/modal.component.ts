@@ -124,6 +124,7 @@ export class ModalComponent {
         this.clickedOutside.emit(true);
         this.isSubmitted = false;
         this.transaction = {} as ITransactionRequest;
+        this.notifierService.ShowSuccess("Transação atualizada com sucesso")
       },
       error: err =>{
         this.isSubmitted = false;
