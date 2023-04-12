@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { AuthService } from './services/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,8 @@ export class AppComponent {
   showSidebar: boolean = false;
 
   constructor(public authService: AuthService){
-
   }
-
+  
   ngOnInit(){
     this.authService.showSideBarEmitter.subscribe(
       show => this.showSidebar = show

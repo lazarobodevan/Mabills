@@ -23,6 +23,7 @@ import { ProfileComponent } from './components/profile/profile.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ModalComponent } from './components/modal/modal.component';
+import { SignupComponent } from './components/signup/signup.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { ModalComponent } from './components/modal/modal.component';
     CategoryItemComponent,
     ProfileComponent,
     ModalComponent,
+    SignupComponent,
   ],
   imports: [
     BrowserModule,

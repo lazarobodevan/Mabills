@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
 
@@ -29,6 +29,19 @@ export class AuthService {
         this.showSideBarEmitter.emit(true);
       })
     );
+  }
+
+  logout(){
+    localStorage.clear();
+    this.router.navigate(['/']).then(()=>{
+      window.location.reload();
+      this._isUserAuthenticated$ = new BehaviorSubject<boolean>(false);
+      const token = localStorage.getItem('token');
+      this._isUserAuthenticated$.next(!!token);
+      this.showSideBarEmitter.emit(false);
+      
+    });
+    
   }
 
   
