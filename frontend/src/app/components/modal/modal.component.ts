@@ -4,6 +4,7 @@ import { ICategory } from 'src/app/interfaces/ICategory';
 import { ITransaction } from 'src/app/interfaces/ITransaction';
 import { ITransactionRequest } from 'src/app/interfaces/ITransactionRequest';
 import { CategoryService } from 'src/app/services/category.service';
+import { NotifierService } from 'src/app/services/notifier.service';
 import { TransactionService } from 'src/app/services/transaction.service';
 
 @Component({
@@ -26,7 +27,10 @@ export class ModalComponent {
   @Input() inputCategory = {} as ICategory;
   @Output() public clickedOutside = new EventEmitter();
 
-  constructor(private categoryService: CategoryService, private transactionService: TransactionService, private ref: ChangeDetectorRef){
+  constructor(private categoryService: CategoryService, 
+              private transactionService: TransactionService, 
+              private ref: ChangeDetectorRef,
+              private notifierService:NotifierService){
     this.getCategories()
   }
 
@@ -43,9 +47,14 @@ export class ModalComponent {
   }
 
   getCategories(){
-    this.categories$.subscribe(response =>{
-      this.categories = response;
-      this.ref.detectChanges();
+    this.categories$.subscribe({
+      next: response =>{
+        this.categories = response;
+        this.ref.detectChanges();
+      },
+      error: err =>{
+        this.notifierService.ShowError(err.error.message);
+      }
     })
   }
 
@@ -90,29 +99,59 @@ export class ModalComponent {
     if(this.transaction.type === 'INCOME'){
       Reflect.deleteProperty(this.transaction, 'isPaid');
     }
-    this.transactionService.createTransaction(this.transaction).subscribe(response=>{
-      this.clickedOutside.emit(true);
-      this.isSubmitted = false;
-      this.transaction = {} as ITransactionRequest;
+    this.transactionService.createTransaction(this.transaction).subscribe({
+      next: response=>{
+        this.clickedOutside.emit(true);
+        this.isSubmitted = false;
+        this.transaction = {} as ITransactionRequest;
+        this.notifierService.ShowSuccess("Transação criada com sucesso")
+      },
+      error: err =>{
+        this.isSubmitted = false;
+        err.error.forEach((error:string) =>{
+          this.notifierService.ShowError(error);  
+        });
+        this.ref.detectChanges();
+        
+      }
     })
   }
 
   updateTransaction(){
     this.isSubmitted = true;
-    this.transactionService.updateTransaction(this.transaction).subscribe(response=>{
-      this.clickedOutside.emit(true);
-      this.isSubmitted = false;
-      this.transaction = {} as ITransactionRequest;
+    this.transactionService.updateTransaction(this.transaction).subscribe({
+      next: response=>{
+        this.clickedOutside.emit(true);
+        this.isSubmitted = false;
+        this.transaction = {} as ITransactionRequest;
+      },
+      error: err =>{
+        this.isSubmitted = false;
+        err.error.forEach((error:string) =>{
+          this.notifierService.ShowError(error);  
+        });
+        this.ref.detectChanges();
+      }
     });
   }
 
   createCategory(){
     this.isSubmitted = true;
-    this.categoryService.createCategory(this.category).subscribe(response =>{
-      this.clickedOutside.emit(true);
-      this.isSubmitted = false;
-      this.category = {} as ICategory;
-      this.ref.detectChanges();
+    this.categoryService.createCategory(this.category).subscribe({
+      next: response =>{
+        this.clickedOutside.emit(true);
+        this.isSubmitted = false;
+        this.category = {} as ICategory;
+        this.ref.detectChanges();
+        this.notifierService.ShowSuccess("Categoria criada com sucesso")
+      },
+      error: err =>{
+        this.isSubmitted = false;
+        err.error.forEach((error:string) =>{
+          this.notifierService.ShowError(error);  
+        });
+        this.ref.detectChanges();
+      }
     });
   }
 

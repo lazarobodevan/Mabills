@@ -6,6 +6,7 @@ import { ITransaction } from 'src/app/interfaces/ITransaction';
 import { IWeekCards } from 'src/app/interfaces/IWeekCards';
 import { AuthService } from 'src/app/services/auth.service';
 import { DashboardService } from 'src/app/services/dashboard.service';
+import { NotifierService } from 'src/app/services/notifier.service';
 import { TransactionService } from 'src/app/services/transaction.service';
 
 @Component({
@@ -30,7 +31,8 @@ export class HomeComponent {
 
   constructor(private dashboardService: DashboardService, 
               private transactionService: TransactionService,
-              public ref:ChangeDetectorRef){
+              public ref:ChangeDetectorRef,
+              private notifierService: NotifierService){
     this.loadHomePage();
   }
 
@@ -80,32 +82,51 @@ export class HomeComponent {
   loadHomePage(){
 
     //get week cards
-    this.weekCards$.subscribe(response => {
-      this.weekCards = response;
-      this.ref.detectChanges();
+    this.weekCards$.subscribe({
+      next: response => {
+        this.weekCards = response;
+        this.ref.detectChanges(); 
+      },
+      error: err =>{
+        this.notifierService.ShowError(err.error.message);
+      }
     });
 
     //gets week incomes by category
-    this.weekIncomes$.subscribe(response =>{
+    this.weekIncomes$.subscribe({
+      next: response =>{
         this.weekIncomes = response;
         if(this.weekIncomes.length)
           this.generateIncomeChart();
         this.ref.detectChanges()
+      },
+      error: err =>{
+        this.notifierService.ShowError(err.error.message);
       }
-    );
+    });
 
     //gets week expenses by category
-    this.weekExpenses$.subscribe(response =>{
-      this.weekExpenses = response;
-      if(this.weekExpenses.length)
-        this.generateExpenseChart();
-      this.ref.detectChanges()
+    this.weekExpenses$.subscribe({
+      next: response =>{
+        this.weekExpenses = response;
+        if(this.weekExpenses.length)
+          this.generateExpenseChart();
+        this.ref.detectChanges()
+      },
+      error: err =>{
+        this.notifierService.ShowError(err.error.message);
+      }
     });
 
     //get 8 latest transactions
-    this.recentTransactions$.subscribe(response =>{
-      this.recentTransactions = response.results;
-      this.ref.detectChanges()
+    this.recentTransactions$.subscribe({
+      next:response =>{
+        this.recentTransactions = response.results;
+        this.ref.detectChanges()
+      },
+      error: err =>{
+        this.notifierService.ShowError(err.error.message);
+      }
     });
 
     

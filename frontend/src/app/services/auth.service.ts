@@ -4,6 +4,7 @@ import { IUser } from '../interfaces/IUser';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
+import { NotifierService } from './notifier.service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class AuthService {
 
   showSideBarEmitter = new EventEmitter<boolean>();
 
-  constructor(private router: Router, private http: HttpClient) { 
+  constructor(private router: Router, private http: HttpClient, private notifierService: NotifierService) { 
     const token = localStorage.getItem('token');
     this._isUserAuthenticated$.next(!!token);
   }
@@ -27,6 +28,7 @@ export class AuthService {
         this._isUserAuthenticated$.next(true);
         this.router.navigate(['/home']);
         this.showSideBarEmitter.emit(true);
+        this.notifierService.ShowSuccess("Login realizado")
       })
     );
   }

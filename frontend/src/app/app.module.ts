@@ -24,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ModalComponent } from './components/modal/modal.component';
 import { SignupComponent } from './components/signup/signup.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,11 @@ import { SignupComponent } from './components/signup/signup.component';
     FormsModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      progressBar:true,
+      positionClass:'toast-bottom-right',
+      preventDuplicates:true
+    })
   ],
   providers: [AuthService],
   bootstrap: [AppComponent]

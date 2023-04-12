@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/
 import { Router } from '@angular/router';
 import { IUser } from 'src/app/interfaces/IUser';
 import { AuthService } from 'src/app/services/auth.service';
+import { NotifierService } from 'src/app/services/notifier.service';
 import { UserService } from 'src/app/services/user.service';
 
 @Component({
@@ -15,7 +16,8 @@ export class ProfileComponent {
 
   constructor(private userService:UserService, 
               private ref:ChangeDetectorRef, 
-              private authService: AuthService){
+              private authService: AuthService,
+              private notifierService: NotifierService){
     this.getLoggedUser();
   }
 
@@ -39,13 +41,27 @@ export class ProfileComponent {
   }
 
   updateUser(){
-    this.userService.updateUser(this.loggedUser).subscribe(response =>{
-      this.getLoggedUser();
-      this.ref.detectChanges();
+    this.userService.updateUser(this.loggedUser).subscribe({
+      next: response =>{
+        this.getLoggedUser();
+        this.ref.detectChanges();
+        this.notifierService.ShowSuccess("Usuário atualizado com sucesso")
+      },
+      error: err =>{
+        if(err.error.length){
+          err.error.forEach((error:string) =>{
+            this.notifierService.ShowError(error);  
+          });
+        }else{
+          this.notifierService.ShowError(err.error.message);  
+        }
+        this.ref.detectChanges();
+      }
     })
   }
 
   logout(){
     this.authService.logout();
+    this.notifierService.ShowSuccess("Logout com sucesso")
   }
 }

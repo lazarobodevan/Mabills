@@ -3,6 +3,7 @@ import { IUser} from 'src/app/interfaces/IUser';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NotifierService } from 'src/app/services/notifier.service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ export class LoginComponent {
 
   private user = {} as IUser;
 
-  constructor(private authService: AuthService, private router: Router){
+  constructor(private authService: AuthService, private router: Router, private notifierService: NotifierService){
   }
 
   setEmail(email:string){
@@ -24,7 +25,18 @@ export class LoginComponent {
   }
 
   login(){
-    this.authService.authenticate(this.user).subscribe();
+    this.authService.authenticate(this.user).subscribe({
+      error: err =>{
+        if(err.error.length){
+          console.log(err)
+          err.error.forEach((error:string) =>{
+            this.notifierService.ShowError(error);    
+          })
+        }else{
+          this.notifierService.ShowError(err.error.message);
+        }
+      }
+    });
   }
 
   signUpRedirect(){

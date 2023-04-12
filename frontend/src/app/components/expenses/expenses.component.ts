@@ -7,6 +7,7 @@ import { IFilter } from 'src/app/interfaces/IFilter';
 import { ITransaction } from 'src/app/interfaces/ITransaction';
 import { ITransactionResponse } from 'src/app/interfaces/ITransactionResponse';
 import { CategoryService } from 'src/app/services/category.service';
+import { NotifierService } from 'src/app/services/notifier.service';
 import { TransactionService } from 'src/app/services/transaction.service';
 
 @Component({
@@ -32,7 +33,8 @@ export class ExpensesComponent {
 
   constructor(private transactionService: TransactionService, 
               private categoryService: CategoryService,
-              public ref:ChangeDetectorRef){
+              public ref:ChangeDetectorRef,
+              private notifierService: NotifierService){
 
     this.loadTransaction();
     this.getCategories();
@@ -61,8 +63,13 @@ export class ExpensesComponent {
   }
 
   getCategories(){
-    this.categories$.subscribe(response =>{
-      this.categories = response;
+    this.categories$.subscribe({
+      next: response =>{
+        this.categories = response;
+      },
+      error: err =>{
+        this.notifierService.ShowError(err.error.message)
+      }
     })
   }
 
@@ -105,11 +112,18 @@ export class ExpensesComponent {
   }
 
   deleteTransaction(){
-    this.transactionService.deleteTransaction(this.selectedTransaction._id!).subscribe(response=>{
-      this.selectedTransaction = {} as ITransaction;
-      this.isFilterChanged = true;
-      this.loadTransaction();
-      this.ref.detectChanges();
+    this.transactionService.deleteTransaction(this.selectedTransaction._id!).subscribe({
+      next: response=>{
+        this.selectedTransaction = {} as ITransaction;
+        this.isFilterChanged = true;
+        this.loadTransaction();
+        this.ref.detectChanges();
+        this.notifierService.ShowSuccess("Transação deletada com sucesso")
+      },
+      error: err =>{
+        this.notifierService.ShowError(err.error.message);
+      }
+
     })
   }
 

@@ -6,6 +6,7 @@ import { IFilter } from '../interfaces/IFilter';
 import { ITransaction } from '../interfaces/ITransaction';
 import { ITransactionRequest } from '../interfaces/ITransactionRequest';
 import { ITransactionResponse } from '../interfaces/ITransactionResponse';
+import { NotifierService } from './notifier.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class TransactionService {
     Authorization: `Bearer ${localStorage.getItem('token')}`
   });
   
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private notifierService:NotifierService) { 
   }
 
   createTransaction(transaction:ITransactionRequest):Observable<ITransaction>{

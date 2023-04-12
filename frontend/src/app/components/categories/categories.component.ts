@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { ICategory } from 'src/app/interfaces/ICategory';
 import { CategoryService } from 'src/app/services/category.service';
+import { NotifierService } from 'src/app/services/notifier.service';
 
 @Component({
   selector: 'app-categories',
@@ -17,14 +18,20 @@ export class CategoriesComponent {
   getCategories$ = this.categoryService.getCategories();
 
   constructor(private categoryService: CategoryService,
-              public ref:ChangeDetectorRef){
+              private ref:ChangeDetectorRef,
+              private notifierService:NotifierService){
     this.getCategories();
   }
 
   getCategories(){
-    this.getCategories$.subscribe(response =>{
-      this.categories = response;
-      this.ref.detectChanges()
+    this.getCategories$.subscribe({
+      next: response =>{
+        this.categories = response;
+        this.ref.detectChanges()
+      },
+      error: err =>{
+        this.notifierService.ShowError(err.error.message);
+      }
     });
   }
 
@@ -34,10 +41,16 @@ export class CategoriesComponent {
   }
 
   deleteCategory(event:ICategory){
-    this.categoryService.deleteCategory(event).subscribe(()=>{
-      this.getCategories();
-      this.ref.detectChanges();
-    })
+    this.categoryService.deleteCategory(event).subscribe(
+      (response)=>{
+        this.getCategories();
+        this.ref.detectChanges();
+        this.notifierService.ShowSuccess("Categoria deletada com sucesso")
+      },
+      (error)=>{
+        this.notifierService.ShowError(error.error.message);
+      }
+    )
   }
 
   toggleModal(event?:any){
