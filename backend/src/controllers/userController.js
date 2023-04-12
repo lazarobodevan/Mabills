@@ -22,7 +22,12 @@ const createUser = async (req, res) =>{
 
 const updateUser = async (req, res) =>{
 
-    const updatedUser = await userModel.findByIdAndUpdate(req.user._id, req.body, {new: true});
+    const {name, email, password} = req.body;
+    const hashedPassword = await encryptPassoword(password);
+    const updatedUser = await userModel.findByIdAndUpdate(req.user._id, {name, 
+        email, 
+        password:hashedPassword
+    }, {new: true});
 
     updatedUser.password = "";
     req.user = updatedUser;

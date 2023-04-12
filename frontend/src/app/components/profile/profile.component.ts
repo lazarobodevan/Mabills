@@ -1,4 +1,5 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { IUser } from 'src/app/interfaces/IUser';
 import { UserService } from 'src/app/services/user.service';
 
@@ -11,7 +12,7 @@ import { UserService } from 'src/app/services/user.service';
 export class ProfileComponent {
   loggedUser = {} as IUser;
 
-  constructor(private userService:UserService, public ref:ChangeDetectorRef){
+  constructor(private userService:UserService, public ref:ChangeDetectorRef, private router: Router){
     this.getLoggedUser();
   }
 
@@ -39,5 +40,10 @@ export class ProfileComponent {
       this.getLoggedUser();
       this.ref.detectChanges();
     })
+  }
+
+  logout(){
+    localStorage.removeItem('token');
+    this.router.navigate(['/']);
   }
 }
