@@ -27,4 +27,12 @@ export class UserService {
       email: user.email
     },{headers: this.headers});
   }
+
+  createUser(user:IUser):Observable<IUser>{
+    return this.http.post<IUser>(`${environment.API}signup`,{
+      name: user.name,
+      email: user.email,
+      password: user.password
+    })
+  }
 }

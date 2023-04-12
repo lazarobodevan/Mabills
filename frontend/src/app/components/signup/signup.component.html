@@ -1,1 +1,16 @@
-<p>signup works!</p>
+<div class="container">
+    <div class="logo-container">
+        <img src="../../../assets/logo.png"/>
+        <span>Mabills</span>
+    </div>
+    <p style="color: white; font-size: 24px; margin-bottom: 20px;">Crie sua conta!</p>
+    <form class="fields-container">
+        <app-input-field placeholder="Nome"  style="margin-bottom: 10px;" (inputContent)="setName($event)"></app-input-field>
+        <app-input-field placeholder="Email"  style="margin-bottom: 10px;" (inputContent)="setEmail($event)"></app-input-field>
+        <app-input-field placeholder="Senha" type="password" style="margin-bottom: 10px;" (inputContent)="setPassword($event)"></app-input-field>
+        <app-input-field placeholder="Confirmar senha" type="password" (inputContent)="setConfirmPassword($event)"></app-input-field>
+        <app-action-button text="Cadastrar" width="100%" [style]="{'margin-top':'20px'}" (OnClick)="signUp()"></app-action-button>
+        
+    </form>
+    
+</div>

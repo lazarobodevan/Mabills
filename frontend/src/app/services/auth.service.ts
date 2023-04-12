@@ -33,13 +33,12 @@ export class AuthService {
 
   logout(){
     localStorage.clear();
+    this._isUserAuthenticated$ = new BehaviorSubject<boolean>(false);
+    const token = localStorage.getItem('token');
+    this._isUserAuthenticated$.next(!!token);
+    this.showSideBarEmitter.emit(false);
     this.router.navigate(['/']).then(()=>{
-      window.location.reload();
-      this._isUserAuthenticated$ = new BehaviorSubject<boolean>(false);
-      const token = localStorage.getItem('token');
-      this._isUserAuthenticated$.next(!!token);
-      this.showSideBarEmitter.emit(false);
-      
+      window.location.reload();      
     });
     
   }
