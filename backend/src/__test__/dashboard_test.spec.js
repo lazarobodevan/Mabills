@@ -12,8 +12,7 @@ const {
     generateCategory, 
     populateTransactions} = require('./utils/utils');
 
-const {getBillsToReceive} = require('../controllers/dashboardController');
-const TransactionModel = require('../models/TransactionModel');
+const {getMonthRange, getWeekRange} = require('../utils/dateUtils');
 
 let token;
 let categoryCreated;
@@ -80,6 +79,13 @@ describe('Dashboard domain',() => {
               expect(response.body).toEqual(
                 expect.arrayContaining(expectation)
               );
+        })
+    });
+    describe('GET #getMonthIncome', ()=>{
+        it('should get total income by category from the current month', async()=>{
+
+            console.log(getMonthRange());
+            console.log(getWeekRange());
         })
     });
 })

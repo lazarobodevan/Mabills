@@ -14,6 +14,21 @@ const getWeekRange = () =>{
     }
 }
 
+const getMonthRange = () =>{
+    let curr = new Date;
+    let first = new Date(curr.getFullYear(), curr.getMonth(), 1);
+    let last = new Date(curr.getFullYear(), curr.getMonth() + 1, 0);
+
+    let firstday = moment.utc(first).set({hour:0,minute:0,second:0,millisecond:0}).toDate();
+    let lastday = moment.utc(last).set({hour:0,minute:0,second:0,millisecond:0}).toDate();
+
+    return {
+        firstday,
+        lastday
+    }
+}
+
 module.exports = {
-    getWeekRange
+    getWeekRange,
+    getMonthRange
 }

@@ -1,6 +1,6 @@
 const TransactionModel = require('../models/TransactionModel');
 const {CategoryModel} = require('../models/CategoryModel');
-const {getWeekRange} = require('../utils/dateUtils');
+const {getWeekRange, getMonthRange} = require('../utils/dateUtils');
 const moment = require('moment');
 const { default: mongoose } = require('mongoose');
 const { calcPercent } = require('../utils/mathUtils');
@@ -78,6 +78,39 @@ const getBillsToPay = async(req, firstDay, lastDay) =>{
     return billsToPay;
 }
 
+const getExpenses = async(req, firstDay, lastDay) =>{
+
+    const billsToPay = await TransactionModel.aggregate([{
+        $match:{
+            $and:[
+                {
+                    userId: mongoose.Types.ObjectId(req.user._id)
+                },
+                {
+                    type: 'EXPENSE'
+                },
+                {
+                    date:{
+                        $gte: firstDay,
+                        $lte: lastDay
+                    }
+                }
+            ]
+        }
+    },
+    {
+        $group:{
+            _id:null,
+            SUM:{
+                $sum: '$value'
+            }
+        }
+    }
+]);
+
+    return billsToPay;
+}
+
 const getBillsToExpire = async (req, firstDay, lastDay) =>{
 
     const billsToExpire =  await TransactionModel.aggregate([
@@ -95,6 +128,43 @@ const getBillsToExpire = async (req, firstDay, lastDay) =>{
                     },
                     {
                         date:{
+                            $gte: firstDay,
+                            $lte: lastDay
+                        }
+                    }
+                ]
+            }
+        },
+        {
+            $group:{
+                _id: null,
+                SUM:{
+                    $sum: '$value'
+                }
+            }
+        }
+    ]);
+    return billsToExpire;
+}
+
+const getExpiredBills = async (req, firstDay, lastDay) =>{
+
+    const billsToExpire =  await TransactionModel.aggregate([
+        {
+            $match:{
+                $and:[
+                    {
+                        userId: mongoose.Types.ObjectId(req.user._id)
+                    },
+                    {
+                        type: 'EXPENSE'
+                    },
+                    {
+                        isPaid: false
+                    },
+                    {
+                        date:{
+                            $lt: moment.utc(new Date()).set({hour:0,minute:0,second:0,millisecond:0}).toDate(),
                             $gte: firstDay,
                             $lte: lastDay
                         }
@@ -266,11 +336,58 @@ const getWeekIncomeByCategory = async(req, res) =>{
     return res.status(200).json(incomeByCategory);
 }
 
+const getDashboardCards = async(req, res) =>{
+    try{
+
+        //------------------This Month--------------------
+        const lastDay = getMonthRange().lastday;
+        const firstDay = getMonthRange().firstday;
+
+        const incomes =  await getBillsToReceive(req, firstDay, lastDay);
+        const expenses = await getExpenses(req, firstDay, lastDay);
+        const expired = await getExpiredBills(req, firstDay, lastDay);
+
+        //------------------Last Month--------------------
+        const pastLastDay = moment.utc(getMonthRange().lastday).subtract(1,'months').endOf('month').toDate();
+        const pastFirstDay = moment.utc(getMonthRange().firstday).subtract(1,'months').startOf('month').toDate();
+
+        const pastIncomes =  await getBillsToReceive(req, pastFirstDay, pastLastDay);
+        const pastExpenses = await getExpenses(req, pastFirstDay, pastLastDay);
+        const pastExpired = await getExpiredBills(req, pastFirstDay, pastLastDay);
+
+        //---------------Generating payload--------------------
+
+        const payload = {
+            incomes:{
+                value: incomes && incomes[0] && incomes[0].SUM || 0,
+                variation: calcPercent(pastIncomes && pastIncomes[0] && pastIncomes[0].SUM || 0,
+                    incomes && incomes[0] && incomes[0].SUM || 0)
+            },
+            expenses:{
+                value: expenses && expenses[0] && expenses[0].SUM || 0,
+                variation: calcPercent(pastExpenses && pastExpenses[0] && pastExpenses[0].SUM || 0, 
+                    expenses && expenses[0] && expenses[0].SUM || 0)
+            },
+            expired:{
+                value: expired && expired[0] && expired[0].SUM || 0,
+                variation: calcPercent(pastExpired && pastExpired[0] && pastExpired[0].SUM || 0, 
+                    expired && expired[0] && expired[0].SUM || 0)
+            }
+        }
+
+        return await res.status(200).json(payload);
+    }catch(e){
+        console.log(e)
+        return res.status(400).json(e);
+    }
+}
+
 module.exports = {
     getBillsToReceive,
     getBillsToPay,
     getBillsToExpire,
     getWeekCards,
     getWeekExpensesByCategory,
-    getWeekIncomeByCategory
+    getWeekIncomeByCategory,
+    getDashboardCards
 }

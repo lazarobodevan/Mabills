@@ -26,13 +26,13 @@ const updateUser = async (req, res) =>{
     const hashedPassword = await encryptPassoword(password);
     const updatedUser = await userModel.findByIdAndUpdate(req.user._id, {name, 
         email, 
-        password:hashedPassword
+        password: hashedPassword
     }, {new: true});
 
     updatedUser.password = "";
     req.user = updatedUser;
 
-    return res.status(201).json(updatedUser);
+    return await res.status(201).json(updatedUser);
 }
 
 const encryptPassoword = async (password) => {
@@ -40,6 +40,7 @@ const encryptPassoword = async (password) => {
     const hashed = await bcrypt.hash(password, salt).then((hash)=>{
         return hash;
     });
+
     return hashed;
 }
 
