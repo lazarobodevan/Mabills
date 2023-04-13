@@ -5,8 +5,16 @@
             [value]="monthCards.expenses && monthCards.expenses.value || 0" 
             [variation]="monthCards.expenses && monthCards.expenses.variation || 0" >
         </app-card>
-        <app-card backgroundColor="#6F9600" text="Receita do mês" [value]="monthCards.incomes.value" [variation]="monthCards.incomes.variation" ></app-card>
-        <app-card backgroundColor="#000000" text="Contas vencidas" [value]="monthCards.expired.value" [variation]="monthCards.expired.variation" ></app-card>
+
+        <app-card backgroundColor="#6F9600" text="Receita do mês" 
+            [value]="monthCards.incomes && monthCards.incomes.value || 0" 
+            [variation]="monthCards.incomes && monthCards.incomes.variation || 0" >
+        </app-card>
+
+        <app-card backgroundColor="#000000" text="Contas vencidas" 
+            [value]="monthCards.expired && monthCards.expired.value || 0" 
+            [variation]="monthCards.expired && monthCards.expired.variation || 0" >
+        </app-card>
     </div>
 
     <div class="chart-container">

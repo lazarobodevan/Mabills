@@ -35,7 +35,15 @@ export class DashboardService {
   }
 
   getMonthCards():Observable<IMonthCards>{
-    return this.http.get<IMonthCards>(`${environment.API}dashboard/monthCards`, {headers:this.headers});
+    return this.http.get<IMonthCards>(`${environment.API}dashboard/month/cards`, {headers:this.headers});
+  }
+
+  getMonthIncomesByCategory():Observable<IExpenseIncomeByCategory[]>{
+    return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/month/incomesByCategory`, {headers: this.headers});
+  }
+  
+  getMonthExpensesByCategory():Observable<IExpenseIncomeByCategory[]>{
+    return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/month/expensesByCategory`, {headers: this.headers});
   }
 
 }

@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import Chart from 'chart.js/auto';
+import { IExpenseIncomeByCategory } from 'src/app/interfaces/IIncomeByCategory';
 import { IMonthCards } from 'src/app/interfaces/IMonthCards';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { NotifierService } from 'src/app/services/notifier.service';
@@ -16,17 +17,38 @@ export class DashboardComponent {
   @ViewChild("expense", {static: true}) expenseChart!: ElementRef;
   
   monthCards = {} as IMonthCards;
+  monthIncomesByCategory: IExpenseIncomeByCategory[] = [];
+  monthExpensesByCategory: IExpenseIncomeByCategory[] = [];
 
   constructor(private dashboardService:DashboardService, private notifierService: NotifierService, private ref:ChangeDetectorRef){
-    this.getMonthCards()
-  }
-
-  ngOnInit(){
     Chart.defaults.borderColor = "rgba(255, 255, 255, 0.22)";
     Chart.defaults.color = "#FFFFFF"
-    this.generateIncomeExpesesChart();
-    this.generateIncomeChart();
-    this.generateExpenseChart();
+    this.loadDashboardPage()
+  }
+
+  loadDashboardPage(){
+    this.getMonthCards();
+    this.dashboardService.getMonthIncomesByCategory().subscribe({
+      next: response =>{
+        this.monthIncomesByCategory = response;
+        this.generateIncomeChart();
+        this.generateTransactionsLineChart()
+      },
+      error: err =>{
+        this.notifierService.ShowError(err.error.message);
+      }
+    });
+
+    this.dashboardService.getMonthExpensesByCategory().subscribe({
+      next: response =>{
+        this.monthExpensesByCategory = response;
+        this.generateExpenseChart();
+      }
+    });
+    
+    //this.generateTransactionsLineChart();
+    //this.generateIncomeChart();
+    //this.generateExpenseChart();
   }
 
   getMonthCards(){
@@ -43,7 +65,7 @@ export class DashboardComponent {
     })
   }
 
-  generateIncomeExpesesChart(){
+  generateTransactionsLineChart(){
     new Chart(this.element.nativeElement,{
       type:'line',
       options: {
@@ -96,11 +118,17 @@ export class DashboardComponent {
         }
       },
       data: {// values on X-Axis
+        labels: this.monthIncomesByCategory.map(item =>{
+          return item._id.name;
+        }),
 	       datasets: [
           {
-            label: "Sales",
-            data: ['467','576', '572', '79', '92',
-								 '574', '573', '576'],
+            data: this.monthIncomesByCategory.map(item =>{
+              return item.SUM
+            }),
+            backgroundColor: this.monthIncomesByCategory.map(item =>{
+              return item._id.color;
+            })
           },
         ]
       },
@@ -118,11 +146,17 @@ export class DashboardComponent {
         }
       },
       data: {// values on X-Axis
-	       datasets: [
+        labels: this.monthExpensesByCategory.map(item=>{
+          return item._id.name
+        }),
+        datasets: [
           {
-            label: "Sales",
-            data: ['467','576', '572', '79', '92',
-								 '574', '573', '576'],
+            data: this.monthExpensesByCategory.map(item=>{
+              return item.SUM;
+            }),
+            backgroundColor: this.monthExpensesByCategory.map(item =>{
+              return item._id.color;
+            })
           },
         ]
       },
