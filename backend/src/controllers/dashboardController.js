@@ -498,8 +498,11 @@ const getYearIncomesExpenses = async (req, res) =>{
             {
                 $group:{
                     _id:{
-                        month:{ $month:{$toDate: "$date"}},
-                    },
+                        month:{ $arrayElemAt:[
+                            ['','Janeiro','Fevereiro','Março','Abril','Maio', 'Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
+                            {$month:{$toDate: "$date"}}
+                        ] ,
+                    }},
                    
                     INCOME: {$sum: {
                         $cond:[
