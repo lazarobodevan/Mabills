@@ -7,6 +7,7 @@ import { ITransaction } from '../interfaces/ITransaction';
 import { IWeekCards } from '../interfaces/IWeekCards';
 import { TransactionService } from './transaction.service';
 import { IMonthCards } from '../interfaces/IMonthCards';
+import { IYearIncomeExpense } from '../interfaces/IYearIncomeExpense';
 
 
 @Injectable({
@@ -23,15 +24,15 @@ export class DashboardService {
   constructor(private http: HttpClient) { }
 
   getWeekCards():Observable<IWeekCards>{
-    return this.http.get<IWeekCards>(`${environment.API}dashboard/weekcards`,{headers:this.headers});
+    return this.http.get<IWeekCards>(`${environment.API}dashboard/week/cards`,{headers:this.headers});
   }
 
   getIncomesByCategory():Observable<IExpenseIncomeByCategory[]>{
-    return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/incomes-by-category-week`, {headers: this.headers});
+    return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/week/incomesByCategory`, {headers: this.headers});
   }
 
   getExpensesByCategory():Observable<IExpenseIncomeByCategory[]>{
-    return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/expenses-by-category-week`, {headers: this.headers});
+    return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/week/expensesByCategory`, {headers: this.headers});
   }
 
   getMonthCards():Observable<IMonthCards>{
@@ -44,6 +45,10 @@ export class DashboardService {
   
   getMonthExpensesByCategory():Observable<IExpenseIncomeByCategory[]>{
     return this.http.get<IExpenseIncomeByCategory[]>(`${environment.API}dashboard/month/expensesByCategory`, {headers: this.headers});
+  }
+
+  getYearIncomeExpenses():Observable<IYearIncomeExpense[]>{
+    return this.http.get<IYearIncomeExpense[]>(`${environment.API}dashboard/year/incomesAndExpenses`, {headers: this.headers});
   }
 
 }

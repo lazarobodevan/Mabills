@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, View
 import Chart from 'chart.js/auto';
 import { IExpenseIncomeByCategory } from 'src/app/interfaces/IIncomeByCategory';
 import { IMonthCards } from 'src/app/interfaces/IMonthCards';
+import { IYearIncomeExpense } from 'src/app/interfaces/IYearIncomeExpense';
 import { DashboardService } from 'src/app/services/dashboard.service';
 import { NotifierService } from 'src/app/services/notifier.service';
 
@@ -19,6 +20,7 @@ export class DashboardComponent {
   monthCards = {} as IMonthCards;
   monthIncomesByCategory: IExpenseIncomeByCategory[] = [];
   monthExpensesByCategory: IExpenseIncomeByCategory[] = [];
+  yearIncomesExpenses: IYearIncomeExpense[] = [];
 
   constructor(private dashboardService:DashboardService, private notifierService: NotifierService, private ref:ChangeDetectorRef){
     Chart.defaults.borderColor = "rgba(255, 255, 255, 0.22)";
@@ -32,7 +34,6 @@ export class DashboardComponent {
       next: response =>{
         this.monthIncomesByCategory = response;
         this.generateIncomeChart();
-        this.generateTransactionsLineChart()
       },
       error: err =>{
         this.notifierService.ShowError(err.error.message);
@@ -45,10 +46,14 @@ export class DashboardComponent {
         this.generateExpenseChart();
       }
     });
-    
-    //this.generateTransactionsLineChart();
-    //this.generateIncomeChart();
-    //this.generateExpenseChart();
+
+    this.dashboardService.getYearIncomeExpenses().subscribe({
+      next: response =>{
+        this.yearIncomesExpenses = response;
+        this.generateTransactionsLineChart();
+      }
+    })
+
   }
 
   getMonthCards(){
@@ -85,19 +90,23 @@ export class DashboardComponent {
         }
       },
       data: {// values on X-Axis
-        labels: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho'],
+        labels: this.yearIncomesExpenses.map(item =>{
+          return item._id.month;
+        }),
 	       datasets: [
           {
             label: 'Receita',
-            data: [1467,276, 1157, 2229, 1092,
-								 1574, 1573, 1576],
+            data: this.yearIncomesExpenses.map(item =>{
+              return item.INCOME
+            }),
             borderColor: 'green',
             backgroundColor: 'green'
           },
           {
             label: 'Despesa',
-            data: ['467','576', '572', '79', '92',
-								 '574', '573', '576'],
+            data: this.yearIncomesExpenses.map(item =>{
+              return item.EXPENSE
+            }),
             borderColor: 'red',
             backgroundColor: 'red'
           },
