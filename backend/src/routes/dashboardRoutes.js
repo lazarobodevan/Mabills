@@ -14,4 +14,6 @@ router.get('/dashboard/month/cards', dashboardController.getDashboardCards);
 router.get('/dashboard/month/expensesByCategory', dashboardController.getMonthExpensesByCategory);
 router.get('/dashboard/month/incomesByCategory', dashboardController.getMonthIncomeByCategory);
 
+router.get('/dashboard/year/incomesAndExpenses', dashboardController.getYearIncomesExpenses);
+
 module.exports = router;

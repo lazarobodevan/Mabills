@@ -35,7 +35,7 @@ describe('Dashboard domain',() => {
         it('should get total value and variation from this week to the last one of bills to receive, bills to pay and late bills', async()=>{
             await populateTransactions(token, categoryCreated);
             
-            const response = await request(app).get('/dashboard/weekcards').set({'Authorization':'bearer '+token});
+            const response = await request(app).get('/dashboard/week/cards').set({'Authorization':'bearer '+token});
             
             const expectation = {
                 toReceive: { value: 2, variation: 0 },
@@ -53,7 +53,7 @@ describe('Dashboard domain',() => {
             const cat1 = await generateCategory(token, 'cat1');
             await populateTransactions(token, cat1);
             
-            const response = await request(app).get('/dashboard/expenses-by-category-week').set({'Authorization':'bearer '+token});
+            const response = await request(app).get('/dashboard/week/expensesByCategory').set({'Authorization':'bearer '+token});
             
             const expectation = [
                 { _id: { name: 'defaultCategory', color: '#FFFFFF' }, SUM: 10 },
@@ -69,7 +69,7 @@ describe('Dashboard domain',() => {
     describe('GET #getWeekIncome', ()=>{
         it('should get total income by category from the current week', async()=>{
 
-            const response = await request(app).get('/dashboard/incomes-by-category-week').set({'Authorization':'bearer '+token});
+            const response = await request(app).get('/dashboard/week/incomesByCategory').set({'Authorization':'bearer '+token});
 
             const expectation = [
                 { _id: { name: 'defaultCategory', color: '#FFFFFF' }, SUM: 2 },

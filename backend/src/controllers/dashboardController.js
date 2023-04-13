@@ -1,6 +1,6 @@
 const TransactionModel = require('../models/TransactionModel');
 const {CategoryModel} = require('../models/CategoryModel');
-const {getWeekRange, getMonthRange} = require('../utils/dateUtils');
+const {getWeekRange, getMonthRange, getYearRange} = require('../utils/dateUtils');
 const moment = require('moment');
 const { default: mongoose } = require('mongoose');
 const { calcPercent } = require('../utils/mathUtils');
@@ -476,6 +476,63 @@ const getDashboardCards = async(req, res) =>{
     }
 }
 
+const getYearIncomesExpenses = async (req, res) =>{
+    try{
+
+        const yearIncomesExpenses = await TransactionModel.aggregate([
+            {
+                $match:{
+                    $and:[
+                        {
+                            userId: mongoose.Types.ObjectId(req.user._id)
+                        },
+                        {
+                            date:{
+                                $gte: getYearRange().firstday,
+                                $lte: getYearRange().lastday
+                            }
+                        }   
+                    ]
+                }
+            },
+            {
+                $group:{
+                    _id:{
+                        month:{ $month:{$toDate: "$date"}},
+                    },
+                   
+                    INCOME: {$sum: {
+                        $cond:[
+                            {
+                                $eq:['$type', "INCOME"]
+                            },
+                            "$value",
+                            0
+                        ]
+                    }},
+                    EXPENSE: {$sum: {
+                        $cond:[
+                            {
+                                $eq:['$type', "EXPENSE"]
+                            },
+                            "$value",
+                            0
+                        ]
+                    }},
+                    
+                },
+                
+            },
+        ]);
+
+        return res.status(200).json(yearIncomesExpenses);
+
+    }catch(e){
+        console.log(e);
+        return res.status(400).json(e);
+    }
+}
+
 module.exports = {
     getBillsToReceive,
     getBillsToPay,
@@ -485,5 +542,6 @@ module.exports = {
     getWeekIncomeByCategory,
     getDashboardCards,
     getMonthIncomeByCategory,
-    getMonthExpensesByCategory
+    getMonthExpensesByCategory,
+    getYearIncomesExpenses
 }
