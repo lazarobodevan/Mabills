@@ -10,6 +10,8 @@ router.get('/dashboard/weekcards', dashboardController.getWeekCards);
 router.get('/dashboard/expenses-by-category-week', dashboardController.getWeekExpensesByCategory);
 router.get('/dashboard/incomes-by-category-week', dashboardController.getWeekIncomeByCategory);
 
-router.get('/dashboard/monthCards', dashboardController.getDashboardCards);
+router.get('/dashboard/month/cards', dashboardController.getDashboardCards);
+router.get('/dashboard/month/expensesByCategory', dashboardController.getMonthExpensesByCategory);
+router.get('/dashboard/month/incomesByCategory', dashboardController.getMonthIncomeByCategory);
 
 module.exports = router;

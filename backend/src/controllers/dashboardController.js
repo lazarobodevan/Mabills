@@ -287,6 +287,53 @@ const getWeekExpensesByCategory = async(req, res) =>{
 
     return res.status(200).json(expensesByCategory);
 }
+const getMonthExpensesByCategory = async(req, res) =>{
+    const expensesByCategory = await TransactionModel.aggregate([
+        {
+            $match:{
+                $and:[
+                    {
+                        userId: mongoose.Types.ObjectId(req.user._id)
+                    },
+                    {
+                        type:'EXPENSE'
+                    },
+                    {
+                        date:{
+                            $gte: getMonthRange().firstday,
+                            $lte: getMonthRange().lastday
+                        }
+                    }   
+                ]
+            }
+        },
+        {
+            $lookup:{
+                from: 'categories',
+                localField: 'categoryId',
+                foreignField: '_id',
+                as: 'categoryDetails'
+
+            }
+        },
+        {
+            $unwind: '$categoryDetails'
+        },
+        {
+            $group:{
+                _id:{
+                    name: '$categoryDetails.name',
+                    color:'$categoryDetails.color',
+                },
+                SUM:{
+                    $sum:'$value'
+                }
+            }
+        }
+    ]);
+
+    return res.status(200).json(expensesByCategory);
+}
 
 const getWeekIncomeByCategory = async(req, res) =>{
     const incomeByCategory = await TransactionModel.aggregate([
@@ -303,6 +350,53 @@ const getWeekIncomeByCategory = async(req, res) =>{
                         date:{
                             $gte: getWeekRange().firstday,
                             $lte: getWeekRange().lastday
+                        }
+                    }   
+                ]
+            }
+        },
+        {
+            $lookup:{
+                from: 'categories',
+                localField: 'categoryId',
+                foreignField: '_id',
+                as: 'categoryDetails'
+
+            }
+        },
+        {
+            $unwind: '$categoryDetails'
+        },
+        {
+            $group:{
+                _id:{
+                    name: '$categoryDetails.name',
+                    color:'$categoryDetails.color',
+                },
+                SUM:{
+                    $sum:'$value'
+                }
+            }
+        },
+    ]);
+    
+    return res.status(200).json(incomeByCategory);
+}
+const getMonthIncomeByCategory = async(req, res) =>{
+    const incomeByCategory = await TransactionModel.aggregate([
+        {
+            $match:{
+                $and:[
+                    {
+                        userId: mongoose.Types.ObjectId(req.user._id)
+                    },
+                    {
+                        type:'INCOME'
+                    },
+                    {
+                        date:{
+                            $gte: getMonthRange().firstday,
+                            $lte: getMonthRange().lastday
                         }
                     }   
                 ]
@@ -389,5 +483,7 @@ module.exports = {
     getWeekCards,
     getWeekExpensesByCategory,
     getWeekIncomeByCategory,
-    getDashboardCards
+    getDashboardCards,
+    getMonthIncomeByCategory,
+    getMonthExpensesByCategory
 }
