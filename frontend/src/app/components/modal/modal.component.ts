@@ -119,6 +119,9 @@ export class ModalComponent {
 
   updateTransaction(){
     this.isSubmitted = true;
+    if(this.transaction.type === 'INCOME'){
+      Reflect.deleteProperty(this.transaction, 'isPaid');
+    }
     this.transactionService.updateTransaction(this.transaction).subscribe({
       next: response=>{
         this.clickedOutside.emit(true);
