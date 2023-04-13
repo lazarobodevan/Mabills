@@ -6,9 +6,9 @@ const dashboardController = require('../controllers/dashboardController');
 
 router.use(authMiddleware.validateUserLoggedIn);
 
-router.get('/dashboard/weekcards', dashboardController.getWeekCards);
-router.get('/dashboard/expenses-by-category-week', dashboardController.getWeekExpensesByCategory);
-router.get('/dashboard/incomes-by-category-week', dashboardController.getWeekIncomeByCategory);
+router.get('/dashboard/week/cards', dashboardController.getWeekCards);
+router.get('/dashboard/week/expensesByCategory', dashboardController.getWeekExpensesByCategory);
+router.get('/dashboard/week/incomesByCategory', dashboardController.getWeekIncomeByCategory);
 
 router.get('/dashboard/month/cards', dashboardController.getDashboardCards);
 router.get('/dashboard/month/expensesByCategory', dashboardController.getMonthExpensesByCategory);
