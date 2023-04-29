@@ -3,13 +3,13 @@
         <img src="../../../assets/logo.png"/>
         <span>Mabills</span>
     </div>
-    <p style="color: white; font-size: 24px; margin-bottom: 20px;">Crie sua conta!</p>
+    <p style="color: white; font-size: 24px; margin-bottom: 20px;" data-testid="singup-title">Crie sua conta!</p>
     <form class="fields-container">
-        <app-input-field placeholder="Nome"  style="margin-bottom: 10px;" (inputContent)="setName($event)"></app-input-field>
-        <app-input-field placeholder="Email"  style="margin-bottom: 10px;" (inputContent)="setEmail($event)"></app-input-field>
-        <app-input-field placeholder="Senha" type="password" style="margin-bottom: 10px;" (inputContent)="setPassword($event)"></app-input-field>
-        <app-input-field placeholder="Confirmar senha" type="password" (inputContent)="setConfirmPassword($event)"></app-input-field>
-        <app-action-button text="Cadastrar" width="100%" [style]="{'margin-top':'20px'}" (OnClick)="signUp()"></app-action-button>
+        <app-input-field placeholder="Nome"  style="margin-bottom: 10px;" (inputContent)="setName($event)" data-testid="name-input"></app-input-field>
+        <app-input-field placeholder="Email"  style="margin-bottom: 10px;" (inputContent)="setEmail($event)" data-testid="email-input"></app-input-field>
+        <app-input-field placeholder="Senha" type="password" style="margin-bottom: 10px;" (inputContent)="setPassword($event)" data-testid="password-input"></app-input-field>
+        <app-input-field placeholder="Confirmar senha" type="password" (inputContent)="setConfirmPassword($event)" data-testid="confirm-input"></app-input-field>
+        <app-action-button text="Cadastrar" width="100%" [style]="{'margin-top':'20px'}" (OnClick)="signUp()" data-testid="signup-button"></app-action-button>
         
     </form>
     

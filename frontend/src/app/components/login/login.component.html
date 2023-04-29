@@ -5,10 +5,10 @@
     </div>
 
     <form class="fields-container">
-        <app-input-field placeholder="Email" (inputContent)="setEmail($event)" style="margin-bottom: 10px;"></app-input-field>
-        <app-input-field placeholder="Senha" type="password" (inputContent)="setPassword($event)"></app-input-field>
-        <app-action-button text="Login" width="100%" [style]="{'margin-top':'20px'}" (OnClick)="login()"></app-action-button>
-        <a (click)="signUpRedirect()">Cadastre-se</a>
+        <app-input-field placeholder="Email" (inputContent)="setEmail($event)" style="margin-bottom: 10px;" data-testid="email-input"></app-input-field>
+        <app-input-field placeholder="Senha" type="password" (inputContent)="setPassword($event)" data-testid="password-input"></app-input-field>
+        <app-action-button text="Login" width="100%" [style]="{'margin-top':'20px'}" (OnClick)="login()" data-testid="login-button"></app-action-button>
+        <a (click)="signUpRedirect()" data-testid="singup-button">Cadastre-se</a>
     </form>
     
 </div>
