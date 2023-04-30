@@ -18,16 +18,20 @@ export class SignupComponent {
 
   signUp(){
     if(this.incorrectPassword){
-      throw("Senhas não batem");
+      this.notifierService.ShowError('passwords should match')
     }
     this.userService.createUser(this.user).subscribe({
       next: response =>{
         console.log(response)
       },
       error: err =>{
-        err.error.forEach((error:string) =>{
-          this.notifierService.ShowError(error);
-        })
+        if(err.error.length){
+          err.error.forEach((error:string) =>{
+            this.notifierService.ShowError(error);
+          })
+        }else{
+          this.notifierService.ShowError(err.error.message)
+        }
       }
     });
   }

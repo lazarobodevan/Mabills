@@ -6,6 +6,8 @@ describe('#LOGIN', ()=>{
     
     it('Should open the Login page', () => {
         cy.visit('/');    
+        cy.get('[data-testid="email-input"]').should('exist');
+        cy.get('[data-testid="password-input"]').should('exist');
     })
 
     it('Should open SignUp page', () =>{
