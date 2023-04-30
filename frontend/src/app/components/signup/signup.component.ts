@@ -18,11 +18,12 @@ export class SignupComponent {
 
   signUp(){
     if(this.incorrectPassword){
-      this.notifierService.ShowError('passwords should match')
+      this.notifierService.ShowError('passwords should match');
+      return;
     }
     this.userService.createUser(this.user).subscribe({
       next: response =>{
-        console.log(response)
+        this.notifierService.ShowSuccess('Usuário criado com sucesso')
       },
       error: err =>{
         if(err.error.length){
