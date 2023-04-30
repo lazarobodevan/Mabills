@@ -5,7 +5,7 @@ const app = require('../app');
 
 const mongo = require('./utils/test_db');
 
-const {generateDefaultUser} = require('./utils/utils');
+const {generateDefaultUser, loginDefaultUser} = require('./utils/utils');
 
 let userToken;
 
@@ -184,6 +184,23 @@ describe('User domain',() => {
             }
 
             expect(response.status).toBe(400);
+            expect(response.body).toMatchObject(expectation);
+        })
+    })
+
+    describe('DELETE #deleteUser', ()=>{
+        it('should delete user by id', async ()=>{
+            await mongo.clearDatabase();
+            const {_id} = await generateDefaultUser();
+            const token = await loginDefaultUser();
+
+            const response = await request(app).delete('/user/'+_id).set({'Authorization':'bearer '+token}).send();
+
+            const expectation = {
+                message:"User deleted"
+            }
+
+            expect(response.status).toBe(201);
             expect(response.body).toMatchObject(expectation);
         })
     })

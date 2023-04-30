@@ -84,8 +84,6 @@ describe('Dashboard domain',() => {
     describe('GET #getMonthIncome', ()=>{
         it('should get total income by category from the current month', async()=>{
 
-            console.log(getMonthRange());
-            console.log(getWeekRange());
         })
     });
 })
