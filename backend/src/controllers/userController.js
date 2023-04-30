@@ -35,6 +35,15 @@ const updateUser = async (req, res) =>{
     return await res.status(201).json(updatedUser);
 }
 
+const deleteUser = async (req, res) =>{
+    const {id} = req.params;
+
+    await userModel.findByIdAndDelete(id);
+
+    return await res.status(201).json({message:'User deleted'});
+}
+
+
 const encryptPassoword = async (password) => {
     const salt = bcrypt.genSaltSync(10);
     const hashed = await bcrypt.hash(password, salt).then((hash)=>{
@@ -46,5 +55,6 @@ const encryptPassoword = async (password) => {
 
 module.exports = {
     createUser,
-    updateUser
+    updateUser,
+    deleteUser
 }

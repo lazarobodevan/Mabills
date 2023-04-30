@@ -16,16 +16,16 @@ router.post('/signup',
 );
 router.post('/signin', userMiddleware.validateLoginBody, login);
 
-
 router.use(authMiddleware.validateUserLoggedIn);
 
 router.put('/users', 
-    userMiddleware.validateUserBody, 
-    userMiddleware.validateEmailAreadyInUse, 
-    userController.updateUser
+userMiddleware.validateUserBody, 
+userMiddleware.validateEmailAreadyInUse, 
+userController.updateUser
 );
 
 router.get('/user', auth.getLoggedUser);
 
+router.delete('/user/:id', userController.deleteUser);
 
 module.exports = router;
