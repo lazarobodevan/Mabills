@@ -1,9 +1,18 @@
-require('dotenv').config();
 const mongoose = require('mongoose');
+require('dotenv').config();
+if(process.env.NODE_ENV === "DEV")
+    require('dotenv').config({path: `DEV.env`});
+else
+    require('dotenv').config({path: `PRD.env`});
 
 async function startDB(){
-    console.log("Connecting to mongo...");
-    await mongoose.connect(`mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_CLUSTER}.pdbawvz.mongodb.net/test`);
+    console.log("Connecting to mongo... "+process.env.NODE_ENV);
+    console.log(process.env)
+    if(process.env.NODE_ENV === 'PRD')
+        await mongoose.connect(`mongodb+srv://${process.env.DB_USER_PRD}:${process.env.DB_PASSWORD_PRD}@${process.env.DB_CLUSTER_PRD}.${process.env.DB_KEY_PRD}.mongodb.net/${process.env.DB_NAME_PRD}`);
+    else
+        await mongoose.connect(`mongodb+srv://${process.env.DB_USER_DEV}:${process.env.DB_PASSWORD_DEV}@${process.env.DB_CLUSTER_DEV}.${process.env.DB_KEY_DEV}.mongodb.net/${process.env.DB_NAME_DEV}`);
+
     console.log("Connected to mongo!");
 }
 

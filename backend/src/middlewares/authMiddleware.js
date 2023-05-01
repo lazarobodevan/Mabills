@@ -1,4 +1,9 @@
+
 require('dotenv').config();
+if(process.env.NODE_ENV === "DEV")
+    require('dotenv').config({path: `DEV.env`});
+else
+    require('dotenv').config({path: `PRD.env`});
 
 const jwt = require('jsonwebtoken');
 const UserModel = require('../models/UserModel');

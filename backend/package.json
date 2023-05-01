@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon src/server.js",
+    "dev": "SET NODE_ENV=DEV& nodemon src/server.js ",
+    "prd": "SET NODE_ENV=PRD& node src/server.js",
     "test": "jest src/__test__"
   },
   "author": "",
