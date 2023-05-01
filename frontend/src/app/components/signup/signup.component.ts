@@ -12,7 +12,7 @@ export class SignupComponent {
 
   user = {} as IUser;
   confirmPassword: string = '';
-  incorrectPassword: boolean = false;
+  incorrectPassword: boolean = true;
 
   constructor(private userService: UserService, private notifierService: NotifierService){}
 
@@ -21,6 +21,7 @@ export class SignupComponent {
       this.notifierService.ShowError('passwords should match');
       return;
     }
+    console.log('alioiiiiiooooooo')
     this.userService.createUser(this.user).subscribe({
       next: response =>{
         this.notifierService.ShowSuccess('Usuário criado com sucesso')
