@@ -20,6 +20,10 @@ export class CategoriesComponent {
   constructor(private categoryService: CategoryService,
               private ref:ChangeDetectorRef,
               private notifierService:NotifierService){
+    
+  }
+
+  ngOnInit(){
     this.getCategories();
   }
 
@@ -27,6 +31,8 @@ export class CategoriesComponent {
     this.getCategories$.subscribe({
       next: response =>{
         this.categories = response;
+        
+        this.ref.reattach()
         this.ref.detectChanges()
       },
       error: err =>{

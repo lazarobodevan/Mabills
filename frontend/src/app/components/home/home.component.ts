@@ -33,6 +33,9 @@ export class HomeComponent {
               private transactionService: TransactionService,
               public ref:ChangeDetectorRef,
               private notifierService: NotifierService){
+    
+  }
+  ngOnInit(){
     this.loadHomePage();
   }
 
@@ -123,6 +126,7 @@ export class HomeComponent {
       next:response =>{
         this.recentTransactions = response.results;
         console.log("HOME: "+response.results);
+        this.ref.detectChanges();
       },
       error: err =>{
         this.notifierService.ShowError(err.error.message);

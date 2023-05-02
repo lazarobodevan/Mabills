@@ -33,11 +33,15 @@ export class ModalComponent {
               private transactionService: TransactionService, 
               private ref: ChangeDetectorRef,
               private notifierService:NotifierService){
-    this.getCategories()
+    
   }
 
   ngOnChanges(){
     this.initializeTransactionByInput();
+  }
+
+  ngOnInit(){
+    this.getCategories()
   }
 
   clickOutside(event:any){

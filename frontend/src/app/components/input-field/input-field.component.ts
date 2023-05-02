@@ -16,7 +16,7 @@ export class InputFieldComponent {
   @Input() inputValue: any = '';
   @Input() width: string = '300px';
   
-  @Output() inputContent: EventEmitter<string> = new EventEmitter();
+  @Output() inputContent: EventEmitter<any> = new EventEmitter();
 
   ngOnChanges(){
     if(this.isDate()){
@@ -24,7 +24,6 @@ export class InputFieldComponent {
       if(date === "Invalid date"){
         this.inputValue = '';
       }else{
-        console.log(date);
         this.inputValue = date;
       }
     }
@@ -32,11 +31,11 @@ export class InputFieldComponent {
 
   sendContent(){
     if(this.type === "date"){
-      let date = moment(this.content, 'YYYY,mm,DD');
+      let date = moment(this.content, 'YYYY,MM,DD');
       if(isNaN(date.toDate().getDate())){
         return this.inputContent.emit('');
       }
-      this.inputContent.emit(date.format("DD/mm/YYYY"));
+      this.inputContent.emit(date.toDate());
       return;
     }
     this.inputContent.emit(this.content);

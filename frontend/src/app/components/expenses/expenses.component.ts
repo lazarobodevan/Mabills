@@ -52,7 +52,7 @@ export class ExpensesComponent {
     
     this.transactions$.subscribe(response =>{
       response.results.forEach(item =>{
-        item.date = moment.utc(item.date).toDate();
+        item.date = moment(item.date).add('hours',3).toDate();
         this.transactions.push(item);
       })
       this.nextURL = response.nextUrl;
@@ -99,7 +99,7 @@ export class ExpensesComponent {
     this.loadTransaction();
   }
   setDateFilter(event:any){
-    this.filter.date = event;
+    this.filter.date = moment(event).format("DD/MM/YYYY");
     if(event === ''){
       Reflect.deleteProperty(this.filter, 'date')
     }

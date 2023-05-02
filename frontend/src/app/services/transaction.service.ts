@@ -7,6 +7,7 @@ import { ITransaction } from '../interfaces/ITransaction';
 import { ITransactionRequest } from '../interfaces/ITransactionRequest';
 import { ITransactionResponse } from '../interfaces/ITransactionResponse';
 import { NotifierService } from './notifier.service';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +24,7 @@ export class TransactionService {
 
   createTransaction(transaction:ITransactionRequest):Observable<ITransaction>{
     let options = {headers: this.headers};
-    return this.http.post<ITransaction>(`${environment.API}transactions`, transaction, options);
+    return this.http.post<ITransaction>(`${environment.API}transactions`, {...transaction, date: moment(transaction.date).format('DD/MM/YYYY')}, options);
   }
 
   getTransactions(query:string, body?:IFilter) :Observable<ITransactionResponse> {
@@ -40,6 +41,6 @@ export class TransactionService {
   updateTransaction(transaction:ITransactionRequest):Observable<ITransaction>{
     let options = { headers: this.headers };
     const {_id, ...newTransaction} = transaction
-    return this.http.put<ITransaction>(`${environment.API}transactions/${_id}`, newTransaction, options);
+    return this.http.put<ITransaction>(`${environment.API}transactions/${_id}`, {...newTransaction, date: moment(newTransaction.date).format('DD/MM/YYYY')}, options);
   }
 }
