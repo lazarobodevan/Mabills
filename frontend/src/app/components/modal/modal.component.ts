@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, HostListener, Input, Output, ViewChild } from '@angular/core';
 import { ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import * as moment from 'moment';
 import { ICategory } from 'src/app/interfaces/ICategory';
 import { ITransaction } from 'src/app/interfaces/ITransaction';
 import { ITransactionRequest } from 'src/app/interfaces/ITransactionRequest';
@@ -72,6 +73,10 @@ export class ModalComponent {
 
   setValue(event:any){
     this.transaction.value = event;
+  }
+
+  setDate(event:any){
+    this.transaction.date = moment(event).toDate();
   }
 
   setCategoryName(event:any){

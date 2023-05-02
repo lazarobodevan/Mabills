@@ -23,7 +23,7 @@
                     </option>
                 </select>
             </div>
-            <app-input-field type="date" (inputContent)="transaction.date = $event" [inputValue]="transaction.date"></app-input-field>
+            <app-input-field type="date" (inputContent)="setDate($event)" [inputValue]="transaction.date"></app-input-field>
             <app-input-field type="number" placeholder="R$" (inputContent)="setValue($event)" [inputValue]="transaction.value"></app-input-field>
             <div class="selector" *ngIf="transaction.type === 'EXPENSE'">
                 <input type="checkbox" id="isPaid" style="width: 20px;height: 20px;" (click)="setIsPaid()" [checked]="transaction.isPaid">

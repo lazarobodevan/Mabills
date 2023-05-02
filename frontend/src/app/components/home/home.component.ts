@@ -122,6 +122,7 @@ export class HomeComponent {
     this.recentTransactions$.subscribe({
       next:response =>{
         this.recentTransactions = response.results;
+        console.log(response.results);
         this.ref.detectChanges()
       },
       error: err =>{

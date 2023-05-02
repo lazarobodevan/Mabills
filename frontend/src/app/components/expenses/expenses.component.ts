@@ -52,7 +52,7 @@ export class ExpensesComponent {
     
     this.transactions$.subscribe(response =>{
       response.results.forEach(item =>{
-        item.date = moment.utc(item.date).format('DD/MM/YYYY');
+        item.date = moment.utc(item.date).toDate();
         this.transactions.push(item);
       })
       this.nextURL = response.nextUrl;

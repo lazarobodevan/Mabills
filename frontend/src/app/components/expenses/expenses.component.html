@@ -70,7 +70,7 @@
                     </div>
                 </td>
                 <td>{{'R$ ' +transaction.value}}</td>
-                <td>{{transaction.date}}</td>
+                <td>{{transaction.date | date:"dd/MM/YYYY"}}</td>
                 <td>{{transaction.type === 'EXPENSE' ? (transaction.isPaid ? "Sim": "Não") : "-"}}</td>
             </tr>
         </table>
