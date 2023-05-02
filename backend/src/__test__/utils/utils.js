@@ -6,6 +6,7 @@ const { getWeekRange } = require("../../utils/dateUtils");
 
 const THIS_WEEK_FIRST_DAY = getWeekRange().firstday;
 const THIS_WEEK_LAST_DAY  = getWeekRange().lastday;
+
 const THIS_WEEK_LAST_DAY_TO_BE_PAID = moment.utc(new Date(THIS_WEEK_LAST_DAY).setDate(THIS_WEEK_LAST_DAY.getDate() - 2)).format('DD/MM/YYYY');
 const THIS_WEEK_FIRST_DAY_TO_EXPIRE = moment.utc(new Date(THIS_WEEK_LAST_DAY).setDate(THIS_WEEK_LAST_DAY.getDate() - 1)).format('DD/MM/YYYY');
 const THIS_WEEK_LAST_DAY_TO_EXPIRE = moment.utc(THIS_WEEK_LAST_DAY).format('DD/MM/YYYY');
@@ -15,6 +16,7 @@ const LAST_WEEK_LAST_DAY  = new Date(new Date(THIS_WEEK_LAST_DAY).setDate(THIS_W
 const LAST_WEEK_LAST_DAY_TO_BE_PAID = moment(new Date(LAST_WEEK_LAST_DAY).setDate(LAST_WEEK_LAST_DAY.getDate() - 2)).format('DD/MM/YYYY');
 const LAST_WEEK_FIRST_DAY_TO_EXPIRE = moment(new Date(LAST_WEEK_LAST_DAY).setDate(LAST_WEEK_LAST_DAY.getDate() - 1)).format('DD/MM/YYYY');
 const LAST_WEEK_LAST_DAY_TO_EXPIRE = moment(LAST_WEEK_LAST_DAY).format('DD/MM/YYYY');
+
 
 const generateDefaultUser = async() => {
     const response = await request(app).post('/signup').send({

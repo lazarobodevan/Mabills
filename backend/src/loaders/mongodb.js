@@ -7,7 +7,6 @@ else
 
 async function startDB(){
     console.log("Connecting to mongo... "+process.env.NODE_ENV);
-    console.log(process.env)
     if(process.env.NODE_ENV === 'PRD')
         await mongoose.connect(`mongodb+srv://${process.env.DB_USER_PRD}:${process.env.DB_PASSWORD_PRD}@${process.env.DB_CLUSTER_PRD}.${process.env.DB_KEY_PRD}.mongodb.net/${process.env.DB_NAME_PRD}`);
     else
