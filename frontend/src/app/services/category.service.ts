@@ -1,14 +1,18 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, shareReplay, startWith, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { ICategory } from '../interfaces/ICategory';
 import { IWeekCards } from '../interfaces/IWeekCards';
+
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class CategoryService {
+
+  private readonly CACHE_KEY = 'httpCategoryCache'
 
   private headers = new HttpHeaders({
     'Content-type': 'application/json',
@@ -18,7 +22,14 @@ export class CategoryService {
   constructor(private http: HttpClient) { }
 
   getCategories():Observable<ICategory[]>{
-    return this.http.get<ICategory[]>(`${environment.API}categories`,{headers:this.headers});
+    let categories$ = this.http.get<ICategory[]>(`${environment.API}categories`,{headers:this.headers}).pipe(
+      startWith(JSON.parse(localStorage[this.CACHE_KEY]||'[]')),
+      tap({next: response =>{
+        localStorage[this.CACHE_KEY] = JSON.stringify(response);
+      }})
+    );
+
+    return categories$;
   }
 
   createCategory(category: ICategory):Observable<ICategory>{
