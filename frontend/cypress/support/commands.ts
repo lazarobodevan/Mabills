@@ -51,10 +51,6 @@ Cypress.Commands.add("validateToast", (title, message)=>{
     cy.get('div.toast-message', {timeout:3000}).invoke('attr', 'aria-label').should('eq',message);
 })
 
-//----------DATABASE-------------
-Cypress.Commands.add("resetDb", ()=>{
-    cy.exec("mongodb://localhost:27017/testdb --drop --gzip --archive=./tests/testFixtures.agz");
-})
 
 //----------INTEGRATION----------
 
@@ -91,5 +87,6 @@ Cypress.Commands.add("deleteTestUser", () =>{
                 console.log(response)
             })
     });
+    cy.wait(1000);
     
 })

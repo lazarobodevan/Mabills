@@ -5,10 +5,10 @@
     <div class="container" (click)="clickOutside($event)">
         <div class="form">
             <h1 style="color: white">Adicionar Transação</h1>
-            <app-input-field type="text" placeholder="Nome" (inputContent)="transaction.name = $event" [inputValue]="transaction.name"></app-input-field>
+            <app-input-field type="text" placeholder="Nome" (inputContent)="transaction.name = $event" [inputValue]="transaction.name" data-testid="name-input"></app-input-field>
             <div class="selector">
                 <p style="color:white">Tipo</p>
-                <select name="type" class="dropdown"  (change)="setType($event)">
+                <select name="type" class="dropdown"  (change)="setType($event)" data-testid="type-select">
                     <option value="">Selecione...</option>
                     <option value="EXPENSE" [selected]="inputTransaction.type === 'EXPENSE'">Despesa</option>
                     <option value="INCOME" [selected]="inputTransaction.type === 'INCOME'">Receita</option>
@@ -16,20 +16,20 @@
             </div>
             <div class="selector">
                 <p style="color:white">Categoria</p>
-                <select name="categories" class="dropdown"  (change)="setCategory($event)" >
+                <select name="categories" class="dropdown"  (change)="setCategory($event)" data-testid="category-select">
                     <option value="" >Selecione...</option>
                     <option *ngFor="let opt of categories" value="{{opt._id}}" [selected]="transaction.categoryId === opt._id">
                         {{opt.name}}
                     </option>
                 </select>
             </div>
-            <app-input-field type="date" (inputContent)="setDate($event)" [inputValue]="transaction.date"></app-input-field>
-            <app-input-field type="number" placeholder="R$" (inputContent)="setValue($event)" [inputValue]="transaction.value"></app-input-field>
+            <app-input-field type="date" (inputContent)="setDate($event)" [inputValue]="transaction.date" data-testid="date-input"></app-input-field>
+            <app-input-field type="number" placeholder="R$" (inputContent)="setValue($event)" [inputValue]="transaction.value" data-testid="value-input"></app-input-field>
             <div class="selector" *ngIf="transaction.type === 'EXPENSE'">
-                <input type="checkbox" id="isPaid" style="width: 20px;height: 20px;" (click)="setIsPaid()" [checked]="transaction.isPaid">
+                <input type="checkbox" id="isPaid" style="width: 20px;height: 20px;" (click)="setIsPaid()" [checked]="transaction.isPaid" data-testid="isPaid-checkbox">
                 <label for="isPaid" style="color: white; margin-left: 10px;">Pago</label>
             </div>
-            <app-action-button text="Finalizar" width="200px" (OnClick)=" transaction._id ? updateTransaction() : addTransaction()"></app-action-button>
+            <app-action-button text="Finalizar" width="200px" (OnClick)=" transaction._id ? updateTransaction() : addTransaction()" data-testid="conclude-button"></app-action-button>
         </div>
     </div>
 </div>
@@ -40,13 +40,13 @@
     <div class="container" (click)="clickOutside($event)">
         <div class="form">
             <h1 style="color: white">Adicionar Categoria</h1>
-            <app-input-field type="text" placeholder="Nome" [inputValue]="inputCategory.name" (inputContent)="setCategoryName($event)"></app-input-field>
+            <app-input-field type="text" placeholder="Nome" [inputValue]="inputCategory.name" (inputContent)="setCategoryName($event)" data-testid="name-input"></app-input-field>
             <div class="selector">
                 <p style="color:white">Cor</p>
-                <app-input-field type="color" [inputValue]="inputCategory.color" (inputContent)="setCategoryColor($event)"></app-input-field>
+                <app-input-field type="color" [inputValue]="inputCategory.color" (inputContent)="setCategoryColor($event)" data-testid="color-input"></app-input-field>
             </div>
             
-            <app-action-button text="Finalizar" width="200px" (OnClick)=" transaction._id ? updateTransaction() : createCategory()"></app-action-button>
+            <app-action-button text="Finalizar" width="200px" (OnClick)=" transaction._id ? updateTransaction() : createCategory()" data-testid="conclude-button"></app-action-button>
         </div>
     </div>
 </div>

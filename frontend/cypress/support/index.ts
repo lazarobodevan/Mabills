@@ -11,6 +11,5 @@ declare namespace Cypress {
       createTestUser(): Chainable<Element>;
       deleteTestUser(): Chainable<Element>;
       validateToast(title:string, message:string): Chainable<Element>;
-      resetDb(): Chainable<Element>;
     }
   }

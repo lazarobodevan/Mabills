@@ -53,28 +53,30 @@
                         name="transaction" 
                         id={{transaction._id}} 
                         (change)="setSelectedTransaction(transaction!)" 
-                        [checked]="transaction._id ===selectedTransaction._id? true: false"/>
+                        [checked]="transaction._id ===selectedTransaction._id? true: false"
+                        data-testid="radio-input"/>
                 </td>
-                <td style="width: 20%;">{{transaction.name}}</td>
-                <td>
+                <td style="width: 20%;" data-testid="transaction-name">{{transaction.name}}</td>
+                <td data-testid="transaction-type">
                     {{transaction.type === "EXPENSE"? "Despesa":"Receita"}}
                 </td>
                 <td>
                     <div style="display: flex; transform: translateX(30%);">
                         <div class="color-wrapper">
                             <div style="width: 20px; height: 20px; border-radius: 5px; margin-right: 10px;justify-self: flex-end;" 
-                                [ngStyle]="{'background-color':transaction.categoryId.color}">
+                                [ngStyle]="{'background-color':transaction.categoryId.color}"
+                                data-testid="transaction-color">
                             </div>
                         </div>
-                        <span >{{transaction.categoryId.name}}</span>
+                        <span data-testid="transaction-category-name">{{transaction.categoryId.name}}</span>
                     </div>
                 </td>
-                <td>{{'R$ ' +transaction.value}}</td>
-                <td>{{transaction.date | date:"dd/MM/YYYY"}}</td>
-                <td>{{transaction.type === 'EXPENSE' ? (transaction.isPaid ? "Sim": "Não") : "-"}}</td>
+                <td data-testid="transaction-value">{{'R$ ' +transaction.value}}</td>
+                <td data-testid="transaction-date">{{transaction.date | date:"dd/MM/YYYY"}}</td>
+                <td data-testid="transaction-isPaid">{{transaction.type === 'EXPENSE' ? (transaction.isPaid ? "Sim": "Não") : "-"}}</td>
             </tr>
         </table>
-        <div class="see-more" (click)="loadTransaction()" [ngClass]="!nextURL ? 'disabled':''">
+        <div class="see-more" (click)="loadTransaction()" [ngClass]="!nextURL ? 'disabled':''" data-testid="see-more-button">
             <span>Ver mais</span>
         </div>
     </div>
@@ -82,7 +84,7 @@
 
     <div class="footer">        
         <div class="btn">
-            <app-action-button text="Adicionar" width="200px" (OnClick)="createTransaction($event)"></app-action-button>
+            <app-action-button text="Adicionar" width="200px" (OnClick)="createTransaction($event)" data-testid="add-expense-button"></app-action-button>
         </div>
     </div>
 
