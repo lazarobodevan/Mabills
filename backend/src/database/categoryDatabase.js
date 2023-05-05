@@ -1,5 +1,7 @@
 const { CategoryModel } = require("../models/CategoryModel");
 const TransactionModel = require('../models/TransactionModel');
+
+
 const createCategory = async(userId, name, color) =>{
     return await CategoryModel.create({
         userId,
@@ -24,10 +26,15 @@ const findByIdAndDelete = async(categoryId) =>{
     return await CategoryModel.findByIdAndDelete(categoryId)
 }
 
+const findById = async(userId, categoryId) =>{
+    return await CategoryModel.findOne({userId, _id: categoryId}).then((category => {return category;}))
+}
+
 module.exports = {
     createCategory,
     findByIdAndUpdate,
     findCategories,
     findCategoryDependecy,
-    findByIdAndDelete
+    findByIdAndDelete,
+    findById
 }

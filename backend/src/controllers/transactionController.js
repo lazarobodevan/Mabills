@@ -2,25 +2,19 @@ const transactionModel = require('../models/TransactionModel');
 const moment = require('moment');
 const TransactionModel = require('../models/TransactionModel');
 const {CategoryModel} = require('../models/CategoryModel');
+const categoryDb = require('../database/categoryDatabase');
+const transactionDb = require('../database/transactionDatabase');
 
 const createTransaction = async (req, res) =>{
     const {name, value, date, type, isPaid, categoryId} = req.body;
-    const loggedUser = req.user;
+    const {_id} = req.user;
 
     try{
-        const category = await CategoryModel.findOne({userId: loggedUser._id, _id: categoryId}).then((category => {return category;}))
+        const category = await categoryDb.findById(_id, categoryId);
         if(!category){
             return res.status(400).json({message: "Invalid category"});
         }
-        let newTransaction = await transactionModel.create({
-            userId: loggedUser._id,
-            name,
-            value,
-            date: date,
-            type,
-            isPaid,
-            categoryId
-        });
+        let newTransaction = await transactionDb.createTransaction(_id, req.body);
         
         return res.status(200).json({newTransaction, category});
         
@@ -33,58 +27,26 @@ const createTransaction = async (req, res) =>{
 
 const getTransactions = async(req, res) =>{
     try{
-        let {limit, offset} = req.query;
         const {date, value, categoryId, type, isPaid, name} = req.body;
+        let {limit, offset} = req.query;
+        const {_id} = req.user;
 
-        const {user} = req;
 
-        const filter = {
-            userId: user._id,
-            date: date ? new Date(moment.utc(date,'DD-MM-YYYY').format('YYYY-MM-DD')): null,
-            value,
-            categoryId,
-            isPaid,
-            type,
-            name
-        }
+        const query = buildFilter(
+            {
+                userId: _id,
+                date: date ? new Date(moment.utc(date,'DD-MM-YYYY').format('YYYY-MM-DD')): null,
+                value,
+                categoryId,
+                isPaid,
+                type,
+                name
+            }
+        );
 
-        const query = buildFilter(filter);
-
-        limit = Number(limit);
-        offset = Number(offset);
-
-        if(!limit){
-            limit = 5;
-        }
-
-        if(!offset){
-            offset = 0;
-        }
-        const transactions = await (await transactionModel.find(filter.name ?{"name":{
-            $regex:filter.name,
-            $options: "i"
-        }}:{}).where(query)
-                                                            .populate('categoryId')
-                                                            .sort({date:-1})
-                                                            .skip(offset)
-                                                            .limit(limit)
-                                                            .then(transactions =>{return transactions;}));
-        const total = await TransactionModel.countDocuments({userId: user._id});
-        const next = offset + limit;
-        const currentUrl = req.baseUrl;
-
-        const nextUrl = next < total ? `${currentUrl}?limit=${limit}&offset=${next}`:null;
-        const previous = offset - limit < 0 ? null : offset-limit;
-        const previousUrl = previous != null ? `${currentUrl}?limit=${limit}&offset=${previous}`: null;
-
-        return res.status(200).json({
-            nextUrl,
-            previousUrl,
-            limit,
-            offset,
-            total,
-            results:transactions
-        });
+        const transactions = await transactionDb.getTransactions(_id, query, offset, limit, req.baseUrl);
+        
+        return res.status(200).json(transactions);
     }catch(e){
         console.log(e);
     }
@@ -96,7 +58,7 @@ const updateTransaction = async(req, res) => {
 
     try{
         const id = req.params.id;
-        const updatedTransaction = await transactionModel.findByIdAndUpdate(id, req.body, {new: true}).populate("categoryId");
+        const updatedTransaction = transactionDb.findByIdAndUpdate(id, req.body);
         return res.status(200).json(updatedTransaction);
 
     }catch(e){

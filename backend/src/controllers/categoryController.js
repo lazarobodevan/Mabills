@@ -1,6 +1,4 @@
-const { CategoryModel } = require("../models/CategoryModel");
 const categoryDb = require('../database/categoryDatabase');
-const TransactionModel = require('../models/TransactionModel');
 
 const createCategory = async (req, res) =>{
     try{
