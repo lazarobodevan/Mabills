@@ -1,7 +1,4 @@
-const transactionModel = require('../models/TransactionModel');
 const moment = require('moment');
-const TransactionModel = require('../models/TransactionModel');
-const {CategoryModel} = require('../models/CategoryModel');
 const categoryDb = require('../database/categoryDatabase');
 const transactionDb = require('../database/transactionDatabase');
 
