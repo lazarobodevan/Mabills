@@ -1,4 +1,3 @@
-const userModel = require('../models/UserModel');
 const userDb = require('../database/userDatabase');
 const express = require('express');
 const bcrypt = require('bcrypt');
