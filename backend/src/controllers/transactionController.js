@@ -58,7 +58,7 @@ const updateTransaction = async(req, res) => {
 
     try{
         const id = req.params.id;
-        const updatedTransaction = transactionDb.findByIdAndUpdate(id, req.body);
+        const updatedTransaction = await transactionDb.findByIdAndUpdate(id, req.body);
         return res.status(200).json(updatedTransaction);
 
     }catch(e){
@@ -73,7 +73,7 @@ const deleteTransaction = async(req, res) => {
     
     try{
         const {id} = req.params;
-        await transactionModel.findByIdAndDelete(id);
+        await transactionDb.findByIdAndDelete(id);
         return res.status(202).json({message: "Object deleted"});
     }catch(e){
         console.log(e);

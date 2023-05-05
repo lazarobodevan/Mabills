@@ -62,8 +62,13 @@ const findByIdAndUpdate = async(id, transaction) =>{
     return await TransactionModel.findByIdAndUpdate(id, transaction, {new: true}).populate("categoryId");
 }
 
+const findByIdAndDelete = async(id)=>{
+    return await TransactionModel.findByIdAndDelete(id);
+}
+
 module.exports={
     createTransaction,
     getTransactions,
-    findByIdAndUpdate
+    findByIdAndUpdate,
+    findByIdAndDelete
 }
