@@ -15,6 +15,8 @@ const createTransaction = async(userId, transaction) =>{
 }
 
 const getTransactions = async(userId, query, offset, limit, baseUrl) =>{
+
+    const {name, ...newQuery} = query;
     
     limit = Number(limit);
     offset = Number(offset);
@@ -26,13 +28,14 @@ const getTransactions = async(userId, query, offset, limit, baseUrl) =>{
     if(!offset){
         offset = 0;
     }
-    const transactions = await TransactionModel.find(query.name ?
+    //console.log(query)
+    const transactions = await TransactionModel.find(name ?
         {"name":{
-                $regex:query.name,
+                $regex: name,
                 $options: "i"
             }
         }:{}
-    ).where(query)
+    ).where(newQuery)
         .populate('categoryId')
         .sort({date:-1})
         .skip(offset)

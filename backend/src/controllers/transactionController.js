@@ -83,11 +83,12 @@ buildFilter = (filter) => {
     let query = {};
 
     for(let key in filter){
-        if(filter[key] && key !== 'name'){
+        if(filter[key]){
             query[key] = filter[key];
         }
     }
     query['userId'] = filter.userId;
+    console.log(query)
     return query;
 }
 
