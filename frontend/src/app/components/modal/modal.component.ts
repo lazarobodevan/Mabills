@@ -114,6 +114,9 @@ export class ModalComponent {
   }
 
   addTransaction(){
+
+    if(this.validateForm()) return;
+
     this.isSubmitted = true;
     if(this.transaction.type === 'INCOME'){
       Reflect.deleteProperty(this.transaction, 'isPaid');
@@ -137,6 +140,9 @@ export class ModalComponent {
   }
 
   updateTransaction(){
+
+    if(this.validateForm()) return;
+
     this.isSubmitted = true;
     if(this.transaction.type === 'INCOME'){
       Reflect.deleteProperty(this.transaction, 'isPaid');
@@ -159,6 +165,9 @@ export class ModalComponent {
   }
 
   createCategory(){
+
+    if(this.validateForm()) return;
+
     this.isSubmitted = true;
     this.categoryService.createCategory(this.category).subscribe({
       next: response =>{
@@ -179,6 +188,9 @@ export class ModalComponent {
   }
 
   updateCategory(){
+
+    if(this.validateForm()) return;
+
     this.isSubmitted = true;
     this.categoryService.updateCategory(this.category).subscribe({
       next: response =>{
@@ -193,6 +205,42 @@ export class ModalComponent {
         this.notifierService.ShowError(err.error.message);
       }
     })
+  }
+
+  validateForm(){
+    let isMissingField = false;
+    if(this.parentComponent === 'expenses'){
+      if(!this.transaction.name){
+        this.notifierService.ShowError('Nome é obrigatório');
+        isMissingField = true;
+      }
+      if(!this.transaction.type){
+        this.notifierService.ShowError('Tipo é obrigatório');
+        isMissingField = true;
+      }
+      if(!this.transaction.categoryId){
+        this.notifierService.ShowError('Categoria é obrigatória');
+        isMissingField = true;
+      }
+      if(!this.transaction.value){
+        this.notifierService.ShowError('Valor é obrigatório');
+        isMissingField = true;
+      }
+      if(!this.transaction.date){
+        this.notifierService.ShowError('Data é obrigatória');
+        isMissingField = true;
+      }
+    }else{
+      if(!this.category.name){
+        this.notifierService.ShowError('Nome é obrigatório');
+        isMissingField = true;
+      }
+      if(!this.category.color){
+        this.notifierService.ShowError('Cor é orbrigatório');
+        isMissingField = true;
+      }
+    }
+    return isMissingField;
   }
 
 }
