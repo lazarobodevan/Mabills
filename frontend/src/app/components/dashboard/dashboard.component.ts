@@ -49,6 +49,7 @@ export class DashboardComponent {
 
     this.dashboardService.getYearIncomeExpenses().subscribe({
       next: response =>{
+        console.log(response)
         this.yearIncomesExpenses = response;
         this.generateTransactionsLineChart();
       }
@@ -90,9 +91,7 @@ export class DashboardComponent {
         }
       },
       data: {// values on X-Axis
-        labels: this.yearIncomesExpenses.map(item =>{
-          return item._id.month;
-        }),
+        labels: ['Janeiro','Fevereiro','Março','Abril','Maio', 'Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
 	       datasets: [
           {
             label: 'Receita',

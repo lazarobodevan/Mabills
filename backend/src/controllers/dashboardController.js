@@ -237,7 +237,7 @@ const getYearIncomesExpenses = async (req, res) =>{
             $lte: getYearRange().lastday
         }
         
-        const yearIncomesExpenses = dashboardDb.getYearTransactions(_id, date);
+        const yearIncomesExpenses = await dashboardDb.getYearTransactions(_id, date);
 
         return res.status(200).json(yearIncomesExpenses);
 
