@@ -49,7 +49,7 @@ export class DashboardComponent {
 
     this.dashboardService.getYearIncomeExpenses().subscribe({
       next: response =>{
-        console.log(response)
+
         this.yearIncomesExpenses = response;
         this.generateTransactionsLineChart();
       }
