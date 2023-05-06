@@ -1,8 +1,8 @@
 
 <div class="container" (click)="click()">
-    <div class="color" [ngStyle]="{'background-color': category.color}"></div>
-    <span class="name">{{category.name}}</span>
+    <div class="color" [ngStyle]="{'background-color': category.color}" data-testid="category-color"></div>
+    <span class="name" data-testid="category-name">{{category.name}}</span>
 </div>
-<div class="delete" (click)="deleteCategory()">
+<div class="delete" (click)="deleteCategory()" data-testid="delete-button">
     <span class="text">Excluir</span>
 </div>

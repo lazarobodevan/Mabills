@@ -33,15 +33,15 @@ export class ModalComponent {
               private transactionService: TransactionService, 
               private ref: ChangeDetectorRef,
               private notifierService:NotifierService){
-    
   }
 
   ngOnChanges(){
     this.initializeTransactionByInput();
+    this.initializeCategoryByInput();
   }
 
   ngOnInit(){
-    this.getCategories()
+    this.getCategories();
   }
 
   clickOutside(event:any){
@@ -101,6 +101,15 @@ export class ModalComponent {
         value: this.inputTransaction.value,
         isPaid: this.inputTransaction.isPaid,
         categoryId: this.inputTransaction.categoryId._id!
+      }
+  }
+
+  initializeCategoryByInput(){
+    if(this.inputCategory._id)
+      this.category = {
+        _id: this.inputCategory._id,
+        name: this.inputCategory.name,
+        color: this.inputCategory.color
       }
   }
 
@@ -167,6 +176,23 @@ export class ModalComponent {
         this.ref.detectChanges();
       }
     });
+  }
+
+  updateCategory(){
+    this.isSubmitted = true;
+    this.categoryService.updateCategory(this.category).subscribe({
+      next: response =>{
+        this.clickedOutside.emit(true);
+        this.isSubmitted = false;
+        this.inputCategory = {} as ICategory;
+        this.notifierService.ShowSuccess('Categoria atualizada com sucesso');
+      },
+      error: err =>{
+        this.isSubmitted = false;
+        console.log(err)
+        this.notifierService.ShowError(err.error.message);
+      }
+    })
   }
 
 }

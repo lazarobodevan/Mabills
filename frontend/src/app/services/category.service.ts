@@ -39,4 +39,11 @@ export class CategoryService {
   deleteCategory(category: ICategory):Observable<any>{
     return this.http.delete<ICategory>(`${environment.API}category/${category._id}`, {headers:this.headers});
   }
+
+  updateCategory(category:ICategory):Observable<ICategory>{
+    return this.http.put<ICategory>(`${environment.API}category/${category._id}`, {
+      name: category.name,
+      color: category.color
+    }, {headers: this.headers});
+  }
 }

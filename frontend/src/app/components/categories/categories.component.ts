@@ -62,6 +62,7 @@ export class CategoriesComponent {
   toggleModal(event?:any){
     if(event){
       this.categorySelected = event;
+      console.log(this.categorySelected);
       this.getCategories();
     }
     this.isModalVisible = !this.isModalVisible;
