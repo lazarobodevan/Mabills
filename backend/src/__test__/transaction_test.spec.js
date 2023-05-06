@@ -200,7 +200,7 @@ describe('Transaction domain',() => {
                 date: '25/02/2023',
                 categoryId: categoryCreated._id,
                 value: 123,
-                name: 'transaction'
+                name: 'transact'
             });
 
             const expectation = {
