@@ -88,7 +88,6 @@ buildFilter = (filter) => {
         }
     }
     query['userId'] = filter.userId;
-    console.log(query)
     return query;
 }
 
