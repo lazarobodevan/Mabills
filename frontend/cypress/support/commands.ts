@@ -87,6 +87,5 @@ Cypress.Commands.add("deleteTestUser", () =>{
                 console.log(response)
             })
     });
-    cy.wait(1000);
     
 })

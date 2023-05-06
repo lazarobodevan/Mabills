@@ -5,183 +5,63 @@ const moment = require('moment');
 const { default: mongoose } = require('mongoose');
 const { calcPercent } = require('../utils/mathUtils');
 
+const dashboardDb = require('../database/dashboardDatabase');
+
 //Searches for INCOME bills to be received this week and returns total value
 const getBillsToReceive = async (req, firstday, lastday) =>{
-    let billsToReceive = await TransactionModel.aggregate([{
-        $match:{
-            $and:[
-                {
-                    userId: mongoose.Types.ObjectId(req.user._id)
-                },
-                {
-                    date:{
-                        $gte: firstday,
-                        $lte: lastday
-                    }
-                },
-                {
-                    type: "INCOME"
-                },
-
-            ]
-            }
-    },
-    {
-        $group:{
-            _id:null,
-            SUM:{
-                $sum: '$value'
-            }
-        }
+    const {_id} = req.user;
+    const filter = {
+        type: 'INCOME'
     }
-
-]);
-
-    return billsToReceive;
+    return await dashboardDb.getTransactionsSumByType(firstday, lastday, _id, filter)
 }
 
 //Searches for bills to pay till the current week. It is considered a bill to pay since it is 
 //5 days left to pay.
-const getBillsToPay = async(req, firstDay, lastDay) =>{
+const getBillsToPay = async(req, firstday, lastday) =>{
 
-    const billsToPay = await TransactionModel.aggregate([{
-        $match:{
-            $and:[
-                {
-                    userId: mongoose.Types.ObjectId(req.user._id)
-                },
-                {
-                    type: 'EXPENSE'
-                },
-                {
-                    isPaid: false
-                },
-                {
-                    date:{
-                        $gte: firstDay,
-                        $lte: lastDay
-                    }
-                }
-            ]
-        }
-    },
-    {
-        $group:{
-            _id:null,
-            SUM:{
-                $sum: '$value'
-            }
+    const {_id} = req.user;
+    const filter = {
+        type: 'EXPENSE',
+        isPaid: false
+    }
+    return await dashboardDb.getTransactionsSumByType(firstday, lastday, _id, filter);
+
+}
+
+const getExpenses = async(req, firstday, lastday) =>{
+
+    const {_id} = req.user;
+    const filter = {
+        type: 'EXPENSE'
+    }
+    return await dashboardDb.getTransactionsSumByType(firstday, lastday, _id, filter);
+}
+
+const getBillsToExpire = async (req, firstday, lastday) =>{
+
+    const {_id} = req.user;
+    const filter = {
+        type: 'EXPENSE',
+        isPaid: false
+    }
+    return await dashboardDb.getTransactionsSumByType(firstday, lastday, _id, filter);
+
+}
+
+const getExpiredBills = async (req, firstday, lastday) =>{
+
+    const {_id} = req.user;
+    const filter = {
+        type: 'EXPENSE',
+        isPaid: false,
+        date:{
+            $lt: moment.utc(new Date()).set({hour:0,minute:0,second:0,millisecond:0}).toDate(),
+            $gte: firstday,
+            $lte: lastday
         }
     }
-]);
-
-    return billsToPay;
-}
-
-const getExpenses = async(req, firstDay, lastDay) =>{
-
-    const billsToPay = await TransactionModel.aggregate([{
-        $match:{
-            $and:[
-                {
-                    userId: mongoose.Types.ObjectId(req.user._id)
-                },
-                {
-                    type: 'EXPENSE'
-                },
-                {
-                    date:{
-                        $gte: firstDay,
-                        $lte: lastDay
-                    }
-                }
-            ]
-        }
-    },
-    {
-        $group:{
-            _id:null,
-            SUM:{
-                $sum: '$value'
-            }
-        }
-    }
-]);
-
-    return billsToPay;
-}
-
-const getBillsToExpire = async (req, firstDay, lastDay) =>{
-
-    const billsToExpire =  await TransactionModel.aggregate([
-        {
-            $match:{
-                $and:[
-                    {
-                        userId: mongoose.Types.ObjectId(req.user._id)
-                    },
-                    {
-                        type: 'EXPENSE'
-                    },
-                    {
-                        isPaid: false
-                    },
-                    {
-                        date:{
-                            $gte: firstDay,
-                            $lte: lastDay
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            $group:{
-                _id: null,
-                SUM:{
-                    $sum: '$value'
-                }
-            }
-        }
-    ]);
-    return billsToExpire;
-}
-
-const getExpiredBills = async (req, firstDay, lastDay) =>{
-
-    const billsToExpire =  await TransactionModel.aggregate([
-        {
-            $match:{
-                $and:[
-                    {
-                        userId: mongoose.Types.ObjectId(req.user._id)
-                    },
-                    {
-                        type: 'EXPENSE'
-                    },
-                    {
-                        isPaid: false
-                    },
-                    {
-                        date:{
-                            $lt: moment.utc(new Date()).set({hour:0,minute:0,second:0,millisecond:0}).toDate(),
-                            $gte: firstDay,
-                            $lte: lastDay
-                        }
-                    }
-                ]
-            }
-        },
-        {
-            $group:{
-                _id: null,
-                SUM:{
-                    $sum: '$value'
-                }
-            }
-        }
-    ]);
-    return billsToExpire;
+    return await dashboardDb.getTransactionsSumByType(firstday, lastday, _id, filter);
 }
 
 
@@ -242,193 +122,63 @@ const getWeekCards = async (req, res) =>{
 }
 
 const getWeekExpensesByCategory = async(req, res) =>{
-    const expensesByCategory = await TransactionModel.aggregate([
-        {
-            $match:{
-                $and:[
-                    {
-                        userId: mongoose.Types.ObjectId(req.user._id)
-                    },
-                    {
-                        type:'EXPENSE'
-                    },
-                    {
-                        date:{
-                            $gte: getWeekRange().firstday,
-                            $lte: getWeekRange().lastday
-                        }
-                    }   
-                ]
-            }
-        },
-        {
-            $lookup:{
-                from: 'categories',
-                localField: 'categoryId',
-                foreignField: '_id',
-                as: 'categoryDetails'
 
-            }
+    const {_id} = req.user;
+    const filter = {
+        date:{
+            $gte: getWeekRange().firstday,
+            $lte: getWeekRange().lastday
         },
-        {
-            $unwind: '$categoryDetails'
-        },
-        {
-            $group:{
-                _id:{
-                    name: '$categoryDetails.name',
-                    color:'$categoryDetails.color',
-                },
-                SUM:{
-                    $sum:'$value'
-                }
-            }
-        }
-    ]);
+        type:'EXPENSE'
+    }
+    const expensesByCategory = await dashboardDb.getTransactionsWithCategoryInfo(_id, filter);
 
     return res.status(200).json(expensesByCategory);
 }
 const getMonthExpensesByCategory = async(req, res) =>{
-    const expensesByCategory = await TransactionModel.aggregate([
-        {
-            $match:{
-                $and:[
-                    {
-                        userId: mongoose.Types.ObjectId(req.user._id)
-                    },
-                    {
-                        type:'EXPENSE'
-                    },
-                    {
-                        date:{
-                            $gte: getMonthRange().firstday,
-                            $lte: getMonthRange().lastday
-                        }
-                    }   
-                ]
-            }
-        },
-        {
-            $lookup:{
-                from: 'categories',
-                localField: 'categoryId',
-                foreignField: '_id',
-                as: 'categoryDetails'
 
-            }
+    const {_id} = req.user;
+    const filter = {
+        date:{
+            $gte: getMonthRange().firstday,
+            $lte: getMonthRange().lastday
         },
-        {
-            $unwind: '$categoryDetails'
-        },
-        {
-            $group:{
-                _id:{
-                    name: '$categoryDetails.name',
-                    color:'$categoryDetails.color',
-                },
-                SUM:{
-                    $sum:'$value'
-                }
-            }
-        }
-    ]);
+        type:'EXPENSE'
+    }
+    const expensesByCategory = await dashboardDb.getTransactionsWithCategoryInfo(_id, filter);
 
     return res.status(200).json(expensesByCategory);
 }
 
 const getWeekIncomeByCategory = async(req, res) =>{
-    const incomeByCategory = await TransactionModel.aggregate([
-        {
-            $match:{
-                $and:[
-                    {
-                        userId: mongoose.Types.ObjectId(req.user._id)
-                    },
-                    {
-                        type:'INCOME'
-                    },
-                    {
-                        date:{
-                            $gte: getWeekRange().firstday,
-                            $lte: getWeekRange().lastday
-                        }
-                    }   
-                ]
-            }
-        },
-        {
-            $lookup:{
-                from: 'categories',
-                localField: 'categoryId',
-                foreignField: '_id',
-                as: 'categoryDetails'
 
-            }
+    const {_id} = req.user;
+    const filter = {
+        date:{
+            $gte: getWeekRange().firstday,
+            $lte: getWeekRange().lastday
         },
-        {
-            $unwind: '$categoryDetails'
-        },
-        {
-            $group:{
-                _id:{
-                    name: '$categoryDetails.name',
-                    color:'$categoryDetails.color',
-                },
-                SUM:{
-                    $sum:'$value'
-                }
-            }
-        },
-    ]);
-    
-    return res.status(200).json(incomeByCategory);
+        type:'INCOME'
+    }
+    const expensesByCategory = await dashboardDb.getTransactionsWithCategoryInfo(_id, filter);
+
+    return res.status(200).json(expensesByCategory);
+
 }
 const getMonthIncomeByCategory = async(req, res) =>{
-    const incomeByCategory = await TransactionModel.aggregate([
-        {
-            $match:{
-                $and:[
-                    {
-                        userId: mongoose.Types.ObjectId(req.user._id)
-                    },
-                    {
-                        type:'INCOME'
-                    },
-                    {
-                        date:{
-                            $gte: getMonthRange().firstday,
-                            $lte: getMonthRange().lastday
-                        }
-                    }   
-                ]
-            }
-        },
-        {
-            $lookup:{
-                from: 'categories',
-                localField: 'categoryId',
-                foreignField: '_id',
-                as: 'categoryDetails'
 
-            }
+    const {_id} = req.user;
+    const filter = {
+        date:{
+            $gte: getMonthRange().firstday,
+            $lte: getMonthRange().lastday
         },
-        {
-            $unwind: '$categoryDetails'
-        },
-        {
-            $group:{
-                _id:{
-                    name: '$categoryDetails.name',
-                    color:'$categoryDetails.color',
-                },
-                SUM:{
-                    $sum:'$value'
-                }
-            }
-        },
-    ]);
-    
-    return res.status(200).json(incomeByCategory);
+        type:'INCOME'
+    }
+    const expensesByCategory = await dashboardDb.getTransactionsWithCategoryInfo(_id, filter);
+
+    return res.status(200).json(expensesByCategory);
+
 }
 
 const getDashboardCards = async(req, res) =>{
@@ -480,54 +230,14 @@ const getDashboardCards = async(req, res) =>{
 const getYearIncomesExpenses = async (req, res) =>{
     try{
 
-        const yearIncomesExpenses = await TransactionModel.aggregate([
-            {
-                $match:{
-                    $and:[
-                        {
-                            userId: mongoose.Types.ObjectId(req.user._id)
-                        },
-                        {
-                            date:{
-                                $gte: getYearRange().firstday,
-                                $lte: getYearRange().lastday
-                            }
-                        }   
-                    ]
-                }
-            },
-            {
-                $group:{
-                    _id:{
-                        month:{ $arrayElemAt:[
-                            ['','Janeiro','Fevereiro','Março','Abril','Maio', 'Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-                            {$month:{$toDate: "$date"}}
-                        ] ,
-                    }},
-                   
-                    INCOME: {$sum: {
-                        $cond:[
-                            {
-                                $eq:['$type', "INCOME"]
-                            },
-                            "$value",
-                            0
-                        ]
-                    }},
-                    EXPENSE: {$sum: {
-                        $cond:[
-                            {
-                                $eq:['$type', "EXPENSE"]
-                            },
-                            "$value",
-                            0
-                        ]
-                    }},
-                    
-                },
-                
-            },
-        ]);
+        const {_id} = req.user;
+        
+        const date = {
+            $gte: getYearRange().firstday,
+            $lte: getYearRange().lastday
+        }
+        
+        const yearIncomesExpenses = dashboardDb.getYearTransactions(_id, date);
 
         return res.status(200).json(yearIncomesExpenses);
 
