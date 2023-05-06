@@ -1,10 +1,14 @@
 import * as moment from 'moment';
 
 describe("#TRANSACTIONS", ()=>{
+    
 
     before(()=>{
-        cy.deleteTestUser();
         cy.createTestUser();
+    });
+
+    after(()=>{
+        cy.deleteTestUser();
     })
 
     beforeEach(()=>{
@@ -94,6 +98,49 @@ describe("#TRANSACTIONS", ()=>{
         cy.getByTestId('transaction-date').should("contain","03/05/2023");
         cy.getByTestId('transaction-isPaid').should("contain","Sim");
         cy.validateToast('Sucesso','Transação atualizada com sucesso');
+    });
+
+    it('Should apply all filters and show the correct transaction', ()=>{
+
+        //Filtering by name - transaction should be shown
+        cy.getByTestId('search-input-filter').type('transaction2');
+        cy.getByTestId('transaction-name').should("have.text", "transaction2");
+        cy.getByTestId('transaction-type').should("contain", "Despesa");
+        cy.getByTestId('transaction-color').should("have.css",'background-color','rgb(255, 255, 255)');
+        cy.getByTestId('transaction-category-name').should("have.text", "category2");
+        cy.getByTestId('transaction-value').should('have.text','R$ 321');
+        cy.getByTestId('transaction-date').should("contain","03/05/2023");
+        cy.getByTestId('transaction-isPaid').should("contain","Sim");
+
+        //Adding filter by tipe - transaction should be shown
+        cy.getByTestId('type-select-filter').select(1);
+        cy.getByTestId('transaction-name').should("have.text", "transaction2");
+        cy.getByTestId('transaction-type').should("contain", "Despesa");
+        cy.getByTestId('transaction-color').should("have.css",'background-color','rgb(255, 255, 255)');
+        cy.getByTestId('transaction-category-name').should("have.text", "category2");
+        cy.getByTestId('transaction-value').should('have.text','R$ 321');
+        cy.getByTestId('transaction-date').should("contain","03/05/2023");
+        cy.getByTestId('transaction-isPaid').should("contain","Sim");
+
+        //Adding filter by category - transaction should be shown
+        cy.getByTestId('category-select-filter').select(2);
+        cy.getByTestId('transaction-name').should("have.text", "transaction2");
+        cy.getByTestId('transaction-type').should("contain", "Despesa");
+        cy.getByTestId('transaction-color').should("have.css",'background-color','rgb(255, 255, 255)');
+        cy.getByTestId('transaction-category-name').should("have.text", "category2");
+        cy.getByTestId('transaction-value').should('have.text','R$ 321');
+        cy.getByTestId('transaction-date').should("contain","03/05/2023");
+        cy.getByTestId('transaction-isPaid').should("contain","Sim");
+        
+        //Adding filter by date - transaction should be shown
+        cy.getByTestId('date-input-filter').type('2023-05-03');
+        cy.getByTestId('transaction-name').should("have.text", "transaction2");
+        cy.getByTestId('transaction-type').should("contain", "Despesa");
+        cy.getByTestId('transaction-color').should("have.css",'background-color','rgb(255, 255, 255)');
+        cy.getByTestId('transaction-category-name').should("have.text", "category2");
+        cy.getByTestId('transaction-value').should('have.text','R$ 321');
+        cy.getByTestId('transaction-date').should("contain","03/05/2023");
+        cy.getByTestId('transaction-isPaid').should("contain","Sim");
     });
 
     it('Should delete selected transaction', ()=>{

@@ -11,11 +11,11 @@
 
 <div class="container">
     <div class="header">
-        <app-input-field placeholder="Pesquisar..." icon="search" (inputContent)="setNameFilter($event)" width="200px"></app-input-field>
+        <app-input-field placeholder="Pesquisar..." icon="search" (inputContent)="setNameFilter($event)" width="200px" data-testid="search-input-filter"></app-input-field>
         <mat-icon fontIcon="filter_list" class="icon"></mat-icon>
         <div class="filter">
             <p>Tipo</p>
-            <select name="type" class="dropdown" (change)="setTypeFilter($event)">
+            <select name="type" class="dropdown" (change)="setTypeFilter($event)" data-testid="type-select-filter">
                 <option value="" selected>Selecione...</option>
                 <option value="EXPENSE">Despesa</option>
                 <option value="INCOME">Entrada</option>
@@ -23,14 +23,14 @@
         </div>
         <div class="filter">
             <p>Categoria</p>
-            <select name="category" class="dropdown" (change)="setCategoryFilter($event)">
+            <select name="category" class="dropdown" (change)="setCategoryFilter($event)" data-testid="category-select-filter">
                 <option value="" selected>Selecione...</option>
                 <option *ngFor="let cat of categories" value={{cat._id}}>{{cat.name}}</option>
             </select>
         </div>
         <div class="filter">
             <p>Data</p>
-           <app-input-field (inputContent)="setDateFilter($event)" type="date" width="180px"></app-input-field>
+           <app-input-field (inputContent)="setDateFilter($event)" type="date" width="180px" data-testid="date-input-filter"></app-input-field>
         </div>
         <app-action-button text="Excluir" width="90px" [ngClass]="!selectedTransaction._id ? 'disabled' : ''" (OnClick)="deleteTransaction()" data-testid="delete-button"></app-action-button>
         <app-action-button text="Editar" width="90px" [ngClass]="!selectedTransaction._id ? 'disabled' : ''" (OnClick)="editTransaction()" style="margin-left: 15px;" data-testid="update-button"></app-action-button>

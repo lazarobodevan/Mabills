@@ -1,5 +1,12 @@
 describe('#LOGIN', ()=>{
 
+    before(()=>{
+        cy.createTestUser();
+    })
+    after(()=>{
+        cy.deleteTestUser();
+    })
+
     beforeEach(() =>{
         cy.visit('/')
     })
@@ -23,9 +30,7 @@ describe('#LOGIN', ()=>{
     })
     
     it('Should login successfully', ()=>{
-        cy.createTestUser();
         cy.login();
-        cy.deleteTestUser();
     })
 
 })

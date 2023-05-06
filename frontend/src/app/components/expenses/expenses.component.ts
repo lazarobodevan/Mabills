@@ -54,7 +54,7 @@ export class ExpensesComponent {
       response.results.forEach(item =>{
         item.date = moment(item.date).add('hours',3).toDate();
         this.transactions.push(item);
-      })
+      });
       this.nextURL = response.nextUrl;
       this.isFilterChanged = false;
       this.isLoading  = false;
@@ -91,7 +91,6 @@ export class ExpensesComponent {
   }
   setNameFilter(event:any){
     this.filter.name = event;
-    console.log(this.filter)
     if(event === ''){
       Reflect.deleteProperty(this.filter, 'name')
     }
