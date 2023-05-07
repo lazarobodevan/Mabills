@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { IExpenseIncomeByCategory } from '../interfaces/IIncomeByCategory';
 import { ITransaction } from '../interfaces/ITransaction';
 import { IWeekCards } from '../interfaces/IWeekCards';

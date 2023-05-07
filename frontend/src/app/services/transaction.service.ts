@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, tap } from 'rxjs';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { IFilter } from '../interfaces/IFilter';
 import { ITransaction } from '../interfaces/ITransaction';
 import { ITransactionRequest } from '../interfaces/ITransactionRequest';

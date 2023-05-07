@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { IUser } from '../interfaces/IUser';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { BehaviorSubject, Observable, delay, tap } from 'rxjs';
-import { environment } from 'src/environments/environment.development';
+import { environment } from 'src/environments/environment';
 import { NotifierService } from './notifier.service';
 
 @Injectable({
