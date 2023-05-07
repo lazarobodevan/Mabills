@@ -11,7 +11,7 @@
             <app-input-field type="text" 
                             placeholder="Nome" 
                             [inputValue]="loggedUser.name"
-                            (inputContent)="setName($event)">
+                            (inputContentEmitter)="setName($event)">
             </app-input-field>
         </div>
         <div class="field">
@@ -19,14 +19,14 @@
             <app-input-field type="email" 
                             placeholder="Email" 
                             [inputValue]="loggedUser.email"
-                            (inputContent)="setEmail($event)">
+                            (inputContentEmitter)="setEmail($event)">
             </app-input-field>
         </div>
         <div class="field">
             <p>Senha</p>
             <app-input-field type="text" 
                             placeholder="Senha"
-                            (inputContent)="setPassword($event)">
+                            (inputContentEmitter)="setPassword($event)">
             </app-input-field>
         </div>
         <div class="field">

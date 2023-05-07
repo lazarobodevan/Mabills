@@ -17,7 +17,10 @@ export class LoginComponent {
 
   isSubmitted: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router, private notifierService: NotifierService,private ref:ChangeDetectorRef){
+  constructor(private authService: AuthService, 
+              private router: Router, 
+              private notifierService: NotifierService,
+              private ref:ChangeDetectorRef){
   }
 
   setEmail(email:string){

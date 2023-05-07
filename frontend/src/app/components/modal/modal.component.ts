@@ -130,6 +130,7 @@ export class ModalComponent {
         this.isSubmitted = false;
         this.transaction = {} as ITransactionRequest;
         this.notifierService.ShowSuccess("Transação criada com sucesso")
+        this.isSubmitted = false;
       },
       error: err =>{
         this.isSubmitted = false;
@@ -137,6 +138,7 @@ export class ModalComponent {
           this.notifierService.ShowError(error);  
         });
         this.ref.detectChanges();
+        this.isSubmitted = false;
         
       }
     })
@@ -156,6 +158,7 @@ export class ModalComponent {
         this.isSubmitted = false;
         this.transaction = {} as ITransactionRequest;
         this.notifierService.ShowSuccess("Transação atualizada com sucesso")
+        this.isSubmitted = false;
       },
       error: err =>{
         this.isSubmitted = false;
@@ -163,6 +166,7 @@ export class ModalComponent {
           this.notifierService.ShowError(error);  
         });
         this.ref.detectChanges();
+        this.isSubmitted = false;
       }
     });
   }
@@ -179,6 +183,7 @@ export class ModalComponent {
         this.category = {} as ICategory;
         this.ref.detectChanges();
         this.notifierService.ShowSuccess("Categoria criada com sucesso")
+        this.isSubmitted = false;
       },
       error: err =>{
         this.isSubmitted = false;
@@ -186,6 +191,7 @@ export class ModalComponent {
           this.notifierService.ShowError(error);  
         });
         this.ref.detectChanges();
+        this.isSubmitted = false;
       }
     });
   }
@@ -201,10 +207,10 @@ export class ModalComponent {
         this.isSubmitted = false;
         this.inputCategory = {} as ICategory;
         this.notifierService.ShowSuccess('Categoria atualizada com sucesso');
+        this.isSubmitted = false;
       },
       error: err =>{
         this.isSubmitted = false;
-        console.log(err)
         this.notifierService.ShowError(err.error.message);
       }
     })

@@ -16,7 +16,9 @@ export class SignupComponent {
   incorrectPassword: boolean = true;
   isSubmitted:boolean = false;
 
-  constructor(private userService: UserService, private notifierService: NotifierService, private router: Router){}
+  constructor(private userService: UserService, 
+              private notifierService: NotifierService, 
+              private router: Router){}
 
   signUp(){
 

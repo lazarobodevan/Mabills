@@ -57,11 +57,11 @@ describe("#TRANSACTIONS", ()=>{
         cy.getByTestId('conclude-button').click()
 
         //Verifying if it is displayed after added
-        cy.getByTestId('transaction-name').should("have.text", "transaction");
+        cy.getByTestId('transaction-name').should("contain", "transaction");
         cy.getByTestId('transaction-type').should("contain", "Receita");
         cy.getByTestId('transaction-color').should("have.css",'background-color','rgb(175, 68, 253)');
-        cy.getByTestId('transaction-category-name').should("have.text", "category test");
-        cy.getByTestId('transaction-value').should('have.text','R$ 123.00');
+        cy.getByTestId('transaction-category-name').should("contain", "category test");
+        cy.getByTestId('transaction-value').should('contain','R$ 123.00');
         cy.getByTestId('transaction-date').should("contain","02/05/2023");
         cy.getByTestId('transaction-isPaid').should("contain","-");
     });
@@ -154,11 +154,11 @@ describe("#TRANSACTIONS", ()=>{
         cy.getByTestId('conclude-button').click()
 
         //Verifying if it is displayed after added
-        cy.getByTestId('transaction-name').should("have.text", "transaction2");
+        cy.getByTestId('transaction-name').should("contain", "transaction2");
         cy.getByTestId('transaction-type').should("contain", "Despesa");
         cy.getByTestId('transaction-color').should("have.css",'background-color','rgb(255, 255, 255)');
-        cy.getByTestId('transaction-category-name').should("have.text", "category2");
-        cy.getByTestId('transaction-value').should('have.text','R$ 321.00');
+        cy.getByTestId('transaction-category-name').should("contain", "category2");
+        cy.getByTestId('transaction-value').should('contain','R$ 321.00');
         cy.getByTestId('transaction-date').should("contain","03/05/2023");
         cy.getByTestId('transaction-isPaid').should("contain","Sim");
         cy.validateToast('Sucesso','Transação atualizada com sucesso');
@@ -167,25 +167,25 @@ describe("#TRANSACTIONS", ()=>{
     it('Should apply name filter', ()=>{
         //Filtering by name - transaction should be shown
         cy.getByTestId('search-input-filter').type('tran');
-        cy.getByTestId('transaction-name').eq(0).should("have.text", "transaction2");
+        cy.getByTestId('transaction-name').eq(0).should("contain", "transaction2");
     })
 
     it('Should apply type filter', ()=>{
         //Filtering by type - transaction should be shown
         cy.getByTestId('type-select-filter').select(1);
-        cy.getByTestId('transaction-name').eq(0).should("have.text", "transaction2");
+        cy.getByTestId('transaction-name').eq(0).should("contain", "transaction2");
     })
 
     it('Should apply category filter', ()=>{
         //Filtering by category - transaction should be shown
         cy.getByTestId('category-select-filter').select(2);
-        cy.getByTestId('transaction-name').eq(0).should("have.text", "transaction2");
+        cy.getByTestId('transaction-name').eq(0).should("contain", "transaction2");
     })
 
     it('Should apply date filter', ()=>{
         //Filtering by date - transaction should be shown
         cy.getByTestId('date-input-filter').type('2023-05-03').trigger('input');
-        cy.getByTestId('transaction-name').eq(0).should("have.text", "transaction2");
+        cy.getByTestId('transaction-name').eq(0).should("contain", "transaction2");
     })
 
 
@@ -193,19 +193,19 @@ describe("#TRANSACTIONS", ()=>{
 
         //Filtering by name - transaction should be shown
         cy.getByTestId('search-input-filter').type('tran');
-        cy.getByTestId('transaction-name').eq(0).should("have.text", "transaction2");
+        cy.getByTestId('transaction-name').eq(0).should("contain", "transaction2");
 
         //Adding filter by tipe - transaction should be shown
         cy.getByTestId('type-select-filter').select(1).should("have.value", "EXPENSE");
-        cy.getByTestId('transaction-name').eq(0).should("have.text", "transaction2");
+        cy.getByTestId('transaction-name').eq(0).should("contain", "transaction2");
 
         //Adding filter by category - transaction should be shown
         cy.getByTestId('category-select-filter').select(2);
-        cy.getByTestId('transaction-name').eq(0).should("have.text", "transaction2");
+        cy.getByTestId('transaction-name').eq(0).should("contain", "transaction2");
         
         //Adding filter by date - transaction should be shown
         cy.getByTestId('date-input-filter').type('2023-05-03').trigger('input');
-        cy.getByTestId('transaction-name').eq(0).should("have.text", "transaction2");
+        cy.getByTestId('transaction-name').eq(0).should("contain", "transaction2");
     });
 
     it('Should delete selected transaction', ()=>{

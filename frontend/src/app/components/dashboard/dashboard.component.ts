@@ -23,7 +23,10 @@ export class DashboardComponent {
   yearIncomesExpenses: IYearIncomeExpense[] = [];
   isSubmitted:boolean = false;
 
-  constructor(private dashboardService:DashboardService, private notifierService: NotifierService, private ref:ChangeDetectorRef){
+  constructor(private dashboardService:DashboardService, 
+              private notifierService: NotifierService, 
+              private ref:ChangeDetectorRef){
+                
     Chart.defaults.borderColor = "rgba(255, 255, 255, 0.22)";
     Chart.defaults.color = "#FFFFFF";
     this.loadDashboardPage()

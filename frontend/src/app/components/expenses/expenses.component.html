@@ -11,8 +11,17 @@
 
 <div class="container">
     <div class="header">
-        <app-input-field placeholder="Pesquisar..." icon="search" (inputContent)="setNameFilter($event)" width="200px" data-testid="search-input-filter"></app-input-field>
+
+        <app-input-field 
+            placeholder="Pesquisar..." 
+            icon="search" 
+            (inputContent)="setNameFilter($event)" 
+            width="200px" 
+            data-testid="search-input-filter">
+        </app-input-field>
+
         <mat-icon fontIcon="filter_list" class="icon"></mat-icon>
+
         <div class="filter">
             <p>Tipo</p>
             <select name="type" class="dropdown" (change)="setTypeFilter($event)" data-testid="type-select-filter">
@@ -30,10 +39,30 @@
         </div>
         <div class="filter">
             <p>Data</p>
-           <app-input-field (inputContent)="setDateFilter($event)" type="date" width="180px" data-testid="date-input-filter"></app-input-field>
+            <app-input-field 
+                (inputContent)="setDateFilter($event)" 
+                type="date" 
+                width="180px" 
+                data-testid="date-input-filter">
+            </app-input-field>
         </div>
-        <app-action-button text="Excluir" width="90px" [ngClass]="!selectedTransaction._id ? 'disabled' : ''" (OnClick)="deleteTransaction()" data-testid="delete-button"></app-action-button>
-        <app-action-button text="Editar" width="90px" [ngClass]="!selectedTransaction._id ? 'disabled' : ''" (OnClick)="editTransaction()" style="margin-left: 15px;" data-testid="update-button"></app-action-button>
+
+        <app-action-button 
+            text="Excluir" 
+            width="90px" 
+            [ngClass]="!selectedTransaction._id ? 'disabled' : ''" 
+            (OnClick)="deleteTransaction()" 
+            data-testid="delete-button">
+        </app-action-button>
+
+        <app-action-button 
+            text="Editar" 
+            width="90px" 
+            [ngClass]="!selectedTransaction._id ? 'disabled' : ''" 
+            (OnClick)="editTransaction()" 
+            style="margin-left: 15px;" 
+            data-testid="update-button">
+        </app-action-button>
     </div>
 
     <div class="table-container">
@@ -56,7 +85,9 @@
                         [checked]="transaction._id ===selectedTransaction._id? true: false"
                         data-testid="radio-input"/>
                 </td>
-                <td style="width: 20%;" data-testid="transaction-name">{{transaction.name.length < 20 ? transaction.name : transaction.name.substring(0,20)+'...'}}</td>
+                <td style="width: 20%;" data-testid="transaction-name">
+                    {{transaction.name.length < 20 ? transaction.name : transaction.name.substring(0,20)+'...'}}
+                </td>
                 <td data-testid="transaction-type">
                     {{transaction.type === "EXPENSE"? "Despesa":"Receita"}}
                 </td>
@@ -68,28 +99,49 @@
                                 data-testid="transaction-color">
                             </div>
                         </div>
-                        <span data-testid="transaction-category-name">{{transaction.categoryId.name.length < 15 ? transaction.categoryId.name : transaction.categoryId.name.substring(0,15)+'...'}}</span>
+                        <span data-testid="transaction-category-name">
+                            {{transaction.categoryId.name.length < 15 ? transaction.categoryId.name : transaction.categoryId.name.substring(0,15)+'...'}}
+                        </span>
                     </div>
                 </td>
-                <td data-testid="transaction-value">{{'R$ ' +transaction.value.toFixed(2)}}</td>
-                <td data-testid="transaction-date">{{transaction.date | date:"dd/MM/YYYY"}}</td>
-                <td data-testid="transaction-isPaid">{{transaction.type === 'EXPENSE' ? (transaction.isPaid ? "Sim": "Não") : "-"}}</td>
+                <td data-testid="transaction-value">
+                    {{'R$ ' +transaction.value.toFixed(2)}}
+                </td>
+                <td data-testid="transaction-date">
+                    {{transaction.date | date:"dd/MM/YYYY"}}
+                </td>
+                <td data-testid="transaction-isPaid">
+                    {{transaction.type === 'EXPENSE' ? (transaction.isPaid ? "Sim": "Não") : "-"}}
+                </td>
             </tr>
         </table>
-        <div class="see-more" (click)="loadTransaction()" [ngClass]="!nextURL ? 'disabled':''" data-testid="see-more-button">
-            <span>Ver mais</span>
+
+        <div class="see-more" 
+            (click)="loadTransaction()" 
+            [ngClass]="!nextURL ? 'disabled':''" 
+            data-testid="see-more-button">
+
+                <span>Ver mais</span>
         </div>
     </div>
 
 
     <div class="footer">        
         <div class="btn">
-            <app-action-button text="Adicionar" width="200px" (OnClick)="createTransaction($event)" data-testid="add-expense-button"></app-action-button>
+            <app-action-button 
+                text="Adicionar" 
+                width="200px" 
+                (OnClick)="createTransaction($event)" 
+                data-testid="add-expense-button">
+            </app-action-button>
         </div>
     </div>
 
     <ng-template #modal>
-        <app-modal  (clickedOutside)="toggleModal($event)" [inputTransaction]="selectedTransaction"></app-modal>
+        <app-modal  
+            (clickedOutside)="toggleModal($event)" 
+            [inputTransaction]="selectedTransaction">
+        </app-modal>
     </ng-template>
 
     <ng-template #loading>

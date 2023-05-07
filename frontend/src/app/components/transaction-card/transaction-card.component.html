@@ -1,5 +1,11 @@
 <div class="container" [ngStyle]="{'backgroundColor': backgroundcolor}">
-    <p class="name">{{name.length < 11 ? name : name.substring(0,11)+'...'}}</p>
-    <p class="value">{{'R$' + value.toFixed(2)}}</p>
-    <p class="date">{{date | date:'dd/MM/YY'}}</p>
+    <p class="name">
+        {{name.length < 11 ? name : name.substring(0,11)+'...'}}
+    </p>
+    <p class="value">
+        {{'R$' + value.toFixed(2)}}
+    </p>
+    <p class="date">
+        {{date | date:'dd/MM/YY'}}
+    </p>
 </div>
