@@ -43,9 +43,9 @@ export class LoginComponent {
           else
             this.notifierService.ShowError(err.error.message);
         }
-        this.isSubmitted = false;
       },
     });
+    this.isSubmitted = false;
     
   }
 

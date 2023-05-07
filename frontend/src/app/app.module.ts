@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import {MatIconModule} from '@angular/material/icon';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
@@ -26,6 +26,7 @@ import { ModalComponent } from './components/modal/modal.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { ToastrModule } from 'ngx-toastr';
 import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 
 @NgModule({
   declarations: [
@@ -61,7 +62,12 @@ import { LoadingSpinnerComponent } from './components/loading-spinner/loading-sp
       preventDuplicates:true
     })
   ],
-  providers: [AuthService],
+  providers: [AuthService,
+  {
+    provide: HTTP_INTERCEPTORS,
+    useClass: JwtInterceptor,
+    multi:true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
