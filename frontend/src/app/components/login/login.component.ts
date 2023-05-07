@@ -34,9 +34,6 @@ export class LoginComponent {
       error: err =>{
         if(err.error.length){
           err.error.forEach((error:string) =>{
-            if(error === '\"email\" must be a valid email')
-              this.notifierService.ShowError('Email deve ser válido')
-            else
               this.notifierService.ShowError(error);    
           })
         }else{
@@ -60,11 +57,19 @@ export class LoginComponent {
       this.notifierService.ShowError('Email é obrigatório');
       isMissingField = true;
     }
+    if(this.user.email && !this.isEmailValid()){
+      this.notifierService.ShowError('Email deve ser válido');
+      isMissingField = true;
+    }
     if(!this.user.password){
       this.notifierService.ShowError('Senha é obrigatória');
       isMissingField = true;
     }
     return isMissingField;
+  }
+
+  isEmailValid(){
+    return  /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(this.user.email);
   }
 
 }

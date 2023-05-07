@@ -20,10 +20,7 @@ export class SignupComponent {
 
   signUp(){
 
-    if(this.incorrectPassword){
-      this.notifierService.ShowError('passwords should match');
-      return;
-    }
+    if(this.validateForm()) return;
 
     this.isSubmitted = true;
     this.userService.createUser(this.user).subscribe({
@@ -58,10 +55,39 @@ export class SignupComponent {
     this.confirmPassword = event
     if(!this.confirmPassword) return;
     if(this.user.password !== this.confirmPassword){
-      console.log("senha incorreta");
       this.incorrectPassword = true
     }else{
       this.incorrectPassword = false;
     }
+  }
+
+  validateForm(){
+    let isMissingField = false;
+    
+    if(!this.user.name){
+      this.notifierService.ShowError('Nome é obrigatório');
+      isMissingField = true;
+    }
+    if(!this.user.email){
+      this.notifierService.ShowError('Email é obrigatório');
+      isMissingField = true;
+    }
+    if(this.user.email && !this.isEmailValid()){
+      this.notifierService.ShowError('Email deve ser válido');
+      isMissingField = true;
+    }
+    if(!this.user.password){
+      this.notifierService.ShowError('Senha é obrigatória');
+      isMissingField = true;
+    }
+    if(this.incorrectPassword){
+      this.notifierService.ShowError('As senhas não batem');
+      isMissingField = true;
+    }
+    return isMissingField;
+  }
+
+  isEmailValid(){
+    return  /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(this.user.email);
   }
 }
