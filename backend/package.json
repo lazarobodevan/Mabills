@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "SET NODE_ENV=DEV& nodemon src/server.js ",
-    "prd": "SET NODE_ENV=PRD& node src/server.js",
+    "prd": "node src/server.js",
     "test": "jest src/__test__"
   },
   "author": "",
