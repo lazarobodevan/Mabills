@@ -70,6 +70,9 @@ export class ModalComponent {
 
   setType(event:any){
     this.transaction.type = event.target.value;
+    if(this.transaction.type === "EXPENSE"){
+      this.transaction['isPaid'] = false;
+    }
   }
 
   setCategory(event:any){

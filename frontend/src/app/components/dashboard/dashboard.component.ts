@@ -132,7 +132,7 @@ export class DashboardComponent {
       },
       data: {// values on X-Axis
         labels: this.monthIncomesByCategory.map(item =>{
-          return item._id.name;
+          return item._id.name.length < 12 ? item._id.name : item._id.name.substring(0,12)+'...';
         }),
 	       datasets: [
           {
@@ -160,7 +160,7 @@ export class DashboardComponent {
       },
       data: {// values on X-Axis
         labels: this.monthExpensesByCategory.map(item=>{
-          return item._id.name
+          return item._id.name.length < 12 ? item._id.name : item._id.name.substring(0,12)+'...';
         }),
         datasets: [
           {

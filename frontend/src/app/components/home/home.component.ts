@@ -44,7 +44,7 @@ export class HomeComponent {
       type:'doughnut',
       data: {// values on X-Axis
         labels: this.weekIncomes.map(item =>{
-          return item._id.name
+          return item._id.name.length < 12 ? item._id.name : item._id.name.substring(0,12)+'...'
         }),
 	       datasets: [
           {
@@ -66,7 +66,7 @@ export class HomeComponent {
       type:'doughnut',
       data: {
         labels: this.weekExpenses.map(item =>{
-          return item._id.name;
+          return item._id.name.length < 12 ? item._id.name : item._id.name.substring(0,12)+'...'
         }),
         datasets: [
           {
