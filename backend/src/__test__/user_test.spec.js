@@ -2,18 +2,15 @@ const {expect, test} = require('@jest/globals');
 const request = require('supertest');
 
 const app = require('../app');
-
 const mongo = require('./utils/test_db');
+const utils = require('./utils/utils2');
 
-const {generateDefaultUser, loginDefaultUser} = require('./utils/utils');
-
-let userToken;
 
 jest.setTimeout(90*1000);
 
 beforeAll(async ()=>{
     await mongo.connect();
-    await generateDefaultUser();
+    utils.generateDefaultUser();
 });
 
 afterAll(async ()=>{
@@ -24,15 +21,11 @@ afterAll(async ()=>{
 describe('User domain',() => {
     describe('POST #createUser', ()=>{
         it('should create a user and return name, email, empty password, _id and ownCategories', async()=>{
-            const response = await request(app).post('/signup').send({
-                email: "test@test.com",
-                name: "test",
-                password: "123"
-            });
+            const response = await utils.generateDefaultUser();
 
             const expectation = {
-                "email": "test@test.com",
-                "name": "test",
+                "email": "default@default.com",
+                "name": "default",
                 "password": ""
             }
 
@@ -42,11 +35,7 @@ describe('User domain',() => {
 
     describe('POST #createUser - Already exists', ()=>{
         it('should try  to create a user and return a message saying that user already exists', async()=>{
-            const response = await request(app).post('/signup').send({
-                email: "test@test.com",
-                name: "test",
-                password: "123"
-            });
+            const response = await utils.generateDefaultUser()
 
             const expectation = {
                message: "User already exists",
@@ -58,11 +47,7 @@ describe('User domain',() => {
 
     describe('POST #createUser - Invalid information', ()=>{
         it('should try  to create a user with invalid information', async()=>{
-            const response = await request(app).post('/signup').send({
-                email: "test",
-                name: "",
-                password: ""
-            });
+            const response = await utils.signUp('','t','');
 
             const expectation = [
                 "\"email\" must be a valid email",
@@ -77,15 +62,12 @@ describe('User domain',() => {
 
     describe('POST #login', ()=>{
         it('should find a user that matched email and password, and return their name, email and token', async ()=>{
-            const response = await request(app).post('/signin').send({
-                email: "test@test.com",
-                password: "123"
-            });
+            const response = await utils.loginDefaultUser();
 
             const expectation = {
                 user:{
-                    email: "test@test.com",
-                    name: "test",
+                    email: "default@default.com",
+                    name: "default",
                     ownCategories:[]
                 }
                 
@@ -101,10 +83,7 @@ describe('User domain',() => {
 
     describe('POST #login - Invalid email', ()=>{
         it('should not find a user and return a message saying that email or password are incorrects', async ()=>{
-            const response = await request(app).post('/signin').send({
-                email: "test1@test.com",
-                password: "123"
-            });
+            const response = await utils.signIn('default@test.com','123');
 
             const expectation = {
                 message:"Incorrect email or password"
@@ -116,10 +95,7 @@ describe('User domain',() => {
     })
     describe('POST #login - Invalid password', ()=>{
         it('should not find a user and return a message saying that email or password are incorrects', async ()=>{
-            const response = await request(app).post('/signin').send({
-                email: "test@test.com",
-                password: "1234"
-            });
+            const response = await utils.signIn('default@default.com','1234');
 
             const expectation = {
                 message:"Incorrect email or password"
@@ -131,21 +107,19 @@ describe('User domain',() => {
     })
 
     /*
-    * NÃO FUNCIONA NO MODO DE TESTE
+    * UPDATE USER DOES NOT WORK ON TEST - NEED TO WORK ON THIS
     */
 
     // describe('PUT #updateUser', ()=>{
     //     it('should update user information', async ()=>{
+
+    //         const token = (await utils.loginDefaultUser()).body.token;
             
-    //         const response = await request(app).put('/users').set({'Authorization':'bearer '+userToken}).send({
-    //             email:"teste2@teste.com",
-    //             name: "teste1",
-    //             password: "12345"
-    //         });            
+    //         const response = await utils.updateUser('test@test.com','t','123', token);
 
     //         const expectation = {
-    //             email:"teste2@teste.com",
-    //             name: "teste1",
+    //             email:"test@test.com",
+    //             name: "t",
     //             password: ""
     //         }
 
@@ -156,11 +130,7 @@ describe('User domain',() => {
 
     describe('PUT #updateUser - Not logged in', ()=>{
         it('should forbid user update', async ()=>{
-            const response = await request(app).put('/users').send({
-                email:"teste2@teste.com",
-                name: "teste1",
-                password: "12345"
-            });
+            const response = await utils.updateUser("test@test.com", 'test', '123', '')
 
             const expectation = {
                 message:"Access denied"
@@ -173,11 +143,15 @@ describe('User domain',() => {
 
     describe('PUT #updateUser - Email already in use', ()=>{
         it('should deny email update and send a message saying that the email is already in use', async ()=>{
-            const response = await request(app).put('/users').set({'Authorization':'bearer '+userToken}).send({
-                email:"default@default.com",
-                name: "teste1",
-                password: "12345"
-            });
+            
+            //Creating a User
+            await utils.signUp('test','test@test.com','123');
+
+            //Loggin-in
+            const user = await utils.loginDefaultUser();
+
+            //Trying to update user with email already taken
+            const response = await utils.updateUser('test@test.com','t','123', user.body.token);
 
             const expectation = {
                 message:"Email already in use"
@@ -191,10 +165,11 @@ describe('User domain',() => {
     describe('DELETE #deleteUser', ()=>{
         it('should delete user by id', async ()=>{
             await mongo.clearDatabase();
-            const {_id} = await generateDefaultUser();
-            const token = await loginDefaultUser();
+            
+            await utils.generateDefaultUser();
+            const user = await utils.loginDefaultUser();   
 
-            const response = await request(app).delete('/user/'+_id).set({'Authorization':'bearer '+token}).send();
+            const response = await request(app).delete('/user/'+user.body.user.id).set({'Authorization':'bearer '+user.body.token}).send();
 
             const expectation = {
                 message:"User deleted"
