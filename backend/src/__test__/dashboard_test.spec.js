@@ -4,25 +4,18 @@ const request = require('supertest');
 const app = require('../app');
 
 const mongo = require('./utils/test_db');
-
-const {
-    generateDefaultUser, 
-    loginDefaultUser, 
-    generateDefaultCategory, 
-    generateCategory, 
-    populateTransactions} = require('./utils/utils');
-
-const {getMonthRange, getWeekRange} = require('../utils/dateUtils');
+const utils = require('./utils/utils2');
 
 let token;
 let categoryCreated;
-let transactionCreated;
 
 beforeAll(async ()=>{
     await mongo.connect();
-    user = await generateDefaultUser();
-    token = await loginDefaultUser();
-    categoryCreated = await generateDefaultCategory(token);
+    user = await utils.generateDefaultUser();
+    user = user.body;
+    token = await utils.loginDefaultUser();
+    token = token.body.token
+    categoryCreated = await utils.generateCategory(token,'defaultCategory');
 });
 
 afterAll(async ()=>{
@@ -33,14 +26,20 @@ afterAll(async ()=>{
 describe('Dashboard domain',() => {
     describe('GET #getWeekCards', ()=>{
         it('should get total value and variation from this week to the last one of bills to receive, bills to pay and late bills', async()=>{
-            await populateTransactions(token, categoryCreated);
+            await utils.addThisWeekIncome(token, 200, categoryCreated);
+            await utils.addThisWeekToBePaid(token, 100, categoryCreated);
+            await utils.addThisWeekToExpire(token, 200, categoryCreated);
+
+            await utils.addLastWeekIncome(token, 100, categoryCreated);
+            await utils.addLastWeekToBePaid(token, 200, categoryCreated);
+            await utils.addLastWeekToExpire(token, 100, categoryCreated);
             
             const response = await request(app).get('/dashboard/week/cards').set({'Authorization':'bearer '+token});
             
             const expectation = {
-                toReceive: { value: 2, variation: 0 },
-                toPay: { value: 2, variation: 100 },
-                toExpire: { value: 6, variation: 50 }
+                toReceive: { value: 200, variation: 100 },
+                toPay: { value: 100, variation: -50 },
+                toExpire: { value: 200, variation: 100 }
               }
 
             expect(response.body).toMatchObject(expectation);
@@ -50,14 +49,21 @@ describe('Dashboard domain',() => {
     describe('GET #getWeekExpenses', ()=>{
         it('should get total expenses by category from the current week', async()=>{
 
-            const cat1 = await generateCategory(token, 'cat1');
-            await populateTransactions(token, cat1);
+            const newCategory = await utils.generateCategory(token, 'cat2');
+            
+            await utils.addThisWeekIncome(token, 1, newCategory);
+            await utils.addThisWeekToBePaid(token, 1, newCategory);
+            await utils.addThisWeekToExpire(token, 1, newCategory);
+
+            await utils.addLastWeekIncome(token, 1, newCategory);
+            await utils.addLastWeekToBePaid(token, 1, newCategory);
+            await utils.addLastWeekToExpire(token, 1, newCategory);
             
             const response = await request(app).get('/dashboard/week/expensesByCategory').set({'Authorization':'bearer '+token});
             
             const expectation = [
-                { _id: { name: 'defaultCategory', color: '#FFFFFF' }, SUM: 10 },
-                { _id: { name: 'cat1', color: '#FFFFFF' }, SUM: 10 }
+                { _id: { name: 'defaultCategory', color: '#FFFFFF' }, SUM: 300 },
+                { _id: { name: 'cat2', color: '#FFFFFF' }, SUM: 2 }
               ]
 
               expect(response.body).toEqual(
@@ -72,8 +78,8 @@ describe('Dashboard domain',() => {
             const response = await request(app).get('/dashboard/week/incomesByCategory').set({'Authorization':'bearer '+token});
 
             const expectation = [
-                { _id: { name: 'defaultCategory', color: '#FFFFFF' }, SUM: 2 },
-                { _id: { name: 'cat1', color: '#FFFFFF' }, SUM: 2 }
+                { _id: { name: 'defaultCategory', color: '#FFFFFF' }, SUM: 200 },
+                { _id: { name: 'cat2', color: '#FFFFFF' }, SUM: 1 }
               ]
 
               expect(response.body).toEqual(
@@ -81,9 +87,5 @@ describe('Dashboard domain',() => {
               );
         })
     });
-    describe('GET #getMonthIncome', ()=>{
-        it('should get total income by category from the current month', async()=>{
 
-        })
-    });
 })

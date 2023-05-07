@@ -5,7 +5,7 @@ const app = require('../app');
 
 const mongo = require('./utils/test_db');
 
-const {generateDefaultUser, loginDefaultUser, generateDefaultCategory} = require('./utils/utils');
+const utils = require('./utils/utils2');
 
 let token;
 let categoryCreated;
@@ -13,9 +13,11 @@ let transactionCreated;
 
 beforeAll(async ()=>{
     await mongo.connect();
-    user = await generateDefaultUser();
-    token = await loginDefaultUser();
-    categoryCreated = await generateDefaultCategory(token);
+    user = await utils.generateDefaultUser();
+    user = user.body;
+    token = await utils.loginDefaultUser();
+    token = token.body.token
+    categoryCreated = await utils.generateCategory(token,'defaultCategory');
 });
 
 afterAll(async ()=>{

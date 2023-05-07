@@ -110,7 +110,7 @@ const addLastWeekIncome = async(token, value, category) =>{
     });
 }
 
-const addLastThisWeekToBePaid = async (token, value, category) =>{
+const addLastWeekToBePaid = async (token, value, category) =>{
     await request(app).post('/transactions').set({'Authorization':'bearer '+token}).send({
         name: "transaction",
         value: value,
@@ -143,6 +143,6 @@ module.exports = {
     addThisWeekToBePaid,
     addThisWeekToExpire,
     addLastWeekIncome,
-    addLastThisWeekToBePaid,
+    addLastWeekToBePaid,
     addLastWeekToExpire
 }

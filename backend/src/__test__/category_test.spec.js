@@ -5,8 +5,7 @@ const app = require('../app');
 
 const mongo = require('./utils/test_db');
 
-const {generateDefaultUser, loginDefaultUser} = require('./utils/utils');
-const utils = require('./utils/utils');
+const utils = require('./utils/utils2');
 
 let token;
 let categoryCreated;
@@ -16,8 +15,10 @@ let transactionCreated;
 
 beforeAll(async ()=>{
     await mongo.connect();
-    user = await generateDefaultUser();
-    token = await loginDefaultUser();
+    user = await utils.generateDefaultUser();
+    user = user.body;
+    token = await utils.loginDefaultUser();
+    token = token.body.token
 });
 
 afterAll(async ()=>{
@@ -176,7 +177,7 @@ describe('Category domain',() => {
 
     describe('DELETE #deleteCategory - Category related to transaction', ()=>{
         it('should not delete category that is related to any transaction', async ()=>{
-            transactionCreated = await utils.populateTransactions(token, categoryCreated);
+            transactionCreated = await utils.addThisWeekIncome(token, 12, categoryCreated);
             const response = await request(app).delete(`/category/${categoryCreated._id}`).set({'Authorization':'bearer '+token});
             const expectation = 
                 {
@@ -191,7 +192,7 @@ describe('Category domain',() => {
 
     describe('DELETE #deleteCategory', ()=>{
         it('should not delete category that is related to any transaction', async ()=>{
-            const category = await utils.generateDefaultCategory(token);
+            const category = await utils.generateCategory(token,'test');
             
             const response = await request(app).delete(`/category/${category._id}`).set({'Authorization':'bearer '+token});
             const expectation = 
