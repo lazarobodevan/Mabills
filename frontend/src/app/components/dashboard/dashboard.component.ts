@@ -21,14 +21,18 @@ export class DashboardComponent {
   monthIncomesByCategory: IExpenseIncomeByCategory[] = [];
   monthExpensesByCategory: IExpenseIncomeByCategory[] = [];
   yearIncomesExpenses: IYearIncomeExpense[] = [];
+  isSubmitted:boolean = false;
 
   constructor(private dashboardService:DashboardService, private notifierService: NotifierService, private ref:ChangeDetectorRef){
     Chart.defaults.borderColor = "rgba(255, 255, 255, 0.22)";
-    Chart.defaults.color = "#FFFFFF"
+    Chart.defaults.color = "#FFFFFF";
     this.loadDashboardPage()
   }
 
   loadDashboardPage(){
+
+    this.isSubmitted = true;
+
     this.getMonthCards();
     this.dashboardService.getMonthIncomesByCategory().subscribe({
       next: response =>{
@@ -52,6 +56,7 @@ export class DashboardComponent {
 
         this.yearIncomesExpenses = response;
         this.generateTransactionsLineChart();
+        this.isSubmitted = false;
       }
     })
 

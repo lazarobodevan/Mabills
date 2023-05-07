@@ -1,3 +1,5 @@
+<div *ngIf="isSubmitted then loading"></div>
+
 <div class="container">
     <div class="logo-container">
         <img src="../../../assets/logo.png"/>
@@ -12,3 +14,7 @@
     </form>
     
 </div>
+
+<ng-template #loading>
+    <app-loading-spinner></app-loading-spinner>
+</ng-template>

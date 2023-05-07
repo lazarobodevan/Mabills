@@ -25,6 +25,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { ModalComponent } from './components/modal/modal.component';
 import { SignupComponent } from './components/signup/signup.component';
 import { ToastrModule } from 'ngx-toastr';
+import { LoadingSpinnerComponent } from './components/loading-spinner/loading-spinner.component';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { ToastrModule } from 'ngx-toastr';
     ProfileComponent,
     ModalComponent,
     SignupComponent,
+    LoadingSpinnerComponent,
   ],
   imports: [
     BrowserModule,

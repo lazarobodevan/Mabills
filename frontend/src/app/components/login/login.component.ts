@@ -14,6 +14,8 @@ export class LoginComponent {
 
   private user = {} as IUser;
 
+  isSubmitted: boolean = false;
+
   constructor(private authService: AuthService, private router: Router, private notifierService: NotifierService){
   }
 
@@ -25,22 +27,44 @@ export class LoginComponent {
   }
 
   login(){
+
+    if(this.validateForm()) return;
+    this.isSubmitted = true;
     this.authService.authenticate(this.user).subscribe({
       error: err =>{
         if(err.error.length){
-          console.log(err)
           err.error.forEach((error:string) =>{
-            this.notifierService.ShowError(error);    
+            if(error === '\"email\" must be a valid email')
+              this.notifierService.ShowError('Email deve ser válido')
+            else
+              this.notifierService.ShowError(error);    
           })
         }else{
-          this.notifierService.ShowError(err.error.message);
+          if(err.error.message === 'Incorrect email or password')
+            this.notifierService.ShowError('Email ou senha incorretos');
+          else
+            this.notifierService.ShowError(err.error.message);
         }
-      }
+      },
     });
+    this.isSubmitted = false;
   }
 
   signUpRedirect(){
     this.router.navigate(['/signup'])
+  }
+
+  validateForm(){
+    let isMissingField = false;
+    if(!this.user.email){
+      this.notifierService.ShowError('Email é obrigatório');
+      isMissingField = true;
+    }
+    if(!this.user.password){
+      this.notifierService.ShowError('Senha é obrigatória');
+      isMissingField = true;
+    }
+    return isMissingField;
   }
 
 }

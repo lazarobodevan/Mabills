@@ -14,6 +14,7 @@ export class CategoriesComponent {
   categories = [] as ICategory[];
   categorySelected = {} as ICategory;
   isModalVisible: boolean = false;
+  isSubmitted:boolean = false;
 
   getCategories$ = this.categoryService.getCategories();
 
@@ -28,14 +29,16 @@ export class CategoriesComponent {
   }
 
   getCategories(){
+    this.isSubmitted = true
     this.getCategories$.subscribe({
       next: response =>{
         this.categories = response;
-        
+        this.isSubmitted = false;
         this.ref.reattach()
-        this.ref.detectChanges()
+        this.ref.detectChanges();
       },
       error: err =>{
+        this.isSubmitted = false;
         this.notifierService.ShowError(err.error.message);
       }
     });
