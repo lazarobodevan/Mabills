@@ -1,0 +1,5 @@
+import './categories.cy'
+import './expenses.cy'
+import './home.cy'
+import './login.cy'
+import './singup.cy'

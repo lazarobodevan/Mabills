@@ -61,7 +61,7 @@ describe("#TRANSACTIONS", ()=>{
         cy.getByTestId('transaction-type').should("contain", "Receita");
         cy.getByTestId('transaction-color').should("have.css",'background-color','rgb(175, 68, 253)');
         cy.getByTestId('transaction-category-name').should("have.text", "category test");
-        cy.getByTestId('transaction-value').should('have.text','R$ 123');
+        cy.getByTestId('transaction-value').should('have.text','R$ 123.00');
         cy.getByTestId('transaction-date').should("contain","02/05/2023");
         cy.getByTestId('transaction-isPaid').should("contain","-");
     });
@@ -158,7 +158,7 @@ describe("#TRANSACTIONS", ()=>{
         cy.getByTestId('transaction-type').should("contain", "Despesa");
         cy.getByTestId('transaction-color').should("have.css",'background-color','rgb(255, 255, 255)');
         cy.getByTestId('transaction-category-name').should("have.text", "category2");
-        cy.getByTestId('transaction-value').should('have.text','R$ 321');
+        cy.getByTestId('transaction-value').should('have.text','R$ 321.00');
         cy.getByTestId('transaction-date').should("contain","03/05/2023");
         cy.getByTestId('transaction-isPaid').should("contain","Sim");
         cy.validateToast('Sucesso','Transação atualizada com sucesso');

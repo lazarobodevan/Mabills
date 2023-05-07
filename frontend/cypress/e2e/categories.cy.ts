@@ -22,7 +22,7 @@ describe("#CATEGORIES", ()=>{
         cy.get("[type='color']").eq(1).invoke('val', '#FFFFFF').trigger('input')
         cy.getByTestId("conclude-button").click();
 
-        cy.getByTestId('category-item').children().get('.container').children().getByTestId('category-name').should('contain','category test');
+        cy.getByTestId('category-item').children().get('.container').children().getByTestId('category-name').should('contain','category t...');
         cy.getByTestId('category-item').children().get('.container').children().getByTestId('category-color').should("have.css",'background-color','rgb(255, 255, 255)');
         cy.getByTestId('category-item').children().getByTestId('delete-button').should('exist');
     });
