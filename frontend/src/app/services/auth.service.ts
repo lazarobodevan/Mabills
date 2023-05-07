@@ -45,5 +45,9 @@ export class AuthService {
     
   }
 
+  getAuthStatus(){
+    return !!localStorage.getItem('token');
+  }
+
   
 }
