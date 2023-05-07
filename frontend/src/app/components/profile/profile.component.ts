@@ -41,6 +41,9 @@ export class ProfileComponent {
   }
 
   updateUser(){
+    
+    if(this.validateForm()) return;
+
     this.userService.updateUser(this.loggedUser).subscribe({
       next: response =>{
         this.getLoggedUser();
@@ -63,5 +66,32 @@ export class ProfileComponent {
   logout(){
     this.authService.logout();
     this.notifierService.ShowSuccess("Logout com sucesso")
+  }
+
+  validateForm(){
+    let isMissingField = false;
+    
+    if(!this.loggedUser.name){
+      this.notifierService.ShowError('Nome é obrigatório');
+      isMissingField = true;
+    }
+    if(!this.loggedUser.email){
+      this.notifierService.ShowError('Email é obrigatório');
+      isMissingField = true;
+    }
+    if(this.loggedUser.email && !this.isEmailValid()){
+      this.notifierService.ShowError('Email deve ser válido');
+      isMissingField = true;
+    }
+    if(!this.loggedUser.password){
+      this.notifierService.ShowError('Senha é obrigatória');
+      isMissingField = true;
+    }
+
+    return isMissingField;
+  }
+
+  isEmailValid(){
+    return  /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/.test(this.loggedUser.email);
   }
 }
