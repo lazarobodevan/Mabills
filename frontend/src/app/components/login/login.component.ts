@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { IUser} from 'src/app/interfaces/IUser';
 import { AuthService } from 'src/app/services/auth.service';
 import { FormsModule } from '@angular/forms';
@@ -8,7 +8,8 @@ import { NotifierService } from 'src/app/services/notifier.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
 
@@ -16,7 +17,7 @@ export class LoginComponent {
 
   isSubmitted: boolean = false;
 
-  constructor(private authService: AuthService, private router: Router, private notifierService: NotifierService){
+  constructor(private authService: AuthService, private router: Router, private notifierService: NotifierService,private ref:ChangeDetectorRef){
   }
 
   setEmail(email:string){
@@ -42,9 +43,10 @@ export class LoginComponent {
           else
             this.notifierService.ShowError(err.error.message);
         }
+        this.isSubmitted = false;
       },
     });
-    this.isSubmitted = false;
+    
   }
 
   signUpRedirect(){

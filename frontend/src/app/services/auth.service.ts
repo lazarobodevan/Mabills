@@ -2,7 +2,7 @@ import { EventEmitter, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { IUser } from '../interfaces/IUser';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { BehaviorSubject, Observable, delay, tap } from 'rxjs';
 import { environment } from 'src/environments/environment.development';
 import { NotifierService } from './notifier.service';
 

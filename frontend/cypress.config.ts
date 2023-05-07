@@ -1,9 +1,10 @@
 import { defineConfig } from 'cypress'
 
 export default defineConfig({
+  projectId: '44e4gx',
   
   e2e: {
-    'baseUrl': 'http://localhost:4200',
+    'baseUrl': 'http://127.0.0.1:4200',
   },
   
   

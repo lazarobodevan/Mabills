@@ -236,7 +236,7 @@ export class ModalComponent {
         isMissingField = true;
       }
       if(!this.category.color){
-        this.notifierService.ShowError('Cor é orbrigatório');
+        this.notifierService.ShowError('Cor é obrigatória');
         isMissingField = true;
       }
     }

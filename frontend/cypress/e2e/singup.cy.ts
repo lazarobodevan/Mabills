@@ -20,7 +20,8 @@ describe('#SIGNUP', () =>{
         cy.get('[data-testid="password-input"]').type('123');
         cy.get('[data-testid="confirm-input"]').type('123');
         cy.get('[data-testid="signup-button"]').click();
-        cy.validateToast('Sucesso', 'Usuário criado com sucesso')
+        cy.validateToast('Sucesso', 'Usuário criado com sucesso');
+        cy.url().should('eq','http://localhost:4200/')
     });
 
     it('Should try to create a user with email already in use', ()=>{
@@ -29,7 +30,7 @@ describe('#SIGNUP', () =>{
         cy.get('[data-testid="password-input"]').type('123');
         cy.get('[data-testid="confirm-input"]').type('123');
         cy.get('[data-testid="signup-button"]').click();
-        cy.validateToast('Erro', 'User already exists');
+        cy.validateToast('Erro', 'Email já em uso');
         cy.deleteTestUser();
     })
 
@@ -38,7 +39,7 @@ describe('#SIGNUP', () =>{
         cy.get('[data-testid="password-input"]').type('123');
         cy.get('[data-testid="confirm-input"]').type('123');
         cy.get('[data-testid="signup-button"]').click();
-        cy.validateToast('Erro', '"name" is required');
+        cy.validateToast('Erro', 'Nome é obrigatório');
         
     })
 
@@ -47,7 +48,7 @@ describe('#SIGNUP', () =>{
         cy.get('[data-testid="password-input"]').type('123');
         cy.get('[data-testid="confirm-input"]').type('123');
         cy.get('[data-testid="signup-button"]').click();
-        cy.validateToast('Erro','"email" is required');
+        cy.validateToast('Erro','Email é obrigatório');
     })
 
     it('Should try to create a user without attribute "password"', ()=>{
@@ -55,7 +56,7 @@ describe('#SIGNUP', () =>{
         cy.get('[data-testid="email-input"]').type('test@gmail.com');
         cy.get('[data-testid="confirm-input"]').type('123');
         cy.get('[data-testid="signup-button"]').click();
-        cy.validateToast('Erro', 'passwords should match');
+        cy.validateToast('Erro', 'As senhas não batem');
     })
 
     it('Should try to create a user without matching passwords', ()=>{
@@ -64,7 +65,7 @@ describe('#SIGNUP', () =>{
         cy.get('[data-testid="password-input"]').type('123');
         cy.get('[data-testid="confirm-input"]').type('12');
         cy.get('[data-testid="signup-button"]').click();
-        cy.validateToast('Erro', 'passwords should match')
+        cy.validateToast('Erro', 'As senhas não batem')
     })
 
     

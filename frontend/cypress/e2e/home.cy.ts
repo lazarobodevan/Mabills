@@ -1,9 +1,12 @@
 
 describe("#HOME", ()=>{
+
     before(()=>{
-        cy.deleteTestUser();
         cy.createTestUser();
         cy.login();
+    })
+    after(()=>{
+        cy.deleteTestUser();
     })
     beforeEach(()=>{
         cy.visit('/home')

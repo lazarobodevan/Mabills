@@ -8,7 +8,7 @@ describe('#LOGIN', ()=>{
     })
 
     beforeEach(() =>{
-        cy.visit('/')
+        cy.visit('http://localhost:4200/')
     })
     
     it('Should open the Login page', () => {
@@ -26,7 +26,23 @@ describe('#LOGIN', ()=>{
         cy.get('[data-testid="email-input"]').type('test@gmail.com');
         cy.get('[data-testid="password-input"]').type('12');
         cy.get('[data-testid="login-button"]').click();
-        cy.validateToast('Erro', 'Incorrect email or password')
+        cy.validateToast('Erro', 'Email ou senha incorretos')
+    })
+    it('Should try to login with invalid email, and get a toast message', ()=>{
+        cy.get('[data-testid="email-input"]').type('testgmail.com');
+        cy.get('[data-testid="password-input"]').type('12');
+        cy.get('[data-testid="login-button"]').click();
+        cy.validateToast('Erro', 'Email deve ser válido')
+    })
+    it('Should try to login without email, and get a toast message', ()=>{
+        cy.get('[data-testid="password-input"]').type('12');
+        cy.get('[data-testid="login-button"]').click();
+        cy.validateToast('Erro', 'Email é obrigatório')
+    })
+    it('Should try to login without password, and get a toast message', ()=>{
+        cy.get('[data-testid="email-input"]').type('test@gmail.com');
+        cy.get('[data-testid="login-button"]').click();
+        cy.validateToast('Erro', 'Senha é obrigatória')
     })
     
     it('Should login successfully', ()=>{

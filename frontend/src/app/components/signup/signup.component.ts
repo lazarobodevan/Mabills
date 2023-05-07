@@ -35,7 +35,10 @@ export class SignupComponent {
             this.notifierService.ShowError(error);
           });
         }else{
-          this.notifierService.ShowError(err.error.message)
+          if(err.error.message === 'User already exists')
+            this.notifierService.ShowError('Email já em uso');
+          else
+            this.notifierService.ShowError(err.error.message)
         }
         this.isSubmitted = false;
       }

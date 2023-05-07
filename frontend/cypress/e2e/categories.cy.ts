@@ -27,6 +27,24 @@ describe("#CATEGORIES", ()=>{
         cy.getByTestId('category-item').children().getByTestId('delete-button').should('exist');
     });
 
+    it('Should try to add a category without name', ()=>{
+        cy.getByTestId("add-button").click();
+        //cy.getByTestId("name-input").type("category test");
+        cy.get("[type='color']").eq(1).invoke('val', '#FFFFFF').trigger('input')
+        cy.getByTestId("conclude-button").click();
+
+        cy.validateToast('Erro','Nome é obrigatório')
+    });
+
+    it('Should try to add a category without color', ()=>{
+        cy.getByTestId("add-button").click();
+        cy.getByTestId("name-input").type("category test");
+        //cy.get("[type='color']").eq(1).invoke('val', '#FFFFFF').trigger('input')
+        cy.getByTestId("conclude-button").click();
+
+        cy.validateToast('Erro','Cor é obrigatória')
+    });
+
     it('Should load the selected transaction info in the modal', ()=>{
         cy.getByTestId('category-item').click();
         cy.getByTestId("name-input").invoke("attr","ng-reflect-input-value").should("contain",'category test');
