@@ -47,6 +47,7 @@ export class LoginComponent {
             this.notifierService.ShowError(err.error.message);
         }
         this.isSubmitted = false;
+        this.ref.detectChanges();
       },
     });
     
