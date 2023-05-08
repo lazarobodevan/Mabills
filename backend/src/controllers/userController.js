@@ -25,7 +25,7 @@ const updateUser = async (req, res) =>{
     updatedUser.password = "";
     req.user = updatedUser;
 
-    return await res.status(201).json(updatedUser);
+    return res.status(201).json(updatedUser);
 }
 
 const deleteUser = async (req, res) =>{
