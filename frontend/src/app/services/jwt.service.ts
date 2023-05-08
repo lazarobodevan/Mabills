@@ -15,7 +15,6 @@ export class JwtService {
   
   decodeToken() {
     this.jwtToken = localStorage.getItem('token')|| '';
-    console.log(this.jwtToken)
     if (this.jwtToken) {
       this.decodedToken = jwt_decode(this.jwtToken);
     }

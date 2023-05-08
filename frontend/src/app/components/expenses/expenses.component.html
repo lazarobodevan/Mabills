@@ -15,7 +15,7 @@
         <app-input-field 
             placeholder="Pesquisar..." 
             icon="search" 
-            (inputContent)="setNameFilter($event)" 
+            (inputContentEmitter)="setNameFilter($event)" 
             width="200px" 
             data-testid="search-input-filter">
         </app-input-field>
@@ -40,7 +40,7 @@
         <div class="filter">
             <p>Data</p>
             <app-input-field 
-                (inputContent)="setDateFilter($event)" 
+                (inputContentEmitter)="setDateFilter($event)" 
                 type="date" 
                 width="180px" 
                 data-testid="date-input-filter">
